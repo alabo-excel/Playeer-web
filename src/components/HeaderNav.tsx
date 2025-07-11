@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from "lucide-react"
+import Link from 'next/link';
 
-const HeaderNav = () => {
+const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false);
 
@@ -27,25 +28,30 @@ const HeaderNav = () => {
 
   return (
     <nav className={`fixed mx-auto right-0 left-0 top-0 transition-colors duration-300 z-50 ${scrolled ?
-      'bg-white rounded-full md:w-[80%] !mx-auto mt-10 text-black shadow-lg' : 'w-full bg-transparent text-[#FBFBFB]'}`}>
+      'bg-white rounded-full md:w-[80%] !mx-auto mt-10  shadow-lg' :
+      'w-full bg-transparent  py-4'} ${scroll || scrolled ? "text-black" : "text-[#FBFBFB]"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <img src={scrolled ? '/images/logo-colored.png' : '/images/logo.png'} alt="logo" className='w-32 my-auto' />
+            <img src={scrolled || scroll ? '/images/logo-colored.png' : '/images/logo.png'} alt="logo" className='w-32 my-auto' />
           </div>
 
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-8">
-              <a href="#" className="hover:text-[#0095FF] transition-colors">Home</a>
-              <a href="#about" className="hover:text-[#0095FF] transition-colors">About</a>
-              <a href="#players" className="hover:text-[#0095FF] transition-colors">Player directory</a>
-              <a href="#pricing" className="hover:text-[#0095FF] transition-colors">Pricing</a>
-              <a href="#faq" className="hover:text-[#0095FF] transition-colors">FAQ</a>
+              <Link className="hover:text-[#0095FF] transition-colors" href={'/'}>
+                Home
+              </Link>
+              <a href="/#about" className="hover:text-[#0095FF] transition-colors">About</a>
+              <Link className="hover:text-[#0095FF] transition-colors" href="/players">
+                Player directory
+              </Link>
+              <a href="/#pricing" className="hover:text-[#0095FF] transition-colors">Pricing</a>
+              <a href="/#" className="hover:text-[#0095FF] transition-colors">FAQ</a>
             </div>
           </div>
 
           <div className="hidden md:block">
-            <button className={`${scrolled ? 'bg-[#E5F4FF]' : 'bg-white'} mr-6 px-8 py-2 rounded-full text-[#0095FF] transition-colors`}>Sign up</button>
+            <button className={`bg-[#E5F4FF] mr-6 px-8 py-2 rounded-full text-[#0095FF] transition-colors`}>Sign up</button>
             <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white transition-colors">Login</button>
           </div>
 
@@ -64,9 +70,9 @@ const HeaderNav = () => {
       />
 
       {/* Mobile menu */}
-      <div className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 md:hidden ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`} style={{background: '#fff'}}>
+      <div className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 md:hidden ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`} style={{ background: '#fff' }}>
         <div className="flex justify-between items-center h-16 px-4 border-b border-[#E5F4FF]">
-          <img src={scrolled ? '/images/logo-colored.png' : '/images/logo-colored.png'} alt="logo" className='w-32 my-auto' />
+          <img src={scrolled ? '/images/logo-colored.png' : '/images/logo.png'} alt="logo" className='w-32 my-auto' />
           <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
             <X className="h-7 w-7 text-[#232323]" />
           </button>

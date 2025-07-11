@@ -28,3 +28,7 @@ ul li {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.blur{
+  backdrop-filter: blur(20px);
+}

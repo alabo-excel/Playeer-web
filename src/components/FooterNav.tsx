@@ -1,5 +1,5 @@
 import React from 'react';
-import { CopyrightIcon } from "lucide-react"
+import { CopyrightIcon, Mail } from "lucide-react"
 
 
 const FooterNav = () => {
@@ -11,7 +11,10 @@ const FooterNav = () => {
           <p className='text-sm'>Be the first to know about talent trials, new features, and scouting opportunities.</p>
         </div>
         <div className='w-full md:w-[40%] flex flex-col md:flex-row md:justify-between my-auto gap-4'>
-          <input type="text" className='bg-[#F4F4F4] w-full rounded-md p-3 md:mr-10' placeholder='Email Address' />
+          <div className='flex items-center bg-[#F4F4F4] w-full rounded-md md:mr-10'>
+            <Mail className="h-5 w-5 text-[#6C6C6C] ml-3" />
+            <input type="text" className='bg-[#F4F4F4] w-full rounded-md p-3 focus:outline-none ml-2' placeholder='Email Address' />
+          </div>
           <button className='text-[#FCFCFC] p-3 bg-[#0095FF] rounded-full w-full md:w-52'>Send Message</button>
         </div>
       </div>
