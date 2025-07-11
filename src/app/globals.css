@@ -15,6 +15,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: 'Benzin';
+  color: #232323;
 }
 
 ul li {
@@ -22,6 +23,8 @@ ul li {
 }
 
 .cta{
-  background: url(/images/cta-img.png)
-  
+  background: url(/images/cta-img.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
