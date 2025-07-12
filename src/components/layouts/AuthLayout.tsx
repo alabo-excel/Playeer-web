@@ -46,7 +46,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
               <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white transition-colors">Login</button>
             </Link>
           </div>
-          <div className='flex-1 flex items-center justify-center'>
+          <div className='flex-1 text-sm flex items-center justify-center'>
             {children}
           </div>
         </div>
