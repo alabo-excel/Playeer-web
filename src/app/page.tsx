@@ -22,7 +22,7 @@ const home = () => {
   return (
     <>
       <HeaderNav />
-      <motion.section style={{ scale, borderRadius }} className='w-full mx-auto overflow-hidden relative '>
+      <motion.section style={{ scale, borderRadius }} className='w-full lg:h-auto h-[80vh] mx-auto overflow-hidden relative '>
         <img src="/images/hero-img.png" alt="hero-img" className='w-full h-full object-cover' />
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:top-1/2 md:left-10 md:translate-x-0 md:-translate-y-1/2 w-[90%] md:w-1/2 px-4 md:px-0'>
           <div className='bg-[#E5F4FF33] w-full md:w-[80%] text-center rounded-full p-2 md:p-3 mb-4 mx-auto md:mx-0'>
@@ -341,7 +341,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className='cta my-20 h-auto mx-auto flex flex-col md:flex-row items-center justify-center'>
+      <section className='cta my-20 lg:h-auto h-[80vh] mx-auto flex flex-col md:flex-row items-center justify-center'>
         <div className='w-full md:w-[40%] py-20 !text-center mx-auto'>
           <div className='bg-[#E5F4FF] w-full mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>DISCOVER FOOTBALL TALENT LIKE NEVER BEFORE</p>
