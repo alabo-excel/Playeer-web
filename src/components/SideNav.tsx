@@ -1,0 +1,57 @@
+'use client'
+
+import { LayoutDashboard, LockKeyholeOpen, Settings, SquarePlay, UserRound } from 'lucide-react';
+import React from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+
+const SideNav = () => {
+  const pathname = usePathname();
+  
+  const navItems = [
+    { href: '/user/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+    { href: '/user/profile', icon: UserRound, label: 'My Profile' },
+    { href: '/user/reels', icon: SquarePlay, label: 'Highlight Videos' },
+    { href: '/user/settings', icon: Settings, label: 'Settings' },
+  ];
+
+  return (
+    <aside className='fixed left-0 w-[20%] bg-[#FCFCFC] top-0 h-screen border-r border-gray p-4 flex flex-col'>
+      <div className='mt-20 flex-1'>
+        {navItems.map((item) => {
+          const Icon = item.icon;
+          const isActive = pathname === item.href;
+          
+          return (
+            <Link key={item.href} href={item.href}>
+              <button 
+                className={`flex my-3 p-3 rounded-md w-full transition-colors duration-200 ${
+                  isActive 
+                    ? 'text-white bg-primary' 
+                    : 'text-[#6C6C6C] hover:bg-gray-100'
+                }`}
+              >
+                <Icon />
+                <p className='ml-4'>{item.label}</p>
+              </button>
+            </Link>
+          );
+        })}
+      </div>
+
+      <div className='bg-[#F4F4F4] p-3 rounded-xl'>
+        <p className='font-semibold'>Unlock Your Full Potential with <span className='text-primary'>Playeer Pro!</span> </p>
+        <p className='text-xs text-[#6C6C6C] my-2'>Get featured, upload unlimited videos, track your stats, and increase your visibility to top scouts and clubs.</p>
+        <button className='mb-2 bg-primary text-white flex p-3 rounded-full w-full justify-center'>
+          <LockKeyholeOpen className='w-4 h-4 my-auto' />
+          <p className='text-sm ml-3 my-auto'>Upgrade to Pro</p>
+        </button>
+        <div className='bg-[#E5F4FF] p-1 rounded-md'>
+          <p className='text-primary text-xs'>Start with Monthly or save more with Yearly. More features. More visibility. More chances to go pro.</p>
+        </div>
+      </div>
+    </aside>
+  );
+};
+
+export default SideNav;

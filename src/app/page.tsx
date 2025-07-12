@@ -135,8 +135,8 @@ const home = () => {
             <div className='w-full md:w-[60%] grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <div className='flex'>
                 {/* <img className='w-16 mr-2 my-auto' src="/images/icons/verified.png" alt="" /> */}
-                <div className='bg-[#0095FF] text-white rounded-xl text-center w-14 h-14 flex items-center justify-center mr-2'>
-                  <BadgeCheck className='w-4 h-4' />
+                <div className='bg-[#0095FF] text-white rounded-xl text-center p-5 w-14 h-14 flex items-center justify-center mr-2'>
+                  <BadgeCheck className='w-6 h-6' />
                 </div>
                 <div>
                   <p className='font-bold'>Verified Player Profiles</p>
@@ -145,8 +145,8 @@ const home = () => {
               </div>
               <div className='flex'>
                 {/* <img className='w-16 mr-2 my-auto' src="/images/icons/messaging.png" alt="" /> */}
-                <div className='bg-[#0095FF] text-white rounded-xl text-center w-14 h-14 flex items-center justify-center mr-2'>
-                  <MessageSquare className='w-4 h-4' />
+                <div className='bg-[#0095FF] text-white rounded-xl text-center p-5 w-14 h-14 flex items-center justify-center mr-2'>
+                  <MessageSquare className='w-6 h-6' />
                 </div>
                 <div>
                   <p className='font-bold'>Direct Messaging</p>
@@ -165,8 +165,8 @@ const home = () => {
               </div>
               <div className='flex'>
                 {/* <img className='w-16 mr-2 my-auto' src="/images/icons/trust.png" alt="" /> */}
-                <div className='bg-[#0095FF] text-white rounded-xl text-center w-16 h-14 flex items-center justify-center mr-2'>
-                  <ShieldCheck className='w-4 h-4' />
+                <div className='bg-[#0095FF] text-white rounded-xl text-center p-5 w-14 h-14 flex items-center justify-center mr-2'>
+                  <ShieldCheck className='w-5 h-5' />
                 </div>
                 <div>
                   <p className='font-bold'>Transparency & Trust</p>

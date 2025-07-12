@@ -1,10 +1,13 @@
+import AdminLayout from '@/components/layouts/AdminLayout';
 import React from 'react';
 
 const reels = () => {
   return (
-    <div>
-      
-    </div>
+    <AdminLayout>
+      <div className='pt-3'>
+        <p>Welcome back, John!</p>
+      </div>
+    </AdminLayout>
   );
 };
 
