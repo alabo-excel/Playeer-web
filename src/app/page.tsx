@@ -310,7 +310,7 @@ const home = () => {
           {/* Second Swiper: right-to-left */}
           <Swiper
             spaceBetween={20}
-            slidesPerView={1.2}
+            slidesPerView={1.5}
             breakpoints={{
               640: { slidesPerView: 2.2 },
               768: { slidesPerView: 3.2 },
@@ -341,7 +341,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className='cta my-32 h-auto md:h-[80vh] max-w-full mx-auto flex flex-col md:flex-row items-center justify-center'>
+      <section className='cta my-20 h-auto md:h-[80vh] max-w-full mx-auto flex flex-col md:flex-row items-center justify-center'>
         <div className='w-full md:w-[40%] !text-center mx-auto'>
           <div className='bg-[#E5F4FF] w-full mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>DISCOVER FOOTBALL TALENT LIKE NEVER BEFORE</p>
