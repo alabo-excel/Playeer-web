@@ -18,7 +18,8 @@
 
 body {
   font-family: "Hanken Grotesk", sans-serif;
-  max-width: 1400px;
+  background-color: #F8F8F8;
+  max-width: 1800px;
   margin-left: auto;
   margin-right: auto;
 }

@@ -1,3 +1,4 @@
+import { Mail, MapPin } from 'lucide-react';
 import React from 'react';
 
 const ContactComp = () => {
@@ -11,11 +12,17 @@ const ContactComp = () => {
           <h2 className='text-2xl md:text-3xl'>Have Questions? Let’s Talk.</h2>
           <p className='text-[#6C6C6C] my-3'>Whether you're a player or a talent seeker, we’re here to support you.</p>
           <div className='flex items-center'>
-            <img src="/images/icons/location.png" alt="" className="" />
+            {/* <img src="/images/icons/location.png" alt="" className="" /> */}
+            <div className='bg-[#0095FF] text-white rounded-xl text-center w-14 h-14 flex items-center justify-center'>
+              <MapPin className='w-4 h-4' />
+            </div>
             <p className='text-[#232323] font-bold text-lg md:text-xl my-auto ml-2'>Lagos, Nigeria</p>
           </div>
           <div className='flex items-center my-4'>
-            <img src="/images/icons/mail.png" alt="" className="" />
+            {/* <img src="/images/icons/mail.svg" alt="" className="" /> */}
+            <div className='bg-[#0095FF] text-white rounded-xl text-center w-14 h-14 flex items-center justify-center'>
+              <Mail className='w-4 h-4' />
+            </div>
             <p className='text-[#232323] font-bold text-lg md:text-xl my-auto ml-2'>support@playeer.africa</p>
           </div>
         </div>

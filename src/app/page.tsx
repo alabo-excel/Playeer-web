@@ -10,13 +10,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectFade, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
-import { Quote } from 'lucide-react';
+import { BadgeCheck, ListFilter, MessageSquare, Quote, ShieldCheck } from 'lucide-react';
 
 const home = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.8]);
+  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.2]);
   const borderRadius = useTransform(scrollYProgress, [0, 1], ["0px", "150px"]);
 
   return (
@@ -124,7 +124,7 @@ const home = () => {
           </div>
         </div>
         <div>
-          <div className='bg-[#E5F4FF] w-80 max-w-full text-center rounded-full p-3 mb-4 mx-auto'>
+          <div className='bg-[#E5F4FF] w-80 max-w-full text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>WHY CHOOSE PLAYEER?</p>
           </div>
           <div className='bg-[#F6F6F6] rounded-3xl p-4 md:p-10 flex flex-col md:flex-row justify-between gap-6'>
@@ -134,28 +134,40 @@ const home = () => {
             </div>
             <div className='w-full md:w-[60%] grid grid-cols-1 sm:grid-cols-2 gap-4'>
               <div className='flex'>
-                <img className='w-16 mr-2 my-auto' src="/images/icons/verified.png" alt="" />
+                {/* <img className='w-16 mr-2 my-auto' src="/images/icons/verified.png" alt="" /> */}
+                <div className='bg-[#0095FF] text-white rounded-xl text-center w-14 h-14 flex items-center justify-center mr-2'>
+                  <BadgeCheck className='w-4 h-4' />
+                </div>
                 <div>
                   <p className='font-bold'>Verified Player Profiles</p>
                   <p className='text-sm text-[#6C6C6C]'>A platform designed to spotlight Africa’s rising stars.</p>
                 </div>
               </div>
               <div className='flex'>
-                <img className='w-16 mr-2 my-auto' src="/images/icons/messaging.png" alt="" />
+                {/* <img className='w-16 mr-2 my-auto' src="/images/icons/messaging.png" alt="" /> */}
+                <div className='bg-[#0095FF] text-white rounded-xl text-center w-14 h-14 flex items-center justify-center mr-2'>
+                  <MessageSquare className='w-4 h-4' />
+                </div>
                 <div>
                   <p className='font-bold'>Direct Messaging</p>
                   <p className='text-sm text-[#6C6C6C]'>Connect with players or representatives instantly.</p>
                 </div>
               </div>
               <div className='flex'>
-                <img className='w-14 mr-2 my-auto' src="/images/icons/filtering.png" alt="" />
+                {/* <img className='w-14 mr-2 my-auto' src="/images/icons/filtering.png" alt="" /> */}
+                <div className='bg-[#0095FF] text-white rounded-xl text-center w-14 h-14 flex items-center justify-center mr-2'>
+                  <ListFilter className='w-4 h-4' />
+                </div>
                 <div>
                   <p className='font-bold'>Advanced Filtering Tools</p>
                   <p className='text-sm text-[#6C6C6C]'>Search by skill, age, location, and more.</p>
                 </div>
               </div>
               <div className='flex'>
-                <img className='w-16 mr-2 my-auto' src="/images/icons/trust.png" alt="" />
+                {/* <img className='w-16 mr-2 my-auto' src="/images/icons/trust.png" alt="" /> */}
+                <div className='bg-[#0095FF] text-white rounded-xl text-center w-16 h-14 flex items-center justify-center mr-2'>
+                  <ShieldCheck className='w-4 h-4' />
+                </div>
                 <div>
                   <p className='font-bold'>Transparency & Trust</p>
                   <p className='text-sm text-[#6C6C6C]'>Our moderation ensures quality, authenticity, and fairness.</p>
@@ -287,7 +299,8 @@ const home = () => {
             }}
             loop
             modules={[Autoplay]}
-            autoplay={{ delay: 3000, disableOnInteraction: false }}
+            speed={1000} // smooth and continuous
+            autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
             className="mb-8"
           >
             {[1, 2, 3, 4, 5, 6, 7].map((i) => (
@@ -319,7 +332,8 @@ const home = () => {
             loop
             dir="rtl"
             modules={[Autoplay]}
-            autoplay={{ delay: 2500, disableOnInteraction: false }}
+            speed={1000} // smooth and continuous
+            autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
           >
             {[1, 2, 3, 4, 5, 6, 7].map((i) => (
               <SwiperSlide key={i}>
@@ -341,8 +355,9 @@ const home = () => {
         </div>
       </section>
 
-      <section className='cta my-20 lg:h-auto h-[80vh] mx-auto flex flex-col md:flex-row items-center justify-center'>
-        <div className='w-full md:w-[40%] py-20 !text-center mx-auto'>
+      <section className='relative my-20 lg:h-auto h-[80vh] mx-auto flex flex-col md:flex-row items-center justify-center'>
+        <img className='w-full' src="/images/cta-img.png" alt="" />
+        <div className='w-full md:w-[40%] py-20 !text-center mx-auto absolute left-0 right-0 top-10'>
           <div className='bg-[#E5F4FF] w-full mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>DISCOVER FOOTBALL TALENT LIKE NEVER BEFORE</p>
           </div>

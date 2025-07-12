@@ -74,9 +74,11 @@ const signup = () => {
             <p>Password must be at least 8 characters, include a number and a special character.</p>
           </div>
 
-          <button className='bg-primary w-full rounded-full text-[#FCFCFC] p-3 my-4'>
-            Create Account
-          </button>
+          <Link href={'/auth/onboarding'}>
+            <button className='bg-primary w-full rounded-full text-[#FCFCFC] p-3 my-4'>
+              Create Account
+            </button>
+          </Link>
 
           <div className='flex justify-center'>
             <p className='text-[#6C6C6C] mr-2'>Already have an account?</p>
