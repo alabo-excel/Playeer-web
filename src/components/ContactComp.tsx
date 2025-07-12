@@ -3,7 +3,7 @@ import React from 'react';
 const ContactComp = () => {
   return (
     <section className='bg-[#F6F6F6]'>
-      <div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between p-6 md:p-20 gap-8'>
+      <div className=' mx-auto flex flex-col md:flex-row justify-between p-6 md:p-20 gap-8'>
         <div className='w-full md:w-auto'>
           <div className='bg-[#E5F4FF] w-40 text-center rounded-full p-3 mb-4 mx-auto md:mx-0'>
             <p className='!text-[#0095FF] font-semibold'>CONTACT US</p>

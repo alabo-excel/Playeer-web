@@ -27,10 +27,10 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
   }, [isMenuOpen]);
 
   return (
-    <nav className={`fixed mx-auto right-0 left-0 top-0 transition-colors duration-300 z-50 ${scrolled ?
+    <nav className={`fixed max-w-7xl mx-auto right-0 left-0 top-0 transition-colors duration-300 z-50 ${scrolled ?
       'bg-white rounded-full md:w-[80%] !mx-auto mt-10  shadow-lg' :
       'w-full bg-transparent  py-4'} ${scroll || scrolled ? "text-black" : "text-[#FBFBFB]"}`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <img src={scrolled || scroll ? '/images/logo-colored.png' : '/images/logo.png'} alt="logo" className='w-32 my-auto' />
@@ -51,8 +51,12 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
           </div>
 
           <div className="hidden md:block">
-            <button className={`bg-[#E5F4FF] mr-6 px-8 py-2 rounded-full text-[#0095FF] transition-colors`}>Sign up</button>
-            <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white transition-colors">Login</button>
+            <Link href={'/auth/signup'}>
+              <button className={`bg-[#E5F4FF] mr-6 px-8 py-2 rounded-full text-[#0095FF] transition-colors`}>Sign up</button>
+            </Link>
+            <Link href={'/auth/login'}>
+              <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white transition-colors">Login</button>
+            </Link>
           </div>
 
           <div className="md:hidden">
@@ -83,8 +87,13 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
           <Link href="/players" className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors" onClick={() => setIsMenuOpen(false)}>Player directory</Link>
           <Link href="/#pricing" className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors" onClick={() => setIsMenuOpen(false)}>Pricing</Link>
           <Link href="/#faq" className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors" onClick={() => setIsMenuOpen(false)}>FAQ</Link>
-          <button className="w-full text-[#0095FF] bg-[#E5F4FF] px-3 py-2 rounded-full mt-4 font-semibold transition-colors hover:bg-[#0095FF] hover:text-white border border-[#0095FF]" onClick={() => setIsMenuOpen(false)}>Sign up</button>
-          <button className="w-full text-white bg-[#0095FF] px-3 py-2 rounded-full mt-2 font-semibold transition-colors hover:bg-[#0077cc]" onClick={() => setIsMenuOpen(false)}>Login</button>
+
+          <Link href={'/auth/signup'}>
+            <button className="w-full text-[#0095FF] bg-[#E5F4FF] px-3 py-2 rounded-full mt-4 font-semibold transition-colors hover:bg-[#0095FF] hover:text-white border border-[#0095FF]" onClick={() => setIsMenuOpen(false)}>Sign up</button>
+          </Link>
+          <Link href={'/auth/login'}>
+            <button className="w-full text-white bg-[#0095FF] px-3 py-2 rounded-full mt-2 font-semibold transition-colors hover:bg-[#0077cc]" onClick={() => setIsMenuOpen(false)}>Login</button>
+          </Link>
         </div>
       </div>
     </nav>

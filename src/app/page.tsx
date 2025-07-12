@@ -22,9 +22,9 @@ const home = () => {
   return (
     <>
       <HeaderNav />
-      <motion.section style={{ scale, borderRadius }} className='w-full h-screen mx-auto overflow-hidden relative max-w-screen-2xl'>
+      <motion.section style={{ scale, borderRadius }} className='w-full mx-auto overflow-hidden relative '>
         <img src="/images/hero-img.png" alt="hero-img" className='w-full h-full object-cover' />
-        <div className='absolute top-1/4 left-1/2 -translate-x-1/2 md:top-52 md:left-10 md:translate-x-0 w-[90%] md:w-1/2 px-4 md:px-0'>
+        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:top-1/2 md:left-10 md:translate-x-0 md:-translate-y-1/2 w-[90%] md:w-1/2 px-4 md:px-0'>
           <div className='bg-[#E5F4FF33] w-full md:w-[80%] text-center rounded-full p-2 md:p-3 mb-4 mx-auto md:mx-0'>
             <p className='!text-[#FCFCFC] text-xs md:text-base'>Showcase Your Talent. Connect with Scouts. Get Discovered.</p>
           </div>
@@ -34,10 +34,10 @@ const home = () => {
           <p className='text-[#FCFCFC] text-xs sm:text-sm md:text-base'>Are you a rising footballer looking to get noticed? Or a scout searching for the next big star? Playeer is your gateway to a global football network. Upload your skills, track your progress, and get in front of decision-makers who matter.</p>
         </div>
       </motion.section>
-      <div className='mx-auto max-w-7xl w-full'>
+      <div className='mx-auto  w-full'>
         <img src="/images/pattern.svg" alt="" className="w-full" />
       </div>
-      <section className='px-4 md:px-6 max-w-7xl mx-auto'>
+      <section className='px-4 md:px-6  mx-auto'>
         <div id='about' className='flex flex-col md:flex-row gap-8 md:gap-4 justify-between my-10'>
           <div className='my-auto w-full md:w-[45%]'>
             <div className='bg-[#E5F4FF] w-52 text-center rounded-full p-3 mb-4 mx-auto md:mx-0'>
@@ -166,7 +166,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className='my-20'>
+      <section className='my-20  mx-auto'>
         <div className='w-full md:w-[30%] !text-center mx-auto px-2'>
           <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>FEATURED PLAYERS</p>
@@ -204,7 +204,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className='bg-[#F4F4F4] rounded-3xl max-w-7xl mx-auto p-4 md:p-6'>
+      <section className='bg-[#F4F4F4] rounded-3xl  mx-auto p-4 md:p-6'>
         <div className='w-full md:w-[30%] !text-center mx-auto'>
           <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>HOW IT WORKS</p>
@@ -267,7 +267,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className='my-20'>
+      <section className='my-20  mx-auto'>
         <div className='w-full md:w-[40%] !text-center mx-auto px-2'>
           <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>TESTIMONIALS</p>
@@ -341,8 +341,8 @@ const home = () => {
         </div>
       </section>
 
-      <section className='cta my-20 h-auto md:h-[80vh] max-w-full mx-auto flex flex-col md:flex-row items-center justify-center'>
-        <div className='w-full md:w-[40%] !text-center mx-auto'>
+      <section className='cta my-20 h-auto mx-auto flex flex-col md:flex-row items-center justify-center'>
+        <div className='w-full md:w-[40%] py-20 !text-center mx-auto'>
           <div className='bg-[#E5F4FF] w-full mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>DISCOVER FOOTBALL TALENT LIKE NEVER BEFORE</p>
           </div>
@@ -351,7 +351,7 @@ const home = () => {
         </div>
       </section>
 
-      <section id='pricing' className='my-20 max-w-7xl mx-auto px-2 md:px-4'>
+      <section id='pricing' className='my-20  mx-auto px-2 md:px-4'>
         <div className='w-full md:w-[30%] !text-center mx-auto pb-10'>
           <div className='bg-[#E5F4FF] w-40 mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>PRICING</p>

@@ -1,19 +1,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap');
+
 @font-face {
   font-family: 'Benzin';
   src: url('/fonts/Benzin-Bold.ttf') format('truetype'),
-       url('/fonts/Benzin-ExtraBold.ttf') format('truetype');
+    url('/fonts/Benzin-ExtraBold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
+
 @import "tailwindcss";
+
+@theme {
+  --color-primary: #0095FF;
+  --color-gray: #E5E5E5;
+}
 
 body {
   font-family: "Hanken Grotesk", sans-serif;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: 'Benzin';
   color: #232323;
 }
@@ -22,13 +37,13 @@ ul li {
   list-style-type: disc !important;
 }
 
-.cta{
+.cta {
   background: url(/images/cta-img.png);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
 
-.blur{
+.blur {
   backdrop-filter: blur(20px);
 }
