@@ -223,8 +223,8 @@ const home = () => {
         </div>
       </section>
 
-      <section className='bg-[#F4F4F4] rounded-3xl  mx-auto p-4 md:p-6'>
-        <div className='mx-auto max-w-7xl'>
+      <section className='bg-[#F4F4F4] rounded-3xl max-w-7xl mx-auto p-4 md:p-6'>
+        <div className='mx-auto p-10'>
           <div className='w-full md:w-[30%] !text-center mx-auto'>
             <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
               <p className='!text-[#0095FF] font-semibold'>HOW IT WORKS</p>
@@ -288,7 +288,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className='my-20 mx-auto'>
+      <section className='my-20 max-w-7xl mx-auto'>
         <div className='w-full md:w-[40%] !text-center mx-auto px-2'>
           <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>TESTIMONIALS</p>
@@ -366,8 +366,8 @@ const home = () => {
 
       <section className='relative my-20 lg:h-auto h-[80vh] mx-auto flex flex-col md:flex-row items-center justify-center'>
         <img className='w-full' src="/images/cta-img.png" alt="" />
-        <div className='w-full max-w-7xl md:w-[40%] py-20 !text-center mx-auto absolute left-0 right-0 top-10'>
-          <div className='bg-[#E5F4FF] w-full mx-auto text-center rounded-full p-3 mb-4'>
+        <div className='w-full max-w-5xl md:w-[40%] py-20 !text-center mx-auto absolute left-0 right-0 top-1/2 -translate-y-1/2'>
+          <div className='bg-[#E5F4FF] w-[80%] mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>DISCOVER FOOTBALL TALENT LIKE NEVER BEFORE</p>
           </div>
           <h2 className='text-2xl md:text-4xl font-bold'>Browse Videos, Matches, and Drills in One Place</h2>

@@ -10,14 +10,14 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       <div className='flex p-4'>
         <div className='relative lg:block hidden w-1/2'>
           <img className='rounded-3xl' src="/images/auth-img.png" alt="" />
-          <div className='flex justify-between absolute top-6 left-5 right-5'>
+          <div className='flex justify-between absolute top-6 left-10 right-10'>
             <button onClick={() => router.back()} className='bg-primary rounded-full p-3 flex text-[#FCFCFC]'>
               <ArrowLeft />
               <span>Back</span>
             </button>
             <img src="/images/logo.png" className='my-auto' alt="" />
           </div>
-          <div className='absolute bottom-10 left-5 right-5'>
+          <div className='absolute bottom-10 left-10 right-10'>
             <h2 className='text-5xl !text-[#FCFCFC] font-bold'>Talent is nothing without the platform to shine.</h2>
             <div className='flex justify-between mt-4'>
               <div>
@@ -38,12 +38,12 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
         <div className='lg:w-1/2 w-full my-auto h-screen flex flex-col'>
-          <div className='flex lg:absolute mb-4 top-0 lg:w-[22%] right-5 top-6 justify-between ml-auto p-4'>
+          <div className='flex lg:absolute justify-end mb-4 top-0 lg:w-[22%] right-5 top-6 ml-auto p-4'>
             <Link href={'/auth/signup'}>
               <button className={`bg-[#E5F4FF] mr-6 px-8 py-2 rounded-full text-[#0095FF] transition-colors`}>Sign up</button>
             </Link>
             <Link href={'/auth/login'}>
-              <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white transition-colors">Login</button>
+              <button className="bg-[#0095FF] px-8 py-2 ml-6 rounded-full text-white transition-colors">Login</button>
             </Link>
           </div>
           <div className='flex-1 text-sm flex items-center justify-center'>
