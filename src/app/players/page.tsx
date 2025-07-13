@@ -9,7 +9,7 @@ const players = () => {
   return (
     <>
       <HeaderNav scroll={true} />
-      <section className='p-4'>
+      <section className='p-4 max-w-7xl mx-auto'>
         <div className=' mt-20 bg-[#E5F4FF] mx-auto p-6 md:p-12 rounded-3xl flex flex-col md:flex-row justify-between'>
           <div className='w-full md:w-[44%] my-auto'>
             <h1 className='text-3xl md:text-5xl font-bold'>Discover Football Talent Across the World</h1>
@@ -18,7 +18,7 @@ const players = () => {
           <img src="/images/three-medal-set.png" className='w-full md:w-auto max-w-xs md:max-w-none mx-auto md:mx-0' alt="" />
         </div>
       </section>
-      <section className='p-4 my-10  mx-auto'>
+      <section className='p-4 my-10 max-w-7xl mx-auto'>
 
         <div className='flex flex-col md:flex-row justify-between gap-8'>
           <div className='w-full md:w-[30%] md:mr-10 mb-6 md:mb-0'>

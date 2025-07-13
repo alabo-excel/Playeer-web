@@ -4,7 +4,7 @@ import { CopyrightIcon, Mail } from "lucide-react"
 
 const FooterNav = () => {
   return (
-    <footer className=' mx-auto px-4'>
+    <footer className='max-w-7xl mx-auto px-4'>
       <div className='flex flex-col md:flex-row md:justify-between py-10 border-b border-b-[#B6B6B6] gap-6'>
         <div className='w-full md:w-[40%]'>
           <h2 className='text-lg md:text-xl font-bold'>Stay Updated With Our Latest News, Tips, and Success Stories</h2>

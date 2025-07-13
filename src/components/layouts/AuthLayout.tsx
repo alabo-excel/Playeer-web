@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter()
   return (
-    <section className=' relative mx-auto'>
+    <section className='relative mx-auto'>
       <div className='flex p-4'>
         <div className='relative lg:block hidden w-1/2'>
           <img className='rounded-3xl' src="/images/auth-img.png" alt="" />
@@ -38,7 +38,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
         </div>
         <div className='lg:w-1/2 w-full my-auto h-screen flex flex-col'>
-          <div className='flex lg:absolute mb-4 top-0 lg:w-[25%] right-5 top-6 justify-between ml-auto p-4'>
+          <div className='flex lg:absolute mb-4 top-0 lg:w-[22%] right-5 top-6 justify-between ml-auto p-4'>
             <Link href={'/auth/signup'}>
               <button className={`bg-[#E5F4FF] mr-6 px-8 py-2 rounded-full text-[#0095FF] transition-colors`}>Sign up</button>
             </Link>

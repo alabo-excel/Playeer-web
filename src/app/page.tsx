@@ -17,27 +17,34 @@ const home = () => {
 
   const { scrollYProgress } = useScroll();
   const scale = useTransform(scrollYProgress, [0, 1], [1, 0.2]);
-  const borderRadius = useTransform(scrollYProgress, [0, 1], ["0px", "150px"]);
+  const borderRadius = useTransform(scrollYProgress, [0, 1], ["0px", "200px"]);
 
   return (
     <>
       <HeaderNav />
-      <motion.section style={{ scale, borderRadius }} className='w-full lg:h-auto h-[80vh] mx-auto overflow-hidden relative '>
-        <img src="/images/hero-img.png" alt="hero-img" className='w-full h-full object-cover' />
-        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 md:top-1/2 md:left-10 md:translate-x-0 md:-translate-y-1/2 w-[90%] md:w-1/2 px-4 md:px-0'>
-          <div className='bg-[#E5F4FF33] w-full md:w-[80%] text-center rounded-full p-2 md:p-3 mb-4 mx-auto md:mx-0'>
-            <p className='!text-[#FCFCFC] text-xs md:text-base'>Showcase Your Talent. Connect with Scouts. Get Discovered.</p>
+      <motion.section style={{ scale }} className='w-full lg:h-auto h-[80vh] mx-auto overflow-hidden relative '>
+        <motion.img style={{ borderRadius }} src="/images/hero-img.png" alt="hero-img" className='w-full h-screen object-cover' />
+        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 md:px-6'>
+          <div className='max-w-7xl mx-auto'>
+            <div className='w-[90%] md:w-1/2'>
+              <div className='bg-[#E5F4FF33] w-full md:w-[80%] text-center rounded-full p-2 md:p-3 mb-4 mx-auto md:mx-0'>
+                <p className='!text-[#FCFCFC] text-xs md:text-base'>Showcase Your Talent. Connect with Scouts. Get Discovered.</p>
+              </div>
+              <h1 className='my-4 text-3xl sm:text-4xl md:text-6xl !text-white font-bold leading-tight'>
+                Turn Your Football Passion into a Career
+              </h1>
+              <p className='text-[#FCFCFC] text-xs sm:text-sm md:text-base'>Are you a rising footballer looking to get noticed? Or a scout searching for the next big star? Playeer is your gateway to a global football network. Upload your skills, track your progress, and get in front of decision-makers who matter.</p>
+            </div>
           </div>
-          <h1 className='my-4 text-3xl sm:text-4xl md:text-6xl !text-white font-bold leading-tight'>
-            Turn Your Football Passion into a Career
-          </h1>
-          <p className='text-[#FCFCFC] text-xs sm:text-sm md:text-base'>Are you a rising footballer looking to get noticed? Or a scout searching for the next big star? Playeer is your gateway to a global football network. Upload your skills, track your progress, and get in front of decision-makers who matter.</p>
+        </div>
+        <div className='mx-auto  w-full'>
+          <img src="/images/pattern.svg" alt="" className="w-full" />
         </div>
       </motion.section>
-      <div className='mx-auto  w-full'>
+      {/* <div className='mx-auto  w-full'>
         <img src="/images/pattern.svg" alt="" className="w-full" />
-      </div>
-      <section className='px-4 md:px-6  mx-auto'>
+      </div> */}
+      <section className='px-4 md:px-6 max-w-7xl mx-auto'>
         <div id='about' className='flex flex-col md:flex-row gap-8 md:gap-4 justify-between my-10'>
           <div className='my-auto w-full md:w-[45%]'>
             <div className='bg-[#E5F4FF] w-52 text-center rounded-full p-3 mb-4 mx-auto md:mx-0'>
@@ -217,69 +224,71 @@ const home = () => {
       </section>
 
       <section className='bg-[#F4F4F4] rounded-3xl  mx-auto p-4 md:p-6'>
-        <div className='w-full md:w-[30%] !text-center mx-auto'>
-          <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
-            <p className='!text-[#0095FF] font-semibold'>HOW IT WORKS</p>
-          </div>
-          <h2 className='text-2xl md:text-3xl font-bold'>Your Roadmap to Football Success</h2>
-        </div>
-        <div className='grid grid-cols-1 md:grid-cols-3 my-6 gap-4'>
-          <div className='bg-white p-6 rounded-xl'>
-            <div className='flex justify-between'>
-              <div className='bg-[#0095FF] rounded-xl text-center w-10 h-10 flex items-center justify-center'>
-                <p className='text-white'>1</p>
-              </div>
-              <img src="/images/icon-white.png" alt="" />
+        <div className='mx-auto max-w-7xl'>
+          <div className='w-full md:w-[30%] !text-center mx-auto'>
+            <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
+              <p className='!text-[#0095FF] font-semibold'>HOW IT WORKS</p>
             </div>
-            <h3 >Create a profile</h3>
-            <p className='text-[#6C6C6C] text-sm'>Upload your stats, highlight videos, achievement, and career history to get started.</p>
+            <h2 className='text-2xl md:text-3xl font-bold'>Your Roadmap to Football Success</h2>
           </div>
-          <div className='bg-white p-6 rounded-xl'>
-            <div className='flex justify-between'>
-              <div className='bg-[#0095FF] rounded-xl text-center w-10 h-10 flex items-center justify-center'>
-                <p className='text-white'>2</p>
-              </div>
-              <img src="/images/icon-white.png" alt="" />
-            </div>
-            <h3 >Get Verified</h3>
-            <p className='text-[#6C6C6C] text-sm'>We review and validate your data to build credibility.</p>
-          </div>
-          <div className='bg-white p-6 rounded-xl'>
-            <div className='flex justify-between'>
-              <div className='bg-[#0095FF] rounded-xl text-center w-10 h-10 flex items-center justify-center'>
-                <p className='text-white'>3</p>
-              </div>
-              <img src="/images/icon-white.png" alt="" />
-            </div>
-            <h3 >Showcase Your Skills</h3>
-            <p className='text-[#6C6C6C] text-sm'>Add match footage, drills, and performance highlights.</p>
-          </div>
-          <div className='col-span-1 md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 md:grid-cols-3 my-6 gap-4'>
             <div className='bg-white p-6 rounded-xl'>
               <div className='flex justify-between'>
                 <div className='bg-[#0095FF] rounded-xl text-center w-10 h-10 flex items-center justify-center'>
-                  <p className='text-white'>4</p>
+                  <p className='text-white'>1</p>
                 </div>
                 <img src="/images/icon-white.png" alt="" />
               </div>
-              <h3 >Connect with Scouts & Agents</h3>
-              <p className='text-[#6C6C6C] text-sm'>Get noticed and contacted for trials or recruitment.</p>
+              <h3 >Create a profile</h3>
+              <p className='text-[#6C6C6C] text-sm'>Upload your stats, highlight videos, achievement, and career history to get started.</p>
             </div>
             <div className='bg-white p-6 rounded-xl'>
               <div className='flex justify-between'>
                 <div className='bg-[#0095FF] rounded-xl text-center w-10 h-10 flex items-center justify-center'>
-                  <p className='text-white'>5</p>
+                  <p className='text-white'>2</p>
                 </div>
                 <img src="/images/icon-white.png" alt="" />
               </div>
-              <h3 >Get Signed</h3>
-              <p className='text-[#6C6C6C] text-sm'>Your opportunity to go professional begins here.</p>
+              <h3 >Get Verified</h3>
+              <p className='text-[#6C6C6C] text-sm'>We review and validate your data to build credibility.</p>
+            </div>
+            <div className='bg-white p-6 rounded-xl'>
+              <div className='flex justify-between'>
+                <div className='bg-[#0095FF] rounded-xl text-center w-10 h-10 flex items-center justify-center'>
+                  <p className='text-white'>3</p>
+                </div>
+                <img src="/images/icon-white.png" alt="" />
+              </div>
+              <h3 >Showcase Your Skills</h3>
+              <p className='text-[#6C6C6C] text-sm'>Add match footage, drills, and performance highlights.</p>
+            </div>
+            <div className='col-span-1 md:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-4'>
+              <div className='bg-white p-6 rounded-xl'>
+                <div className='flex justify-between'>
+                  <div className='bg-[#0095FF] rounded-xl text-center w-10 h-10 flex items-center justify-center'>
+                    <p className='text-white'>4</p>
+                  </div>
+                  <img src="/images/icon-white.png" alt="" />
+                </div>
+                <h3 >Connect with Scouts & Agents</h3>
+                <p className='text-[#6C6C6C] text-sm'>Get noticed and contacted for trials or recruitment.</p>
+              </div>
+              <div className='bg-white p-6 rounded-xl'>
+                <div className='flex justify-between'>
+                  <div className='bg-[#0095FF] rounded-xl text-center w-10 h-10 flex items-center justify-center'>
+                    <p className='text-white'>5</p>
+                  </div>
+                  <img src="/images/icon-white.png" alt="" />
+                </div>
+                <h3 >Get Signed</h3>
+                <p className='text-[#6C6C6C] text-sm'>Your opportunity to go professional begins here.</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      <section className='my-20  mx-auto'>
+      <section className='my-20 mx-auto'>
         <div className='w-full md:w-[40%] !text-center mx-auto px-2'>
           <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>TESTIMONIALS</p>
@@ -299,7 +308,7 @@ const home = () => {
             }}
             loop
             modules={[Autoplay]}
-            speed={1000} // smooth and continuous
+            speed={4000} // smooth and continuous
             autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
             className="mb-8"
           >
@@ -332,7 +341,7 @@ const home = () => {
             loop
             dir="rtl"
             modules={[Autoplay]}
-            speed={1000} // smooth and continuous
+            speed={4000} // smooth and continuous
             autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
           >
             {[1, 2, 3, 4, 5, 6, 7].map((i) => (
@@ -357,7 +366,7 @@ const home = () => {
 
       <section className='relative my-20 lg:h-auto h-[80vh] mx-auto flex flex-col md:flex-row items-center justify-center'>
         <img className='w-full' src="/images/cta-img.png" alt="" />
-        <div className='w-full md:w-[40%] py-20 !text-center mx-auto absolute left-0 right-0 top-10'>
+        <div className='w-full max-w-7xl md:w-[40%] py-20 !text-center mx-auto absolute left-0 right-0 top-10'>
           <div className='bg-[#E5F4FF] w-full mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>DISCOVER FOOTBALL TALENT LIKE NEVER BEFORE</p>
           </div>
@@ -366,7 +375,7 @@ const home = () => {
         </div>
       </section>
 
-      <section id='pricing' className='my-20  mx-auto px-2 md:px-4'>
+      <section id='pricing' className='my-20 max-w-7xl  mx-auto px-2 md:px-4'>
         <div className='w-full md:w-[30%] !text-center mx-auto pb-10'>
           <div className='bg-[#E5F4FF] w-40 mx-auto text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>PRICING</p>
