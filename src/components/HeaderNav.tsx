@@ -27,7 +27,7 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
   }, [isMenuOpen]);
 
   return (
-    <nav className={`fixed max-w-7xl mx-auto right-0 left-0 top-0 transition-all duration-300 transition-discrete z-50 ${scrolled ?
+    <nav className={`fixed mx-auto right-0 left-0 top-0 transition-all duration-300 transition-discrete z-50 ${scrolled ?
       'bg-white rounded-full md:w-[80%] !mx-auto mt-10  shadow-lg' :
       'w-full bg-transparent  py-4'} ${scroll || scrolled ? "text-black" : "text-[#FBFBFB]"}`}>
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
@@ -76,7 +76,7 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
       {/* Mobile menu */}
       <div className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 md:hidden ${isMenuOpen ? 'translate-y-0' : '-translate-y-full'}`} style={{ background: '#fff' }}>
         <div className="flex justify-between items-center h-16 px-4 border-b border-[#E5F4FF]">
-          <img src={scrolled ? '/images/logo-colored.png' : '/images/logo.png'} alt="logo" className='w-32 my-auto' />
+          <img src={scrolled || scroll ? '/images/logo-colored.png' : '/images/logo.png'} alt="logo" className='w-32 my-auto' />
           <button onClick={() => setIsMenuOpen(false)} aria-label="Close menu">
             <X className="h-7 w-7 text-[#232323]" />
           </button>

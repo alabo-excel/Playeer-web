@@ -46,9 +46,11 @@ const LoginPage = () => {
             </Link>
           </div>
 
-          <button className='bg-primary w-full rounded-full text-[#FCFCFC] p-3 my-4'>
-            Login
-          </button>
+          <Link href={'/user/dashboard'}>
+            <button className='bg-primary w-full rounded-full text-[#FCFCFC] p-3 my-4'>
+              Login
+            </button>
+          </Link>
           <div className='border-b border-gray mb-6'>
             <p className='text-center -mb-3 bg-white w-10 mx-auto'>or</p>
           </div>

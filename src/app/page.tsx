@@ -32,7 +32,7 @@ const home = () => {
         className='w-full lg:h-auto h-[80vh] mx-auto overflow-hidden relative '
       >
         <motion.img style={{ borderRadius }} src="/images/hero-img.png" alt="hero-img" className='w-full h-screen object-cover' />
-        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 md:px-6'>
+        <div className='absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 md:px-6'>
           <div className='max-w-7xl mx-auto'>
             <div className='w-[90%] md:w-1/2'>
               <div className='bg-[#E5F4FF33] w-full md:w-[80%] text-center rounded-full p-2 md:p-3 mb-4 mx-auto md:mx-0'>

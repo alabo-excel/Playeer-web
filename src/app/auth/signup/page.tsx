@@ -11,7 +11,7 @@ const signup = () => {
   return (
     <AuthLayout>
       <>
-        <div className='lg:w-[90%] lg:-mt-20 mx-auto border border-gray rounded-3xl p-6'>
+        <div className='lg:w-[70%] lg:-mt-20 mx-auto border border-gray rounded-3xl p-6'>
           <button className={`bg-[#E5F4FF] px-4 mb-2 py-2 rounded-full text-[#0095FF] transition-colors`}>Join Playeer</button>
 
           <p className='text-3xl font-bold text-[#232323]'>Your Football Journey Starts Here</p>
