@@ -27,7 +27,7 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
   }, [isMenuOpen]);
 
   return (
-    <nav className={`fixed max-w-7xl mx-auto right-0 left-0 top-0 transition-colors duration-300 z-50 ${scrolled ?
+    <nav className={`fixed max-w-7xl mx-auto right-0 left-0 top-0 transition-all duration-300 transition-discrete z-50 ${scrolled ?
       'bg-white rounded-full md:w-[80%] !mx-auto mt-10  shadow-lg' :
       'w-full bg-transparent  py-4'} ${scroll || scrolled ? "text-black" : "text-[#FBFBFB]"}`}>
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">

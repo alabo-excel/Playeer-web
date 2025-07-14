@@ -11,18 +11,26 @@ import { EffectFade, Autoplay } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import { BadgeCheck, ListFilter, MessageSquare, Quote, ShieldCheck } from 'lucide-react';
+import Marquee from "react-fast-marquee";
 
 const home = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(1)
 
   const { scrollYProgress } = useScroll();
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 0.2]);
-  const borderRadius = useTransform(scrollYProgress, [0, 1], ["0px", "200px"]);
+  // Make scale and marginTop jump instantly as soon as scrolling starts
+  const scale = useTransform(scrollYProgress, [0, 0.01], [1, 0.9]);
+
+  const marginTop = useTransform(scrollYProgress, [0, 0.01], [0, 40]);
+  const borderRadius = useTransform(scrollYProgress, [0, 0.01], ["0", "40px"]);
 
   return (
     <>
       <HeaderNav />
-      <motion.section style={{ scale }} className='w-full lg:h-auto h-[80vh] mx-auto overflow-hidden relative '>
+      <motion.section 
+        style={{ scale, marginTop, borderRadius }}
+        className='w-full lg:h-auto h-[80vh] mx-auto overflow-hidden relative '
+      >
         <motion.img style={{ borderRadius }} src="/images/hero-img.png" alt="hero-img" className='w-full h-screen object-cover' />
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full px-4 md:px-6'>
           <div className='max-w-7xl mx-auto'>
@@ -41,9 +49,7 @@ const home = () => {
           <img src="/images/pattern.svg" alt="" className="w-full" />
         </div>
       </motion.section>
-      {/* <div className='mx-auto  w-full'>
-        <img src="/images/pattern.svg" alt="" className="w-full" />
-      </div> */}
+
       <section className='px-4 md:px-6 max-w-7xl mx-auto'>
         <div id='about' className='flex flex-col md:flex-row gap-8 md:gap-4 justify-between my-10'>
           <div className='my-auto w-full md:w-[45%]'>
@@ -90,29 +96,22 @@ const home = () => {
         </div>
 
         <div className='flex flex-col-reverse md:flex-row gap-8 md:gap-4 my-16 md:my-32 justify-between'>
-          <div className='w-full md:w-1/2 mt-8 md:mt-0 object-contain'>
-            <Swiper
-              modules={[EffectFade, Autoplay]}
-              effect="fade"
-              autoplay={{ disableOnInteraction: false }}
-              slidesPerView={1}
-              // fadeEffect={{ crossFade: true }}
-              loop
-              speed={1200}
-            >
-              <SwiperSlide>
-                <img src="/images/players-slide/slide-1.png" className='w-full object-contain' alt="" />
-              </SwiperSlide>
-              <SwiperSlide>
-                <img src="/images/players-slide/slide-2.png" className='w-full object-contain' alt="" />
-              </SwiperSlide>
-              <SwiperSlide>
-                <img src="/images/players-slide/slide-3.png" className='w-full object-contain' alt="" />
-              </SwiperSlide>
-            </Swiper>
+          <div className='w-full md:w-1/2 mt-8 md:mt-0 grid grid-cols-4 gap-3'>
+            {[1, 2, 3].map((single) => (
+              <img
+                key={single}
+                onMouseEnter={() => setActiveSlide(single)}
+                className={`h-full object-cover rounded-2xl transition-all transition-discrete duration-700 ease-in-out ${activeSlide === single ? 'col-span-2' : ''}`}
+                src={`/images/players-slide/slide-${single}.png`}
+                alt=""
+              />
+            ))}
+
+            {/* <img className='h-full hover:col-span-2 object-cover rounded-xl' src="/images/players-slide/slide-2.png" alt="" />
+            <img className='h-full hover:col-span-2 object-cover rounded-xl' src="/images/players-slide/slide-3.png" alt="" /> */}
           </div>
           {/* <img src="/images/playeer.png" className='w-full md:w-1/2 object-contain mt-8 md:mt-0' alt="" /> */}
-          <div className='my-auto w-full md:w-[45%]'>
+          <div className='my-auto py-6 w-full md:w-[45%]'>
             <div className='bg-[#E5F4FF] w-52 text-center rounded-full p-3 mb-4 mx-auto md:mx-0'>
               <p className='!text-[#0095FF] font-semibold'>FIND A PLAYER</p>
             </div>
@@ -130,6 +129,7 @@ const home = () => {
             </button>
           </div>
         </div>
+
         <div>
           <div className='bg-[#E5F4FF] w-80 max-w-full text-center rounded-full p-3 mb-4'>
             <p className='!text-[#0095FF] font-semibold'>WHY CHOOSE PLAYEER?</p>
@@ -224,7 +224,7 @@ const home = () => {
       </section>
 
       <section className='bg-[#F4F4F4] rounded-3xl max-w-7xl mx-auto p-4 md:p-6'>
-        <div className='mx-auto p-10'>
+        <div className='mx-auto lg:p-10'>
           <div className='w-full md:w-[30%] !text-center mx-auto'>
             <div className='bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4'>
               <p className='!text-[#0095FF] font-semibold'>HOW IT WORKS</p>
@@ -298,22 +298,9 @@ const home = () => {
         {/* Testimonial sliders */}
         <div className="mt-10">
           {/* First Swiper: left-to-right */}
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={1.2}
-            breakpoints={{
-              640: { slidesPerView: 2.2 },
-              768: { slidesPerView: 3.2 },
-              1024: { slidesPerView: 4.2 },
-            }}
-            loop
-            modules={[Autoplay]}
-            speed={4000} // smooth and continuous
-            autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
-            className="mb-8"
-          >
+          <Marquee pauseOnHover={true} className="gap-4">
             {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <SwiperSlide key={i}>
+              <div key={i} className="w-[350px] mx-2 flex-shrink-0">
                 <div className="bg-[#F6F6F6] rounded-xl p-4 md:p-8">
                   <Quote className='text-[#232323] mb-4' />
                   {/* <p className="text-lg font-semibold mb-2">Player {i}</p> */}
@@ -326,41 +313,28 @@ const home = () => {
                     </div>
                   </div>
                 </div>
-              </SwiperSlide>
+              </div>
             ))}
-          </Swiper>
+          </Marquee>
           {/* Second Swiper: right-to-left */}
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={1.5}
-            breakpoints={{
-              640: { slidesPerView: 2.2 },
-              768: { slidesPerView: 3.2 },
-              1024: { slidesPerView: 4.5 },
-            }}
-            loop
-            dir="rtl"
-            modules={[Autoplay]}
-            speed={4000} // smooth and continuous
-            autoplay={{ delay: 0, disableOnInteraction: false, pauseOnMouseEnter: true }}
-          >
+          <Marquee pauseOnHover={true} direction='right' className="gap-4 mt-6">
             {[1, 2, 3, 4, 5, 6, 7].map((i) => (
-              <SwiperSlide key={i}>
+              <div key={i} className="w-[300px] mx-2 flex-shrink-0">
                 <div className="bg-[#F6F6F6] rounded-xl p-4 md:p-8">
-                  <Quote className='text-[#232323] mb-4 mr-auto' />
+                  <Quote className='text-[#232323] mb-4' />
                   {/* <p className="text-lg font-semibold mb-2">Player {i}</p> */}
-                  <p className="text-[#6C6C6C] text-left text-sm md:text-base">We found a brilliant young talent for our U-18 squad thanks to Playeer.</p>
-                  <div className='flex mr-auto justify-start mt-2'>
-                    <div className='w-full text-left'>
+                  <p className="text-[#6C6C6C] text-sm md:text-base">We found a brilliant young talent for our U-18 squad thanks to Playeer.</p>
+                  <div className='flex mt-2'>
+                    <img src="/images/player.png" alt={`Testimonial ${i}`} className="w-6 h-6 rounded-full mr-2 my-auto" />
+                    <div>
                       <h2 className='font-bold text-sm md:text-base'>Luka A., – Serbia</h2>
                       <p className='text-[#6C6C6C] text-xs md:text-sm'>Club Manager</p>
                     </div>
-                    <img src="/images/player.png" alt={`Testimonial ${i}`} className="w-6 h-6 rounded-full mr-3 my-auto" />
                   </div>
                 </div>
-              </SwiperSlide>
+              </div>
             ))}
-          </Swiper>
+          </Marquee>
         </div>
       </section>
 

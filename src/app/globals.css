@@ -3,6 +3,7 @@
 @font-face {
   font-family: 'Benzin';
   src: url('/fonts/Benzin-Bold.ttf') format('truetype'),
+    url('/fonts/Benzin-Medium.ttf') format('truetype'),
     url('/fonts/Benzin-ExtraBold.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
@@ -47,4 +48,8 @@ ul li {
 
 .blur {
   backdrop-filter: blur(20px);
+}
+
+input:focus {
+  outline: none;
 }
