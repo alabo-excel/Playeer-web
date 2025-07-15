@@ -3,7 +3,7 @@ import React from 'react';
 
 const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
   return (
-    <header className='fixed top-0 w-full bg-[#FCFCFC] border-b border-gray p-6 flex justify-between lg:z-100'>
+    <header className='fixed top-0 w-full bg-[#FCFCFC] border-b border-gray p-6 flex justify-between lg:z-50'>
       <div className='flex items-center'>
         {/* Hamburger menu for mobile/tablet */}
         <button

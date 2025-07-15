@@ -28,7 +28,7 @@ const signup = () => {
             </button>
           </div>
           <div className='border-b border-gray mb-6'>
-            <p className='text-center -mb-3 bg-white w-10 mx-auto'>or</p>
+            <p className='text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto'>or</p>
           </div>
 
           <div className='my-4'>

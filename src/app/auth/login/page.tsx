@@ -52,7 +52,7 @@ const LoginPage = () => {
             </button>
           </Link>
           <div className='border-b border-gray mb-6'>
-            <p className='text-center -mb-3 bg-white w-10 mx-auto'>or</p>
+            <p className='text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto'>or</p>
           </div>
           <div className='flex justify-between mb-4'>
             <button className='flex justify-center text-[#202426] p-3 border border-gray rounded-full w-[48%]'>

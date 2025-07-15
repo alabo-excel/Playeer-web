@@ -50,10 +50,39 @@ ul li {
   backdrop-filter: blur(20px);
 }
 
-input:focus {
+input:focus,
+select:focus {
   outline: none;
 }
 
-button{
+button {
   cursor: pointer;
+}
+
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background: #F4F4F4 url('data:image/svg+xml;utf8,<svg fill=\"%230095FF\" height=\"20\" viewBox=\"0 0 20 20\" width=\"20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7.293 7.293a1 1 0 011.414 0L10 8.586l1.293-1.293a1 1 0 111.414 1.414l-2 2a1 1 0 01-1.414 0l-2-2a1 1 0 010-1.414z\"/></svg>') no-repeat right 10px center/1.25em;
+  padding-right: 0rem;
+  /* default is right .75rem center */
+}
+
+.transition-width {
+  transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.2s ease;
+}
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-modalIn {
+  animation: modalIn 0.3s cubic-bezier(0.4,0,0.2,1);
 }
