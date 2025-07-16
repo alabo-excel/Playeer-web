@@ -31,7 +31,7 @@ const dashboard = () => {
               />
               <div className="absolute md:top-6 top-10 md:left-6 left-3 text-[#FCFCFC] lg:w-1/2">
                 <img src="/images/logo.png" alt="" />
-                <h2 className="text-2xl !text-[#FCFCFC] my-2 font-bold">
+                <h2 className="text-xl !text-[#FCFCFC] my-2 font-bold">
                   Every Video You Upload Increases Your Chance of Discovery
                 </h2>
                 <p className="text-xs">
@@ -102,7 +102,7 @@ const dashboard = () => {
               ))}
             </div>
           </div>
-          <div className="lg:w-[35%] bg-[#FCFCFC] p-3 rounded-xl">
+          <div className="lg:w-[35%] mb-auto bg-[#FCFCFC] p-3 rounded-xl">
             <UserComp />
           </div>
         </section>

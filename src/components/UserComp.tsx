@@ -3,7 +3,7 @@ import React from "react";
 const UserComp = () => {
   return (
     <>
-      <img src="/images/player-2.jpg" className="rounded-xl md:h-80 object-cover" alt="" />
+      <img src="/images/player-2.jpg" className="rounded-xl md:h-90 object-cover" alt="" />
       <p className="text-lg mt-2 font-bold">Emmanuel Babalola</p>
       <p className="my-2 text-sm text-[#6C6C6C]">Central Midfielder</p>
       <div className="bg-[#F4F4F4] p-3 rounded-xl grid grid-cols-3 gap-2">

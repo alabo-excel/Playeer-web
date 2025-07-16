@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 interface CardProps {
   videoUrl?: string;
-  type: string;
+  type?: string;
 }
 
 const Card: React.FC<CardProps> = ({ videoUrl, type }) => {
@@ -44,7 +44,7 @@ const Card: React.FC<CardProps> = ({ videoUrl, type }) => {
         <img
           src={thumbnail || "/images/player-2.jpg"}
           alt="Video thumbnail"
-          className="w-full h-44 object-cover rounded-md"
+          className="w-full max-h-80 h-44 object-cover rounded-md"
         />
         {type === "video" ? (
           <button className="rounded-full p-4 bg-[#F4F4F4] w-14 absolute top-14 text-[#232323] left-0 right-0 mx-auto">
@@ -55,16 +55,30 @@ const Card: React.FC<CardProps> = ({ videoUrl, type }) => {
       <div className="p-2">
         <div className="flex justify-between">
           <div className="flex gap-3">
-            <button className="flex text-xs bg-[#E5F4FF] justify-between py-1 px-3 rounded-full text-primary">
-              <Eye size={18} />
-              <span className="my-auto">100</span>
-            </button>
-            <p className="text-sm my-auto text-[#6C6C6C]">April 14, 2025</p>
+            {type === "video" ? (
+              <>
+                <button className="flex text-xs bg-[#E5F4FF] justify-between py-1 px-3 rounded-full text-primary">
+                  <Eye size={18} />
+                  <span className="my-auto">100</span>
+                </button>
+                <p className="text-sm my-auto text-[#6C6C6C]">April 14, 2025</p>
+              </>
+            ) : (
+              <button className="flex text-xs bg-[#E5F4FF] justify-between py-1 px-3 rounded-full text-primary">
+                <span className="my-auto">Rising Stars Football Camp</span>
+              </button>
+            )}
+            <div></div>
           </div>
         </div>
-        <p className="text-sm font-bold my-2">
-          Dribbling & Ball Control – U17 Trials
-        </p>
+        <div className="flex flex-wrap gap-3">
+          <p className="text-sm font-bold my-2">
+            Dribbling & Ball Control – U17 Trials
+          </p>
+          {type !== "video" ? (
+            <span className="text-sm my-auto text-[#6C6C6C]">(April 14)</span>
+          ) : null}
+        </div>
         <p className="text-sm text-[#6C6C6C]">
           2 assists and 1 goal during this match. Watch movement and control.
           #Dribbling #Speed #Close Control
