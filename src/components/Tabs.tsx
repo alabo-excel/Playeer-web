@@ -178,10 +178,10 @@ const Tabs = () => {
           </div>
           {showModal && (
             <Modal onClose={() => setShowModal(false)} width="400px">
-              <div className="text-center p-4">
+              <div className="text-center p-3">
                 <img
                   src="/images/male-memojis.svg"
-                  className="mx-auto"
+                  className="mx-auto w-44"
                   alt=""
                 />
 
