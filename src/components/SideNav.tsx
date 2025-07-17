@@ -102,7 +102,7 @@ const SideNav = ({ open = false, onClose }: SideNavProps) => {
             );
           })}
         </div>
-        <div className='bg-[#F4F4F4] p-3 rounded-xl'>
+        <div className='bg-[#F4F4F4] p-3 rounded-xl mb-20'>
           <p className='font-semibold'>Unlock Your Full Potential with <span className='text-primary'>Playeer Pro!</span> </p>
           <p className='text-xs text-[#6C6C6C] my-2'>Get featured, upload unlimited videos, track your stats, and increase your visibility to top scouts and clubs.</p>
           <button className='mb-2 bg-primary text-white flex p-3 rounded-full w-full justify-center'>

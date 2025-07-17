@@ -194,7 +194,7 @@ const reels = () => {
         <section className="bg-[#FCFCFC] rounded-xl mt-2 p-4">
           {data ? (
             <div className="bg-[#F4F4F4] rounded-xl p-3">
-              <p className="font-bold mb-4">Highlight Videos</p>
+              <p className="font-bold text-xl mb-4">Highlight Videos</p>
               <div className="grid lg:grid-cols-3 gap-4">
                 {[1, 2, 3, 4, 5].map((single) => (
                   <Card type="video" key={single} />

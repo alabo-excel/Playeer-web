@@ -29,12 +29,12 @@ const dashboard = () => {
                 className="rounded-2xl w-full md:h-auto h-[55vh] object-cover"
                 alt=""
               />
-              <div className="absolute md:top-6 top-10 md:left-6 left-3 text-[#FCFCFC] lg:w-1/2">
-                <img src="/images/logo.png" alt="" />
+              <div className="absolute top-1/2 md:left-6 left-3 -translate-y-1/2 text-[#FCFCFC] lg:w-1/2">
+                <img src="/images/logo.png" className="my-2" alt="" />
                 <h2 className="text-xl !text-[#FCFCFC] my-2 font-bold">
                   Every Video You Upload Increases Your Chance of Discovery
                 </h2>
-                <p className="text-xs">
+                <p className="text-xs my-2">
                   Scouts want to see consistency, not perfection. Start small
                   training drills, match clips, or even warm-ups. Let them see
                   what you’re made of.

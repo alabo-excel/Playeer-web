@@ -350,7 +350,7 @@ const profile = () => {
           <div className="md:w-[65%]">
             <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
               <div className="flex justify-between">
-                <p className="text-lg font-bold">Personal Information</p>
+                <p className="text-xl font-bold">Personal Information</p>
                 <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
                   <SquarePen size={15} className="my-auto" />
                   <span className="text-sm my-auto">Edit</span>
@@ -358,39 +358,39 @@ const profile = () => {
               </div>
               <div className="grid grid-cols-4 gap-4 mt-3">
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Full Name</p>
-                  <p className="font-bold text-sm">John Kelly</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Full Name</p>
+                  <p className="font-bold text-base">John Kelly</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Date of Birth</p>
-                  <p className="font-bold text-sm">10 Feb, 2000</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Date of Birth</p>
+                  <p className="font-bold text-base">10 Feb, 2000</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Age</p>
-                  <p className="font-bold text-sm">19</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Age</p>
+                  <p className="font-bold text-base">19</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Gender</p>
-                  <p className="font-bold text-sm">Male</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Gender</p>
+                  <p className="font-bold text-base">Male</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Nationality</p>
-                  <p className="font-bold text-sm">Nigerian</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Nationality</p>
+                  <p className="font-bold text-base">Nigerian</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">City</p>
-                  <p className="font-bold text-sm">Uyo</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">City</p>
+                  <p className="font-bold text-base">Uyo</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Contact Email</p>
-                  <p className="font-bold text-sm">Johnkelly@gmail.com</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Contact Email</p>
+                  <p className="font-bold text-base">Johnkelly@gmail.com</p>
                 </div>
               </div>
             </div>
 
             <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
               <div className="flex justify-between">
-                <p className="text-lg font-bold">Football Information</p>
+                <p className="text-xl font-bold">Football Information</p>
                 <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
                   <SquarePen size={15} className="my-auto" />
                   <span className="text-sm my-auto">Edit</span>
@@ -398,34 +398,34 @@ const profile = () => {
               </div>
               <div className="grid grid-cols-3 gap-4 mt-3">
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Main Position</p>
-                  <p className="font-bold text-sm">John Kelly</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Main Position</p>
+                  <p className="font-bold text-bse">John Kelly</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">
+                  <p className="text-sm text-[#6C6C6C] mb-2">
                     Secondary Position
                   </p>
-                  <p className="font-bold text-sm">10 Feb, 2000</p>
+                  <p className="font-bold text-base">10 Feb, 2000</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Dominant Foot</p>
-                  <p className="font-bold text-sm">19</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Dominant Foot</p>
+                  <p className="font-bold text-base">19</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">Jersey Number</p>
-                  <p className="font-bold text-sm">7</p>
+                  <p className="text-sm text-[#6C6C6C] mb-2">Jersey Number</p>
+                  <p className="font-bold text-base">7</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">
+                  <p className="text-sm text-[#6C6C6C] mb-2">
                     Years of Expreience
                   </p>
-                  <p className="font-bold text-sm">7 years</p>
+                  <p className="font-bold text-base">7 years</p>
                 </div>
                 <div>
-                  <p className="text-xs text-[#6C6C6C] mb-2">
+                  <p className="text-sm text-[#6C6C6C] mb-2">
                     Current Club/Academy
                   </p>
-                  <p className="font-bold text-sm">Uyo</p>
+                  <p className="font-bold text-base">Uyo</p>
                 </div>
               </div>
             </div>
@@ -433,7 +433,7 @@ const profile = () => {
             <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
               <div className="flex justify-between">
                 <div>
-                  <p className="text-lg font-bold">Football Journey</p>
+                  <p className="text-xl font-bold">Football Journey</p>
                   <p className="text-sm text-[#6C6C6C]">
                     List past clubs, academies, or events you’ve been part of.
                   </p>
@@ -453,7 +453,7 @@ const profile = () => {
                   {[1, 2, 3].map((single) => (
                     <div className="my-3" key={single}>
                       <div className="flex gap-4">
-                        <p className="font-bold text-sm">Future Stars FC</p>
+                        <p className="font-bold text-base">Future Stars FC</p>
                         <span className="text-[#232323] text-sm">
                           (Jan 2021 – Nov 2023)
                         </span>
@@ -490,7 +490,7 @@ const profile = () => {
 
         <div className="bg-[#F4F4F4] p-3 rounded-2xl my-3">
           <div className="flex justify-between">
-            <p className="text-lg font-bold">Achievements</p>
+            <p className="text-xl font-bold">Achievements</p>
             {journey ? (
               <button
                 onClick={() => setShowAchievement(true)}
@@ -551,7 +551,7 @@ const profile = () => {
 
         <div className="bg-[#F4F4F4] p-3 rounded-2xl">
           <div className="flex justify-between">
-            <p className="text-lg font-bold">Certificates</p>
+            <p className="text-xl font-bold">Certificates</p>
             {journey ? (
               <button
                 onClick={() => setShowModal(true)}

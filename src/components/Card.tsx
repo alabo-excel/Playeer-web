@@ -71,13 +71,13 @@ const Card: React.FC<CardProps> = ({ videoUrl, type }) => {
             <div></div>
           </div>
         </div>
-        <div className="flex flex-wrap gap-3">
+        <div className="">
           <p className="text-sm font-bold my-2">
             Dribbling & Ball Control – U17 Trials
+            {type !== "video" ? (
+              <span className="text-sm ml-3 my-auto text-[#6C6C6C]">(April 14)</span>
+            ) : null}
           </p>
-          {type !== "video" ? (
-            <span className="text-sm my-auto text-[#6C6C6C]">(April 14)</span>
-          ) : null}
         </div>
         <p className="text-sm text-[#6C6C6C]">
           2 assists and 1 goal during this match. Watch movement and control.
