@@ -3,9 +3,12 @@ import { LogOut, Menu } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/store/user";
 
 const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
   const router = useRouter();
+  const user = useAtomValue(userAtom);
 
   const handleLogout = async () => {
     try {
@@ -39,9 +42,9 @@ const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
       </div>
       <div className="w-44 flex justify-between my-auto">
         <img
-          src="/images/player-2.jpg"
+          src={user?.profilePicture || "/images/player-2.jpg"}
           className="w-8 my-auto h-8 rounded-full"
-          alt=""
+          alt="User profile"
         />
         <button
           className="flex text-primary bg-[#E5F4FF] p-2 px-6 rounded-full justify-center"

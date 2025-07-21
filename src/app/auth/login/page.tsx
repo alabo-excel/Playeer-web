@@ -2,12 +2,15 @@
 
 import React, { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
+import { useSetAtom } from "jotai";
+import { userAtom } from "@/store/user";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import Link from "next/link";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
+  const setUser = useSetAtom(userAtom);
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     email: "",
@@ -44,8 +47,13 @@ const LoginPage = () => {
         password: form.password,
       });
 
-      if (res.data?.data.token) {
-        localStorage.setItem("token", res.data.data.token);
+      // console.log(res.data)
+
+      if (res.data?.data) {
+        setUser(res.data.data);
+      }
+      if (res.data?.token) {
+        localStorage.setItem("token", res.data.token);
       }
       if (res.data?.data.isVerified) {
         router.push("/user/dashboard");

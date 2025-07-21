@@ -10,9 +10,16 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import Modal from "@/components/Modal";
+import { userAtom } from "@/store/user";
+import { useAtomValue } from "jotai";
+import { getAge } from "@/utils/ageConverter";
+import EditProfile from "@/components/Modals/EditProfile";
+import { formatDate } from "@/utils/formatDate";
 
 const profile = () => {
-  const [journey, setJourney] = useState(true);
+  const [journey, setJourney] = useState(false);
+  const user = useAtomValue(userAtom);
+  const [showEditProfile, setShowEditProfile] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showJourney, setShowJourney] = useState(false);
   const [showAchievement, setShowAchievement] = useState(false);
@@ -338,7 +345,10 @@ const profile = () => {
               getting discovered.
             </p>
           </div>
-          <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-6 bg-[#E5F4FF]">
+          <button
+            onClick={() => setShowEditProfile(true)}
+            className="text-primary my-auto p-2 flex gap-3 rounded-full px-6 bg-[#E5F4FF]"
+          >
             <SquarePen size={15} className="my-auto" />
             <span>Edit Profile</span>
           </button>
@@ -351,39 +361,43 @@ const profile = () => {
             <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
               <div className="flex justify-between">
                 <p className="text-xl font-bold">Personal Information</p>
-                <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
+                {/* <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
                   <SquarePen size={15} className="my-auto" />
                   <span className="text-sm my-auto">Edit</span>
-                </button>
+                </button> */}
               </div>
               <div className="grid grid-cols-4 gap-4 mt-3">
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Full Name</p>
-                  <p className="font-bold text-base">John Kelly</p>
+                  <p className="font-bold text-base">{user?.fullName}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Date of Birth</p>
-                  <p className="font-bold text-base">10 Feb, 2000</p>
+                  <p className="font-bold text-base">
+                    {user?.dateOfBirth && formatDate(user?.dateOfBirth)}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Age</p>
-                  <p className="font-bold text-base">19</p>
+                  <p className="font-bold text-base">
+                    {user?.dateOfBirth && getAge(user.dateOfBirth)}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Gender</p>
-                  <p className="font-bold text-base">Male</p>
+                  <p className="font-bold text-base">{user?.gender}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Nationality</p>
-                  <p className="font-bold text-base">Nigerian</p>
+                  <p className="font-bold text-base">{user?.country}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">City</p>
-                  <p className="font-bold text-base">Uyo</p>
+                  <p className="font-bold text-base">{user?.city}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Contact Email</p>
-                  <p className="font-bold text-base">Johnkelly@gmail.com</p>
+                  <p className="font-bold text-base">{user?.email}</p>
                 </div>
               </div>
             </div>
@@ -391,41 +405,45 @@ const profile = () => {
             <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
               <div className="flex justify-between">
                 <p className="text-xl font-bold">Football Information</p>
-                <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
+                {/* <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
                   <SquarePen size={15} className="my-auto" />
                   <span className="text-sm my-auto">Edit</span>
-                </button>
+                </button> */}
               </div>
               <div className="grid grid-cols-3 gap-4 mt-3">
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Main Position</p>
-                  <p className="font-bold text-bse">John Kelly</p>
+                  <p className="font-bold text-bse">{user?.mainPosition}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">
                     Secondary Position
                   </p>
-                  <p className="font-bold text-base">10 Feb, 2000</p>
+                  <p className="font-bold text-base">
+                    {user?.secondaryPosition}
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Dominant Foot</p>
-                  <p className="font-bold text-base">19</p>
+                  <p className="font-bold text-base">{user?.dominantFoot}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Jersey Number</p>
-                  <p className="font-bold text-base">7</p>
+                  <p className="font-bold text-base">{user?.jerseyNumber}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">
                     Years of Expreience
                   </p>
-                  <p className="font-bold text-base">7 years</p>
+                  <p className="font-bold text-base">
+                    {user?.yearsOfExperience} years
+                  </p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">
                     Current Club/Academy
                   </p>
-                  <p className="font-bold text-base">Uyo</p>
+                  <p className="font-bold text-base">{user?.currentTeam}</p>
                 </div>
               </div>
             </div>
@@ -1105,6 +1123,11 @@ const profile = () => {
             </Modal>
           )}
         </>
+
+        <EditProfile
+          show={showEditProfile}
+          onClose={() => setShowEditProfile(false)}
+        />
       </div>
     </AdminLayout>
   );

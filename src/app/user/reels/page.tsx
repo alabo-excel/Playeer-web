@@ -4,7 +4,11 @@ import Card from "@/components/Card";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import Modal from "@/components/Modal";
 import { CloudUpload, Plus, X } from "lucide-react";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/store/user";
+import api from "@/utils/api";
+import { Spin } from "antd";
 
 interface VideoFormData {
   title: string;
@@ -31,10 +35,15 @@ const reels = () => {
     preview: "",
   });
 
-  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const user = useAtomValue(userAtom);
+  const [highlights, setHighlights] = useState<any[]>([]);
+  const [highlightsLoading, setHighlightsLoading] = useState(true);
+  const [highlightsError, setHighlightsError] = useState<string | null>(null);
 
   const validateForm = (): boolean => {
-    const newErrors: {[key: string]: string} = {};
+    const newErrors: { [key: string]: string } = {};
 
     if (!formData.title.trim()) {
       newErrors.title = "Video title is required";
@@ -63,7 +72,9 @@ const reels = () => {
     // Validate file type
     const allowedTypes = ["video/mp4", "video/mov", "video/avi", "video/mkv"];
     if (!allowedTypes.includes(file.type)) {
-      setErrors({ file: "Please select a valid video file (MP4, MOV, AVI, MKV)" });
+      setErrors({
+        file: "Please select a valid video file (MP4, MOV, AVI, MKV)",
+      });
       return;
     }
 
@@ -75,7 +86,7 @@ const reels = () => {
     }
 
     // Clear previous errors
-    setErrors(prev => {
+    setErrors((prev) => {
       const newErrors = { ...prev };
       delete newErrors.file;
       return newErrors;
@@ -84,7 +95,7 @@ const reels = () => {
     // Create preview
     const reader = new FileReader();
     reader.onload = (e) => {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         file: file,
         fileName: file.name,
@@ -95,13 +106,13 @@ const reels = () => {
   };
 
   const handleRemoveFile = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       file: null,
       fileName: "",
       preview: "",
     }));
-    setErrors(prev => {
+    setErrors((prev) => {
       const newErrors = { ...prev };
       delete newErrors.file;
       return newErrors;
@@ -112,10 +123,10 @@ const reels = () => {
   };
 
   const handleInputChange = (field: keyof VideoFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
-      setErrors(prev => {
+      setErrors((prev) => {
         const newErrors = { ...prev };
         delete newErrors[field];
         return newErrors;
@@ -123,51 +134,71 @@ const reels = () => {
     }
   };
 
+  // Fetch highlights for the user
+  const fetchHighlights = async () => {
+    if (!user?._id) return;
+    setHighlightsLoading(true);
+    try {
+      const res = await api.get(`/highlights/user/${user._id}`);
+      console.log(res.data?.data);
+      setHighlights(res.data?.data || []);
+    } catch (err) {
+      setHighlightsError("Failed to load highlights");
+    } finally {
+      setHighlightsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchHighlights();
+  }, [user?._id]);
+
+  // Update handleSubmit to POST to /highlights
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
     if (!validateForm()) {
       return;
     }
-
     setIsUploading(true);
     setUploadProgress(0);
-
-    // Simulate upload progress
-    const progressInterval = setInterval(() => {
-      setUploadProgress(prev => {
-        if (prev >= 90) {
-          clearInterval(progressInterval);
-          return 90;
-        }
-        return prev + 10;
+    const formPayload = new FormData();
+    formPayload.append("title", formData.title);
+    formPayload.append("description", formData.description);
+    formPayload.append("tags", formData.tags);
+    if (formData.file) {
+      formPayload.append("video", formData.file);
+    }
+    try {
+      await api.post("/highlights", formPayload, {
+        headers: { "Content-Type": "multipart/form-data" },
+        onUploadProgress: (progressEvent) => {
+          if (progressEvent.total) {
+            setUploadProgress(
+              Math.round((progressEvent.loaded * 100) / progressEvent.total)
+            );
+          }
+        },
       });
-    }, 200);
-
-    // Simulate upload delay
-    setTimeout(() => {
-      clearInterval(progressInterval);
-      setUploadProgress(100);
-      
-      setTimeout(() => {
-        setIsUploading(false);
-        setUploadProgress(0);
-        setShowModal(false);
-        // Reset form
-        setFormData({
-          title: "",
-          description: "",
-          tags: "",
-          file: null,
-          fileName: "",
-          preview: "",
-        });
-        setErrors({});
-        if (fileInputRef.current) {
-          fileInputRef.current.value = "";
-        }
-      }, 500);
-    }, 2000);
+      setShowModal(false);
+      setFormData({
+        title: "",
+        description: "",
+        tags: "",
+        file: null,
+        fileName: "",
+        preview: "",
+      });
+      setErrors({});
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      fetchHighlights();
+    } catch (err) {
+      setErrors({ file: "Failed to upload highlight" });
+    } finally {
+      setIsUploading(false);
+      setUploadProgress(0);
+    }
   };
 
   return (
@@ -192,31 +223,33 @@ const reels = () => {
           ) : null}
         </div>
         <section className="bg-[#FCFCFC] rounded-xl mt-2 p-4">
-          {data ? (
+          {highlightsLoading ? (
+            <div className="text-center">
+              <Spin />
+            </div>
+          ) : highlights.length === 0 ? (
+            <div className="lg:w-[45%] my-32 mx-auto text-center">
+              <p className="text-2xl font-bold">No video yet!</p>
+              <p className="text-sm my-3 text-[#6C6C6C]">
+                Your videos are your best chance to stand out. Upload match
+                clips, drills, or skill showcases to show scouts what you're
+                made of.
+              </p>
+              <button
+                onClick={() => setShowModal(true)}
+                className="bg-primary text-sm text-white flex justify-evenly p-3 rounded-full w-52 mx-auto"
+              >
+                <Plus />
+                <span> Upload New Video</span>
+              </button>
+            </div>
+          ) : (
             <div className="bg-[#F4F4F4] rounded-xl p-3">
               <p className="font-bold text-xl mb-4">Highlight Videos</p>
               <div className="grid lg:grid-cols-3 gap-4">
-                {[1, 2, 3, 4, 5].map((single) => (
-                  <Card type="video" key={single} />
+                {highlights.map((highlight) => (
+                  <Card type="video" key={highlight._id} data={highlight} />
                 ))}
-              </div>
-            </div>
-          ) : (
-            <div>
-              <div className="lg:w-[45%] my-32 mx-auto text-center">
-                <p className="text-2xl font-bold">No video yet!</p>
-                <p className="text-sm my-3 text-[#6C6C6C]">
-                  Your videos are your best chance to stand out. Upload match
-                  clips, drills, or skill showcases to show scouts what you're
-                  made of.
-                </p>
-                <button
-                  onClick={() => setShowModal(true)}
-                  className="bg-primary text-sm text-white flex justify-evenly p-3 rounded-full w-52 mx-auto"
-                >
-                  <Plus />
-                  <span> Upload New Video</span>
-                </button>
               </div>
             </div>
           )}
@@ -225,7 +258,7 @@ const reels = () => {
           <Modal onClose={() => setShowModal(false)} width="600px">
             <form onSubmit={handleSubmit}>
               <p className="text-lg font-bold">Upload New Highlight</p>
-              
+
               <div className="my-4">
                 <label className="font-semibold text-sm mb-2">
                   Video Title
@@ -236,9 +269,7 @@ const reels = () => {
                   value={formData.title}
                   onChange={(e) => handleInputChange("title", e.target.value)}
                   className={`p-3 rounded-md w-full ${
-                    errors.title 
-                      ? "border border-red-500" 
-                      : "bg-[#F4F4F4]"
+                    errors.title ? "border border-red-500" : "bg-[#F4F4F4]"
                   }`}
                 />
                 {errors.title && (
@@ -250,13 +281,15 @@ const reels = () => {
                 <label className="font-semibold text-sm mb-2">
                   Upload Video
                 </label>
-                <div className={`border border-dashed rounded-xl p-3 ${
-                  errors.file ? "border-red-500" : "border-[#D8DADE]"
-                }`}>
+                <div
+                  className={`border border-dashed rounded-xl p-3 ${
+                    errors.file ? "border-red-500" : "border-[#D8DADE]"
+                  }`}
+                >
                   {!formData.preview ? (
                     <>
                       <div className="mb-3 flex gap-3">
-                        <button 
+                        <button
                           type="button"
                           onClick={() => fileInputRef.current?.click()}
                           className="bg-[#F4F4F4] rounded-full p-4"
@@ -270,7 +303,7 @@ const reels = () => {
                           </p>
                         </div>
                       </div>
-                      <button 
+                      <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
                         className="bg-[#E5F4FF] text-primary p-2 rounded-xl text-sm w-full"
@@ -280,8 +313,8 @@ const reels = () => {
                     </>
                   ) : (
                     <div className="relative">
-                      <video 
-                        src={formData.preview} 
+                      <video
+                        src={formData.preview}
                         className="w-full h-48 object-cover rounded-lg"
                         controls
                       />
@@ -292,7 +325,9 @@ const reels = () => {
                       >
                         <X className="w-4 h-4" />
                       </button>
-                      <p className="text-sm text-gray-600 mt-2">{formData.fileName}</p>
+                      <p className="text-sm text-gray-600 mt-2">
+                        {formData.fileName}
+                      </p>
                     </div>
                   )}
                   <input
@@ -315,15 +350,19 @@ const reels = () => {
                 <textarea
                   placeholder="Short context or what to focus on in the video"
                   value={formData.description}
-                  onChange={(e) => handleInputChange("description", e.target.value)}
+                  onChange={(e) =>
+                    handleInputChange("description", e.target.value)
+                  }
                   className={`p-3 rounded-md w-full h-32 ${
-                    errors.description 
-                      ? "border border-red-500" 
+                    errors.description
+                      ? "border border-red-500"
                       : "bg-[#F4F4F4]"
                   }`}
                 />
                 {errors.description && (
-                  <p className="text-red-500 text-xs mt-1">{errors.description}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {errors.description}
+                  </p>
                 )}
               </div>
 
@@ -337,8 +376,8 @@ const reels = () => {
                   value={formData.tags}
                   onChange={(e) => handleInputChange("tags", e.target.value)}
                   className={`p-3 rounded-md w-full ${
-                    errors.tags 
-                      ? "border border-red-500 bg-[#F4F4F4]" 
+                    errors.tags
+                      ? "border border-red-500 bg-[#F4F4F4]"
                       : "bg-[#F4F4F4]"
                   }`}
                 />
@@ -350,7 +389,7 @@ const reels = () => {
               {isUploading && (
                 <div className="my-4">
                   <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div 
+                    <div
                       className="bg-primary h-2 rounded-full transition-all duration-300"
                       style={{ width: `${uploadProgress}%` }}
                     ></div>
@@ -361,12 +400,12 @@ const reels = () => {
                 </div>
               )}
 
-              <button 
+              <button
                 type="submit"
                 disabled={isUploading}
                 className={`w-full text-white p-3 rounded-full mt-4 text-sm ${
-                  isUploading 
-                    ? "bg-gray-400 cursor-not-allowed" 
+                  isUploading
+                    ? "bg-gray-400 cursor-not-allowed"
                     : "bg-primary hover:bg-blue-600"
                 }`}
               >
