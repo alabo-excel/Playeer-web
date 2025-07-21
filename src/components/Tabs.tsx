@@ -106,44 +106,44 @@ const Tabs = () => {
         </div>
       ),
     },
-    {
-      label: "Notification Preferences",
-      content: <NotificationPreferencesTab />,
-    },
-    {
-      label: "Language & Regional Preferences",
-      content: (
-        <div className="bg-[#F4F4F4] mx-auto md:w-[40%] p-4 rounded-xl">
-          <p className="text-center text-sm mb-4">
-            Choose how content is displayed to you, including language and
-            regional settings.
-          </p>
-          <div className="bg-[#FCFCFC] rounded-xl p-3">
-            <div className="my-4">
-              <label className="text-sm font-bold mb-2">Language</label>
-              <select className="bg-[#F4F4F4] text-sm p-3 w-full rounded-md">
-                <option value="" className="hidden">
-                  Select
-                </option>
-              </select>
-            </div>
-            <div className="my-4">
-              <label className="text-sm font-bold mb-2">Timezone</label>
-              <select className="bg-[#F4F4F4] text-sm p-3 w-full rounded-md">
-                <option value="" className="hidden">
-                  Select
-                </option>
-              </select>
-            </div>
-          </div>
-          <div className="text-center">
-            <button className="text-white bg-primary p-3 rounded-full w-44 mx-auto mt-4">
-              Save
-            </button>
-          </div>
-        </div>
-      ),
-    },
+    // {
+    //   label: "Notification Preferences",
+    //   content: <NotificationPreferencesTab />,
+    // },
+    // {
+    //   label: "Language & Regional Preferences",
+    //   content: (
+    //     <div className="bg-[#F4F4F4] mx-auto md:w-[40%] p-4 rounded-xl">
+    //       <p className="text-center text-sm mb-4">
+    //         Choose how content is displayed to you, including language and
+    //         regional settings.
+    //       </p>
+    //       <div className="bg-[#FCFCFC] rounded-xl p-3">
+    //         <div className="my-4">
+    //           <label className="text-sm font-bold mb-2">Language</label>
+    //           <select className="bg-[#F4F4F4] text-sm p-3 w-full rounded-md">
+    //             <option value="" className="hidden">
+    //               Select
+    //             </option>
+    //           </select>
+    //         </div>
+    //         <div className="my-4">
+    //           <label className="text-sm font-bold mb-2">Timezone</label>
+    //           <select className="bg-[#F4F4F4] text-sm p-3 w-full rounded-md">
+    //             <option value="" className="hidden">
+    //               Select
+    //             </option>
+    //           </select>
+    //         </div>
+    //       </div>
+    //       <div className="text-center">
+    //         <button className="text-white bg-primary p-3 rounded-full w-44 mx-auto mt-4">
+    //           Save
+    //         </button>
+    //       </div>
+    //     </div>
+    //   ),
+    // },
     {
       label: "Account & App Behavior",
       content: (
