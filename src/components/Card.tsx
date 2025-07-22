@@ -4,14 +4,23 @@ import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { Dropdown, Menu } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
+import NewHighlights from "./Modals/Highlights";
+import api from "@/utils/api";
 
 interface CardProps {
   type?: string;
   data?: any;
+  fetchHighlights?: any;
 }
 
-const Card: React.FC<CardProps> = ({ type, data }) => {
+const Card: React.FC<CardProps> = ({ type, data, fetchHighlights }) => {
   const [play, showPlay] = useState(false);
+  const [showHighlight, setShowHighlight] = useState(false);
+
+  const deletHighlight = async () => {
+    await api.delete(`/highlights/${data._id}`);
+    fetchHighlights();
+  }
 
   return (
     <div className="border border-[#E5E5E5] bg-[#FCFCFC] p-1 rounded-md">
@@ -66,6 +75,7 @@ const Card: React.FC<CardProps> = ({ type, data }) => {
                     key="edit"
                     onClick={() => {
                       /* handle edit */
+                      setShowHighlight(true);
                     }}
                   >
                     Edit
@@ -73,7 +83,7 @@ const Card: React.FC<CardProps> = ({ type, data }) => {
                   <Menu.Item
                     key="delete"
                     onClick={() => {
-                      /* handle delete */
+                      deletHighlight()
                     }}
                     danger
                   >
@@ -120,6 +130,8 @@ const Card: React.FC<CardProps> = ({ type, data }) => {
           </>
         </Modal>
       )}
+
+      <NewHighlights fetchHighlights={fetchHighlights} showModal={showHighlight} data={data} onCLose={() => setShowHighlight(false)} />
     </div>
   );
 };
