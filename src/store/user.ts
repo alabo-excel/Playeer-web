@@ -34,6 +34,7 @@ export interface User {
   createdAt: Date;
   updatedAt: Date;
   _id: string;
+  visibility: 'public' | 'private'
 }
 
 export interface FootballJourneyEntry {

@@ -2,6 +2,9 @@
 
 import React, { useState } from "react";
 import Modal from "./Modal";
+import api from "@/utils/api";
+import { userAtom } from "@/store/user";
+import { useAtomValue } from "jotai";
 
 const NotificationPreferencesTab = () => {
   const notificationOptions = [
@@ -38,16 +41,14 @@ const NotificationPreferencesTab = () => {
             <p className="text-sm">{option.label}</p>
             <button
               type="button"
-              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none ${
-                toggles[option.key] ? "bg-primary" : "bg-gray-300"
-              }`}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-300 focus:outline-none ${toggles[option.key] ? "bg-primary" : "bg-gray-300"
+                }`}
               onClick={() => handleToggle(option.key)}
               aria-pressed={toggles[option.key]}
             >
               <span
-                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-300 ${
-                  toggles[option.key] ? "translate-x-5" : "translate-x-1"
-                }`}
+                className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform duration-300 ${toggles[option.key] ? "translate-x-5" : "translate-x-1"
+                  }`}
               />
             </button>
           </div>
@@ -65,6 +66,51 @@ const NotificationPreferencesTab = () => {
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [deactivateLoading, setDeactivateLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
+  const [toggle, setToggle] = useState(false);
+  const user = useAtomValue(userAtom);
+
+  const toggleVisibility = async () => {
+    setToggle(!toggle);
+    try {
+      await api.patch(`/users/${user?._id}/visibility`);
+
+    } catch {
+
+    } finally {
+      setToggle(false);
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    setDeleteLoading(true);
+    try {
+      await api.patch("/users/me/soft-delete");
+      setTimeout(() => {
+        localStorage.removeItem("token");
+        window.location.href = "/";
+      }, 1200);
+    } catch (err) {
+    } finally {
+      setDeleteLoading(false);
+    }
+  };
+
+  const handleDeactivate = async () => {
+    setDeactivateLoading(true);
+    try {
+      await api.patch("/users/me/deactivate");
+      // Log out and redirect to login page after short delay
+      setTimeout(() => {
+        localStorage.removeItem("token");
+        window.location.href = "/auth/login";
+      }, 1200);
+    } catch (err) {
+    } finally {
+      setDeactivateLoading(false);
+    }
+  };
 
   // Move the tabData array inside the Tabs component to access showModal/setShowModal
   const tabData = [
@@ -81,13 +127,15 @@ const Tabs = () => {
               <label className="text-sm font-bold mb-2">
                 Who Can View Your Profile?
               </label>
-              <select className="bg-[#F4F4F4] text-sm p-3 w-full rounded-md">
+              <select value={user?.visibility} className="bg-[#F4F4F4] text-sm p-3 w-full rounded-md">
                 <option value="" className="hidden">
                   Select
                 </option>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
               </select>
             </div>
-            <div className="my-4">
+            {/* <div className="my-4">
               <label className="text-sm font-bold mb-2">
                 Default Setting for New Videos
               </label>
@@ -96,11 +144,11 @@ const Tabs = () => {
                   Select
                 </option>
               </select>
-            </div>
+            </div> */}
           </div>
           <div className="text-center">
-            <button className="text-white bg-primary p-3 rounded-full w-44 mx-auto mt-4">
-              Save
+            <button onClick={() => toggleVisibility()} className="text-white bg-primary p-3 rounded-full w-44 mx-auto mt-4">
+              {toggle ? 'loading...' : 'Save'}
             </button>
           </div>
         </div>
@@ -159,9 +207,19 @@ const Tabs = () => {
               Hide your profile temporarily. Your data will remain saved, but
               your page and videos won't be publicly accessible.
             </p>
-            <button className="w-full p-3 rounded-full text-white bg-primary ">
-              Deactivate My Profile
+            <button
+              className={`w-full p-3 rounded-full text-white bg-primary ${deactivateLoading ? "opacity-60 cursor-not-allowed" : ""}`}
+              onClick={handleDeactivate}
+              disabled={deactivateLoading}
+            >
+              {deactivateLoading ? "Deactivating..." : "Deactivate My Profile"}
             </button>
+            {/* {deactivateSuccess && (
+              <p className="text-green-600 text-sm mt-2">{deactivateSuccess}</p>
+            )}
+            {deactivateError && (
+              <p className="text-red-600 text-sm mt-2">{deactivateError}</p>
+            )} */}
           </div>
           <div className="bg-[#FCFCFC] rounded-xl p-3">
             <p className="font-bold text-sm">Request Account Deletion</p>
@@ -192,15 +250,26 @@ const Tabs = () => {
                   This action is permanent. All your profile data, videos, and
                   history will be erased from Playeer.
                 </p>
+                {/* {deleteSuccess && (
+                  <p className="text-green-600 text-sm mb-2">{deleteSuccess}</p>
+                )}
+                {deleteError && (
+                  <p className="text-red-600 text-sm mb-2">{deleteError}</p>
+                )} */}
                 <div className="flex justify-center gap-4 text-sm">
                   <button
                     className="px-6 w-full py-3 rounded-full bg-[#E5F4FF] text-primary"
                     onClick={() => setShowModal(false)}
+                    disabled={deleteLoading}
                   >
                     No
                   </button>
-                  <button className="px-6 w-full py-3 rounded-full bg-[#E82728] text-white">
-                    Yes
+                  <button
+                    className="px-6 w-full py-3 rounded-full bg-[#E82728] text-white"
+                    onClick={handleDeleteAccount}
+                    disabled={deleteLoading}
+                  >
+                    {deleteLoading ? "Deleting..." : "Yes"}
                   </button>
                 </div>
               </div>
@@ -217,9 +286,8 @@ const Tabs = () => {
         {tabData.map((tab, idx) => (
           <button
             key={tab.label}
-            className={`px-6 py-3 text-sm font-semibold focus:outline-none transition-colors duration-200 relative ${
-              activeTab === idx ? "border-b-2 border-primary" : ""
-            }`}
+            className={`px-6 py-3 text-sm font-semibold focus:outline-none transition-colors duration-200 relative ${activeTab === idx ? "border-b-2 border-primary" : ""
+              }`}
             onClick={() => setActiveTab(idx)}
           >
             {tab.label}
