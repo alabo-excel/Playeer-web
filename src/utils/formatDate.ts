@@ -9,3 +9,6 @@ export function formatDate(date: string | Date): string {
 
 
 
+export function underscoreToSpace(str: string): string {
+  return str.replace(/_/g, " ");
+}

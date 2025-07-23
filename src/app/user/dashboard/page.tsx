@@ -11,10 +11,8 @@ import React, { useEffect, useState } from "react";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { Spin } from "antd";
+import { underscoreToSpace } from "@/utils/formatDate";
 
-export function underscoreToSpace(str: string): string {
-  return str.replace(/_/g, " ");
-}
 
 const dashboard = () => {
   const user = useAtomValue(userAtom);
