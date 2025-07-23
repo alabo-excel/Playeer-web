@@ -1,10 +1,15 @@
 import { userAtom } from "@/store/user";
 import { getAge } from "@/utils/ageConverter";
+import { positions } from "@/utils/positions";
 import { useAtomValue } from "jotai";
 import React from "react";
 
 const UserComp = () => {
   const user = useAtomValue(userAtom);
+  const userPosition = positions
+  const positionLabel = userPosition.find(
+    (pos: any) => pos.value === user?.mainPosition
+  )?.label;
 
   return (
     <>
@@ -14,7 +19,7 @@ const UserComp = () => {
         alt=""
       />
       <p className="text-lg mt-2 font-bold">{user?.fullName}</p>
-      <p className="my-2 text-sm text-[#6C6C6C]">{user?.mainPosition}</p>
+      <p className="my-2 text-sm text-[#6C6C6C]">{positionLabel}</p>
       <div className="bg-[#F4F4F4] p-3 text-center rounded-xl grid grid-cols-3 gap-2">
         <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
           <p className="text-[#6C6C6C] text-xs">Age</p>

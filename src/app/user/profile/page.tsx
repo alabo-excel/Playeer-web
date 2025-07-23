@@ -3,7 +3,8 @@ import Card from "@/components/Card";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import UserComp from "@/components/UserComp";
 import { CloudUpload, Plus, SquarePen } from "lucide-react";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import api from "@/utils/api";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
@@ -15,14 +16,57 @@ import { useAtomValue } from "jotai";
 import { getAge } from "@/utils/ageConverter";
 import EditProfile from "@/components/Modals/EditProfile";
 import { formatDate } from "@/utils/formatDate";
+import { positions } from "@/utils/positions";
+import { Country } from "country-state-city";
 
 const profile = () => {
-  const [journey, setJourney] = useState(false);
   const user = useAtomValue(userAtom);
+  const [countries] = useState(Country.getAllCountries());
+
+  const userPosition = positions;
+  const positionLabel = userPosition.find(
+    (pos: any) => pos.value === user?.mainPosition
+  )?.label;
+
+  const secondLabe = userPosition.find(
+    (pos: any) => pos.value === user?.secondaryPosition
+  )?.label;
+
+  const countryObj = countries.find((c: any) => c.isoCode === user?.country);
+
+  // State for fetched profile data
+  const [profileData, setProfileData] = useState({
+    journey: [],
+    achievements: [],
+    certificates: [],
+  });
+  const [loadingProfile, setLoadingProfile] = useState(false);
+
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showJourney, setShowJourney] = useState(false);
   const [showAchievement, setShowAchievement] = useState(false);
+
+  // Fetch user profile (journey, achievements, certificates)
+  useEffect(() => {
+    const fetchProfile = async () => {
+      setLoadingProfile(true);
+      try {
+        const res = await api.get("/users/profile");
+        const data = res.data?.data || {};
+        setProfileData({
+          journey: data.footballJourney || [],
+          achievements: data.achievements || [],
+          certificates: data.certificates || [],
+        });
+      } catch (err) {
+        setProfileData({ journey: [], achievements: [], certificates: [] });
+      } finally {
+        setLoadingProfile(false);
+      }
+    };
+    fetchProfile();
+  }, []);
 
   // File upload refs
   const certUploadRef = useRef<HTMLInputElement>(null);
@@ -389,7 +433,7 @@ const profile = () => {
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Nationality</p>
-                  <p className="font-bold text-base">{user?.country}</p>
+                  <p className="font-bold text-base">{countryObj?.name}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">City</p>
@@ -413,15 +457,13 @@ const profile = () => {
               <div className="grid grid-cols-3 gap-4 mt-3">
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Main Position</p>
-                  <p className="font-bold text-bse">{user?.mainPosition}</p>
+                  <p className="font-bold text-bse">{positionLabel}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">
                     Secondary Position
                   </p>
-                  <p className="font-bold text-base">
-                    {user?.secondaryPosition}
-                  </p>
+                  <p className="font-bold text-base">{secondLabe}</p>
                 </div>
                 <div>
                   <p className="text-sm text-[#6C6C6C] mb-2">Dominant Foot</p>
@@ -456,7 +498,7 @@ const profile = () => {
                     List past clubs, academies, or events you’ve been part of.
                   </p>
                 </div>
-                {journey ? (
+                {profileData.journey.length >= 1 ? (
                   <button
                     onClick={() => setShowJourney(true)}
                     className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary"
@@ -466,7 +508,7 @@ const profile = () => {
                   </button>
                 ) : null}
               </div>
-              {journey ? (
+              {profileData.journey.length >= 1 ? (
                 <div>
                   {[1, 2, 3].map((single) => (
                     <div className="my-3" key={single}>
@@ -509,7 +551,7 @@ const profile = () => {
         <div className="bg-[#F4F4F4] p-3 rounded-2xl my-3">
           <div className="flex justify-between">
             <p className="text-xl font-bold">Achievements</p>
-            {journey ? (
+            {profileData.achievements.length >= 1 ? (
               <button
                 onClick={() => setShowAchievement(true)}
                 className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary"
@@ -519,7 +561,7 @@ const profile = () => {
               </button>
             ) : null}
           </div>
-          {journey ? (
+          {profileData.achievements.length >= 1 ? (
             <div className="mt-4">
               <Swiper
                 modules={[Navigation]}
@@ -570,7 +612,7 @@ const profile = () => {
         <div className="bg-[#F4F4F4] p-3 rounded-2xl">
           <div className="flex justify-between">
             <p className="text-xl font-bold">Certificates</p>
-            {journey ? (
+            {profileData.certificates.length >= 1 ? (
               <button
                 onClick={() => setShowModal(true)}
                 className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary"
@@ -580,7 +622,7 @@ const profile = () => {
               </button>
             ) : null}
           </div>
-          {journey ? (
+          {profileData.certificates.length >= 1 ? (
             <div className="mt-4">
               <Swiper
                 modules={[Navigation]}
@@ -671,11 +713,14 @@ const profile = () => {
                             : "bg-[#F4F4F4]"
                         }`}
                       >
-                        <option value="">Select</option>
-                        <option value="Goalkeeper">Goalkeeper</option>
-                        <option value="Defender">Defender</option>
-                        <option value="Midfielder">Midfielder</option>
-                        <option value="Forward">Forward</option>
+                        <option className="hidden" value="">
+                          Select
+                        </option>
+                        {positions.map((opt) => (
+                          <option key={opt.value} value={opt.value}>
+                            {opt.label}
+                          </option>
+                        ))}
                       </select>
                       {journeyErrors.position && (
                         <p className="text-red-500 text-xs mt-1">

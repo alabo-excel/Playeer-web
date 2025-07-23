@@ -1,0 +1,21 @@
+export const positions = [
+    { label: "Goalkeeper (GK)", value: "GK" },
+    { label: "Centre Back (CB)", value: "CB" },
+    { label: "Sweeper (SW)", value: "SW" },
+    { label: "Left Back (LB)", value: "LB" },
+    { label: "Right Back (RB)", value: "RB" },
+    { label: "Left Wing-Back (LWB)", value: "LWB" },
+    { label: "Right Wing-Back (RWB)", value: "RWB" },
+    { label: "Defensive Midfielder (CDM)", value: "CDM" },
+    { label: "Deep-Lying Playmaker", value: "DLP" },
+    { label: "Attacking Midfielder (CAM)", value: "CAM" },
+    { label: "Playmaker (No. 10)", value: "NO10" },
+    { label: "Left Midfielder (LM)", value: "LM" },
+    { label: "Right Midfielder (RM)", value: "RM" },
+    { label: "Left Winger (LW)", value: "LW" },
+    { label: "Right Winger (RW)", value: "RW" },
+    { label: "Inverted Winger (LWF/RWF)", value: "LWF_RWF" },
+    { label: "Centre Forward (CF)", value: "CF" },
+    { label: "Striker (ST)", value: "ST" },
+    { label: "Second Striker / Support Forward (SS)", value: "SS" }
+  ];

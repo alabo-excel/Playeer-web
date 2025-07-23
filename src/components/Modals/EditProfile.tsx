@@ -4,6 +4,7 @@ import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/store/user";
 import api from "@/utils/api";
 import { Country, City } from "country-state-city";
+import { positions } from "@/utils/positions";
 
 const genderOptions = [
   { label: "Male", value: "male" },
@@ -15,12 +16,7 @@ const dominantFootOptions = [
   { label: "Right", value: "right" },
   { label: "Both", value: "both" },
 ];
-const secondaryPositionOptions = [
-  { label: "Goalkeeper (GK)", value: "GK" },
-  { label: "Sweeper (SW)", value: "SW" },
-  { label: "Centre Back (CB)", value: "CB" },
-  { label: "Left Back (LB)", value: "LB" },
-];
+const secondaryPositionOptions = positions
 
 const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
   const user = useAtomValue(userAtom);
