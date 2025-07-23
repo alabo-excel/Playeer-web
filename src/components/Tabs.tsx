@@ -65,16 +65,20 @@ const NotificationPreferencesTab = () => {
 
 const Tabs = () => {
   const [activeTab, setActiveTab] = useState(0);
+  const user = useAtomValue(userAtom);
+
   const [showModal, setShowModal] = useState(false);
   const [deactivateLoading, setDeactivateLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [toggle, setToggle] = useState(false);
-  const user = useAtomValue(userAtom);
+  const [visibility, setVisibility] = useState<any>(user?.visibility);
 
   const toggleVisibility = async () => {
     setToggle(!toggle);
     try {
-      await api.patch(`/users/${user?._id}/visibility`);
+      await api.patch(`/users/${user?._id}/visibility`, {
+        visibility: visibility
+      });
 
     } catch {
 
@@ -127,7 +131,7 @@ const Tabs = () => {
               <label className="text-sm font-bold mb-2">
                 Who Can View Your Profile?
               </label>
-              <select value={user?.visibility} className="bg-[#F4F4F4] text-sm p-3 w-full rounded-md">
+              <select value={visibility} onChange={(e) => setVisibility(e.target.value)} className="bg-[#F4F4F4] text-sm p-3 w-full rounded-md">
                 <option value="" className="hidden">
                   Select
                 </option>
