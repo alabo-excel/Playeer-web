@@ -484,7 +484,7 @@ const home = () => {
             Affordable Plans, Maximum Impact
           </h2>
         </div>
-        <PricingComp />
+        <PricingComp onPlanSelect={() => console.log('hello')} />
       </section>
 
       <ContactComp />

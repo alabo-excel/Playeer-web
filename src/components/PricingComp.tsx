@@ -3,7 +3,7 @@ import { CircleCheckBig, CircleX } from "lucide-react"
 
 interface PricingCompProps {
   onPlanSelect: (plan: string) => void;
-  selectedPlan: string;
+  selectedPlan?: string;
   loading?: boolean;
 }
 
