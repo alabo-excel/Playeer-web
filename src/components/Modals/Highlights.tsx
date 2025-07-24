@@ -166,8 +166,14 @@ const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModa
         fileInputRef.current.value = "";
       }
       fetchHighlights();
-    } catch (err) {
-      setErrors({ file: "Failed to update highlight" });
+    } catch (err: any) {
+      let errorMsg = "Failed to update highlight";
+      if (err?.response?.data?.message) {
+        errorMsg = err.response.data.message;
+      } else if (err?.message) {
+        errorMsg = err.message;
+      }
+      setErrors({ file: errorMsg });
     } finally {
       setIsUploading(false);
       setUploadProgress(0);
@@ -217,8 +223,14 @@ const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModa
           fileInputRef.current.value = "";
         }
         fetchHighlights();
-      } catch (err) {
-        setErrors({ file: "Failed to upload highlight" });
+      } catch (err: any) {
+        let errorMsg = "Failed to upload highlight";
+        if (err?.response?.data?.message) {
+          errorMsg = err.response.data.message;
+        } else if (err?.message) {
+          errorMsg = err.message;
+        }
+        setErrors({ file: errorMsg });
       } finally {
         setIsUploading(false);
         setUploadProgress(0);

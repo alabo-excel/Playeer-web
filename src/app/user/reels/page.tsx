@@ -47,7 +47,6 @@ const reels = () => {
     fetchHighlights();
   }, [user?._id]);
 
-
   return (
     <AdminLayout>
       <div className="pt-3">
@@ -71,8 +70,8 @@ const reels = () => {
         </div>
         <section className="bg-[#FCFCFC] rounded-xl mt-2 p-4">
           {highlightsLoading ? (
-            <div className="text-center">
-              <Spin />
+            <div className="flex justify-center items-center min-h-[300px]">
+              <Spin size="large" />
             </div>
           ) : highlights.length === 0 ? (
             <div className="lg:w-[45%] my-32 mx-auto text-center">
@@ -95,13 +94,22 @@ const reels = () => {
               <p className="font-bold text-xl mb-4">Highlight Videos</p>
               <div className="grid lg:grid-cols-3 gap-4">
                 {highlights.map((highlight) => (
-                  <Card type="video" key={highlight._id} fetchHighlights={() => fetchHighlights()} data={highlight} />
+                  <Card
+                    type="video"
+                    key={highlight._id}
+                    fetchData={() => fetchHighlights()}
+                    data={highlight}
+                  />
                 ))}
               </div>
             </div>
           )}
         </section>
-        <NewHighlights showModal={modal} onCLose={() => setShowModal(false)} fetchHighlights={() => fetchHighlights()} />
+        <NewHighlights
+          showModal={modal}
+          onCLose={() => setShowModal(false)}
+          fetchHighlights={() => fetchHighlights()}
+        />
       </div>
     </AdminLayout>
   );

@@ -6,21 +6,34 @@ import { Dropdown, Menu } from "antd";
 import { MoreOutlined } from "@ant-design/icons";
 import NewHighlights from "./Modals/Highlights";
 import api from "@/utils/api";
+import AchievementModal from "./Modals/Achievement";
+import CertificateModal from "./Modals/Certificate";
 
 interface CardProps {
   type?: string;
   data?: any;
-  fetchHighlights?: any;
+  fetchData?: any;
+  editAction?: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ type, data, fetchHighlights }) => {
+const Card: React.FC<CardProps> = ({ type, data, fetchData, editAction }) => {
   const [play, showPlay] = useState(false);
   const [showHighlight, setShowHighlight] = useState(false);
 
   const deletHighlight = async () => {
     await api.delete(`/highlights/${data._id}`);
-    fetchHighlights();
-  }
+    fetchData();
+  };
+
+  const deleteAchievement = async () => {
+    await api.delete(`/onboarding/achievement/${data._id}`);
+    fetchData();
+  };
+
+  const deleteCertificate = async () => {
+    await api.delete(`/onboarding/certificate/${data._id}`);
+    fetchData();
+  };
 
   return (
     <div className="border border-[#E5E5E5] bg-[#FCFCFC] p-1 rounded-md">
@@ -32,7 +45,7 @@ const Card: React.FC<CardProps> = ({ type, data, fetchHighlights }) => {
           />
         ) : (
           <img
-            src={"/images/player-2.jpg"}
+            src={data?.photo}
             alt="Video thumbnail"
             className="w-full max-h-80 h-44 object-cover rounded-md"
           />
@@ -62,35 +75,46 @@ const Card: React.FC<CardProps> = ({ type, data, fetchHighlights }) => {
               </>
             ) : (
               <button className="flex text-xs bg-[#E5F4FF] justify-between py-1 px-3 rounded-full text-primary">
-                <span className="my-auto">Rising Stars Football Camp</span>
+                <span className="my-auto">
+                  {data.organizer || data.issuedBy}
+                </span>
               </button>
             )}
             <div></div>
           </div>
           <div className="ml-auto">
             <Dropdown
-              overlay={
-                <Menu>
-                  <Menu.Item
-                    key="edit"
-                    onClick={() => {
-                      /* handle edit */
-                      setShowHighlight(true);
-                    }}
-                  >
-                    Edit
-                  </Menu.Item>
-                  <Menu.Item
-                    key="delete"
-                    onClick={() => {
-                      deletHighlight()
-                    }}
-                    danger
-                  >
-                    Delete
-                  </Menu.Item>
-                </Menu>
-              }
+              menu={{
+                items: [
+                  {
+                    key: "edit",
+                    label: "Edit",
+                    onClick: () => {
+                      if (type === "video") {
+                        setShowHighlight(true);
+                      } else if (type === "achievement") {
+                        editAction && editAction();
+                      } else {
+                        editAction && editAction();
+                      }
+                    },
+                  },
+                  {
+                    key: "delete",
+                    label: "Delete",
+                    danger: true,
+                    onClick: () => {
+                      if (type === "video") {
+                        deletHighlight();
+                      } else if (type === "achievement") {
+                        deleteAchievement();
+                      } else {
+                        deleteCertificate();
+                      }
+                    },
+                  },
+                ],
+              }}
               trigger={["click"]}
             >
               <button className="p-2 hover:bg-gray-100 rounded-full">
@@ -101,10 +125,10 @@ const Card: React.FC<CardProps> = ({ type, data, fetchHighlights }) => {
         </div>
         <div className="">
           <p className="text-sm font-bold my-2">
-            {data.title}
+            {data.title || data.certificateTitle}
             {type !== "video" ? (
               <span className="text-sm ml-3 my-auto text-[#6C6C6C]">
-                ({formatDate(data.createdAt)})
+                ({formatDate(data.createdAt || data.date || data.dateIssued)})
               </span>
             ) : null}
           </p>
@@ -131,7 +155,12 @@ const Card: React.FC<CardProps> = ({ type, data, fetchHighlights }) => {
         </Modal>
       )}
 
-      <NewHighlights fetchHighlights={fetchHighlights} showModal={showHighlight} data={data} onCLose={() => setShowHighlight(false)} />
+      <NewHighlights
+        fetchHighlights={fetchData}
+        showModal={showHighlight}
+        data={data}
+        onCLose={() => setShowHighlight(false)}
+      />
     </div>
   );
 };

@@ -43,6 +43,7 @@ export interface FootballJourneyEntry {
   from: Date;
   to: Date;
   keyHighlights?: string;
+  [key: string]: any; // Allow additional properties
 }
 
 export interface Achievement {
@@ -52,6 +53,7 @@ export interface Achievement {
   date: Date;
   description?: string;
   photo?: string;
+  [key: string]: any; // Allow additional properties
 }
 
 export interface Certificate {
@@ -60,6 +62,7 @@ export interface Certificate {
   dateIssued: Date;
   description?: string;
   photo?: string;
+  [key: string]: any; // Allow additional properties
 }
 
 
