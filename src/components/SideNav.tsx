@@ -12,6 +12,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { userAtom } from "@/store/user";
 import { useAtomValue } from "jotai";
+import Modal from "./Modal";
+import PricingComp from "./PricingComp";
 
 interface SideNavProps {
   open?: boolean;
@@ -21,6 +23,7 @@ interface SideNavProps {
 const SideNav = ({ open = false, onClose }: SideNavProps) => {
   const pathname = usePathname();
   const user = useAtomValue(userAtom);
+  const [showModal, setShowModal] = React.useState(false);
 
   const navItems = [
     { href: "/user/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -31,7 +34,7 @@ const SideNav = ({ open = false, onClose }: SideNavProps) => {
 
   // Responsive/animated sidebar classes
   const baseClass =
-    "fixed left-0 top-0 h-screen border-r border-gray p-4 flex flex-col bg-[#FCFCFC] z-40 transition-transform duration-300";
+    "fixed left-0 top-0 h-screen border-r border-gray p-4 flex flex-col bg-[#FCFCFC] z-50 transition-transform duration-300";
   const desktopClass = "hidden md:flex w-[20%] mt-20";
   const mobileClass = `md:hidden w-64 mt-0 ${
     open ? "translate-x-0" : "-translate-x-full"
@@ -137,7 +140,10 @@ const SideNav = ({ open = false, onClose }: SideNavProps) => {
               Get featured, upload unlimited videos, track your stats, and
               increase your visibility to top scouts and clubs.
             </p>
-            <button className="mb-2 bg-primary text-white flex p-3 rounded-full w-full justify-center">
+            <button
+              onClick={() => setShowModal(true)}
+              className="mb-2 bg-primary text-white flex p-3 rounded-full w-full justify-center"
+            >
               <LockKeyholeOpen className="w-4 h-4 my-auto" />
               <p className="text-sm ml-3 my-auto">Upgrade to Pro</p>
             </button>
@@ -148,6 +154,12 @@ const SideNav = ({ open = false, onClose }: SideNavProps) => {
               </p>
             </div>
           </div>
+        )}
+
+        {showModal && (
+          <Modal width="95%" onClose={() => setShowModal(false)}>
+            <PricingComp onPlanSelect={() => console.log("hello")} />
+          </Modal>
         )}
       </aside>
     </>

@@ -9,10 +9,13 @@ import { useRouter } from "next/navigation";
 import { X, XCircleIcon } from "lucide-react";
 import { positions } from "@/utils/positions";
 import { Country } from "country-state-city";
+import { Spin } from "antd";
+import PlayerModal from "@/components/Modals/PlayerModal";
 
 const players = () => {
   const [players, setPlayers] = useState([]);
   const [allPlayers, setAllPlayers] = useState([]); // Store all fetched players
+  const [showModal, setShowModal] = useState(false);
   const [filters, setFilters] = useState({
     position: "",
     country: "",
@@ -78,6 +81,7 @@ const players = () => {
 
   // Handle player click
   const handlePlayerClick = async (userId: string) => {
+    setShowModal(true);
     try {
       await api.get(`/users/view/${userId}`);
       // router.push(`/players/${userId}`);
@@ -158,18 +162,7 @@ const players = () => {
               ))}
               {/* Add more countries as needed */}
             </select>
-            {/* <select name="ageGroup" value={filters.ageGroup} onChange={handleFilterChange} className='p-3 rounded-md text-sm bg-[#F4F4F4] text-[#B6B6B6] focus:outline-none w-full my-2'>
-              <option value="" className='hidden'>Age Group</option>
-              <option value="U15">U15</option>
-              <option value="U18">U18</option>
-              <option value="U21">U21</option>
-              <option value="Senior">Senior</option>
-            </select> */}
-            {/* <select name="status" value={filters.status} onChange={handleFilterChange} className='p-3 rounded-md text-sm bg-[#F4F4F4] text-[#B6B6B6] focus:outline-none w-full my-2'>
-              <option value="" className='hidden'>Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select> */}
+
             <select
               name="gender"
               value={filters.gender}
@@ -211,7 +204,9 @@ const players = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {loading ? (
-                <div className="col-span-3 text-center py-10">Loading...</div>
+                <div className="flex justify-center items-center min-h-[300px]">
+                  <Spin size="large" />
+                </div>
               ) : players.length === 0 ? (
                 <div className="col-span-3 text-center py-10">
                   No players found.
@@ -249,6 +244,11 @@ const players = () => {
                         }
                       </p>
                     </div>
+                    <PlayerModal
+                      data={player}
+                      open={showModal}
+                      onClose={() => setShowModal(false)}
+                    />
                   </div>
                 ))
               )}
