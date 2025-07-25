@@ -129,7 +129,7 @@ const profile = () => {
                   <span className="text-sm my-auto">Edit</span>
                 </button> */}
                 </div>
-                <div className="grid grid-cols-4 gap-4 mt-3">
+                <div className="grid md:grid-cols-4 grid-cols-2 gap-4 mt-3">
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Full Name</p>
                     <p className="font-bold text-base">{user?.fullName}</p>
@@ -173,7 +173,7 @@ const profile = () => {
                   <span className="text-sm my-auto">Edit</span>
                 </button> */}
                 </div>
-                <div className="grid grid-cols-3 gap-4 mt-3">
+                <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Main Position</p>
                     <p className="font-bold text-bse">{positionLabel}</p>
@@ -231,13 +231,12 @@ const profile = () => {
                   <div>
                     {profileData.journey.map((single: FootballJourneyEntry) => (
                       <div className="my-3" key={single._id}>
-                        <div className="flex gap-4">
-                          <p className="font-bold text-base">
+                        <div className="flex flex-wrap md:flex-nowrap gap-2 md:gap-4 items-center">
+                          <p className="font-bold text-base break-words max-w-[120px] md:max-w-none">
                             {single.teamName}
                           </p>
-                          <span className="text-[#232323] text-sm">
-                            ({formatDate(single.from)} – {formatDate(single.to)}
-                            )
+                          <span className="text-[#232323] text-sm whitespace-nowrap">
+                            ({formatDate(single.from)} – {formatDate(single.to)})
                           </span>
                           <button
                             type="button"
@@ -265,7 +264,7 @@ const profile = () => {
                             />
                           </button>
                         </div>
-                        <p className="text-sm text-[#6C6C6C]">
+                        <p className="text-sm text-[#6C6C6C] mt-1 md:mt-0">
                           {
                             userPosition.find(
                               (pos: any) => pos.value === single?.position
