@@ -25,7 +25,7 @@ const dashboard = () => {
   const [activitiesError, setActivitiesError] = useState<string | null>(null);
 
   const handleCompleteProfile = async () => {
-    setShowModal(true);
+    setShowModal(false);
     try {
       await api.patch("/users/dismiss-welcome");
       router.push("/user/profile");
