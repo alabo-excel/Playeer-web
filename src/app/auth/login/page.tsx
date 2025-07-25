@@ -8,6 +8,7 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import Link from "next/link";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
+import { Spin } from "antd";
 
 const LoginPage = () => {
   const setUser = useSetAtom(userAtom);
@@ -143,10 +144,15 @@ const LoginPage = () => {
 
             <button
               type="submit"
-              className="bg-primary w-full rounded-full text-[#FCFCFC] p-3 my-4"
+              className={`w-full rounded-full p-3 my-4 flex justify-center items-center min-h-[48px] transition-colors duration-200
+                ${loading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}`}
               disabled={loading}
             >
-              {loading ? "Logging in..." : "Login"}
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <Spin size="small" style={{ color: '#0095FF' }} />
+                </span>
+              ) : "Login"}
             </button>
             <div className="border-b border-gray mb-6">
               <p className="text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto">or</p>

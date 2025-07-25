@@ -4,6 +4,7 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+import { Spin } from "antd";
 
 import api from "@/utils/api";
 
@@ -14,8 +15,13 @@ const forgotPassword = () => {
   const [error, setError] = useState<string | null>(null);
 
   const handleForgotPassword = async () => {
-    setLoading(true);
     setError(null);
+    // Simple email validation
+    if (!email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+    setLoading(true);
     try {
       await api.post("/auth/forgot-password", { email });
       setShow(true);
@@ -82,11 +88,17 @@ const forgotPassword = () => {
             </div>
 
             <button
+              type="button"
               onClick={handleForgotPassword}
-              className="bg-primary w-full rounded-full text-[#FCFCFC] p-3 my-4"
+              className={`w-full rounded-full p-3 my-4 flex justify-center items-center min-h-[48px] transition-colors duration-200
+                ${loading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}`}
               disabled={loading}
             >
-              {loading ? "Sending..." : "Send Reset Link"}
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <Spin size="small" style={{ color: '#0095FF' }} />
+                </span>
+              ) : "Send Reset Link"}
             </button>
             {error && (
               <p className="text-red-500 text-xs mb-2 text-center">{error}</p>

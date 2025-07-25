@@ -117,7 +117,7 @@ const OnboardingForm = () => {
       <HeaderNav scroll={true} />
       <section
         className={`${step === 3 ? "" : "lg:w-[55%]"
-          } max-w-7xl my-24 bg-white lg:mx-auto mx-4 bg-[#E5E5E5] rounded-2xl border border-gray p-10`}
+          } max-w-7xl my-24 bg-white lg:mx-auto mx-4 bg-[#E5E5E5] rounded-2xl border border-gray md:p-10 p-4`}
       >
         {/* <form id="onboarding-form" onSubmit={handleSubmit}> */}
         {/* Step indicators */}
@@ -186,14 +186,14 @@ const OnboardingForm = () => {
                   value={form.dateOfBirth}
                   onChange={handleChange}
                   type="date"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                 />
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm">Country</label>
                 <select
                   name="country"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                   value={form.country}
                   onChange={handleChange}
                 >
@@ -211,7 +211,7 @@ const OnboardingForm = () => {
                 <label className="font-semibold mb-2 text-sm">City</label>
                 <select
                   name="city"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                   value={form.city}
                   onChange={handleChange}
                   disabled={!form.country}
@@ -230,7 +230,7 @@ const OnboardingForm = () => {
                 <label className="font-semibold mb-2 text-sm">Gender</label>
                 <select
                   name="gender"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                   value={form.gender}
                   onChange={handleChange}
                 >
@@ -252,7 +252,7 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="e.g., 178 cm"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                 />
               </div>
               <div>
@@ -263,7 +263,7 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="e.g., 70 kg"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                 />
               </div>
             </div>
@@ -289,7 +289,7 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="e.g., Future Stars Academy"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                 />
               </div>
 
@@ -303,7 +303,7 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="List your previous clubs"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                 />
               </div>
 
@@ -317,7 +317,7 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="e.g., 3 years"
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                 />
               </div>
 
@@ -332,7 +332,7 @@ const OnboardingForm = () => {
                   name="mainPosition"
                   value={form.mainPosition}
                   onChange={handleChange}
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                 >
                   <option className="hidden" value="">
                     Select
@@ -351,7 +351,7 @@ const OnboardingForm = () => {
                   </label>
                   <select
                     name="secondaryPosition"
-                    className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                    className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                     value={form.secondaryPosition}
                     onChange={handleChange}
                   >
@@ -372,7 +372,7 @@ const OnboardingForm = () => {
                   </label>
                   <select
                     name="dominantFoot"
-                    className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                    className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                     value={form.dominantFoot}
                     onChange={handleChange}
                   >
@@ -396,7 +396,7 @@ const OnboardingForm = () => {
                     onChange={handleChange}
                     type="number"
                     placeholder="Enter Jersey Number"
-                    className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                    className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                   />
                 </div>
               </div>
@@ -435,7 +435,7 @@ const OnboardingForm = () => {
             <button
               type="button"
               onClick={nextStep}
-              className="px-20 py-2 rounded-full bg-primary text-white"
+              className="md:px-20 px-8 py-2 rounded-full bg-primary text-white"
             >
               Continue
             </button>

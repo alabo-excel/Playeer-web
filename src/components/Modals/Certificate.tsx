@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import Modal from "../Modal";
 import { CloudUpload } from "lucide-react";
+import { Spin } from "antd";
 import api from "@/utils/api";
 
 const CertificateModal = ({
@@ -178,7 +179,11 @@ const CertificateModal = ({
         <Modal onClose={() => setShowModal()} width="600px">
           <form onSubmit={handleCertSubmit}>
             <div>
-              <p className="text-lg font-bold">Upload New Certificate</p>
+              {certificateToEdit ? (
+                <p className="text-lg font-bold">Edit Certificate</p>
+              ) : (
+                <p className="text-lg font-bold">Upload New Certificate</p>
+              )}
               <div className="grid grid-cols-2 gap-4 my-4">
                 <div>
                   <label className="font-semibold text-sm mb-2">
@@ -295,7 +300,7 @@ const CertificateModal = ({
                       </button>
                       <div className="my-auto">
                         <p className="text-sm font-semibold">Upload Photos</p>
-                        <p className="text-xs text-[#B6B6B6]">
+                        <p className="text-xs placeholder:text-[#B6B6B6]">
                           JPG, PNG accepted (max 4mb)
                         </p>
                       </div>
@@ -322,13 +327,23 @@ const CertificateModal = ({
               </div>
               <button
                 type="submit"
-                className="w-full flex justify-center gap-3 text-white p-3 rounded-full bg-primary mt-4 text-sm"
+                className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+                  ${certUploading ? "border border-primary bg-[#E5F4FF] text-primary" : "bg-primary text-[#FCFCFC]"}
+                `}
                 disabled={certUploading}
               >
-                <CloudUpload size={15} className="my-auto" />
-                <span className="my-auto">
-                  {certUploading ? "Uploading..." : "Upload Certificate"}
-                </span>
+                {certUploading ? (
+                  <span className="flex items-center justify-center">
+                    <Spin size="small" style={{ color: "#0095FF" }} />
+                  </span>
+                ) : (
+                  <div className="flex justify-center items-center gap-3">
+                    <CloudUpload size={15} />
+                    <span className="my-auto">
+                      {certificateToEdit ? "Save Changes" : "Upload Certificate"}
+                    </span>
+                  </div>
+                )}
               </button>
               {certError && (
                 <p className="text-red-500 text-xs mt-3 text-center">

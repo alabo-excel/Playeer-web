@@ -3,8 +3,9 @@ import { userAtom } from "@/store/user";
 import api from "@/utils/api";
 import Modal from "@/components/Modal";
 import { useAtomValue } from "jotai";
-import { CloudUpload, X } from "lucide-react";
+import { CloudUpload, X, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
+import { Spin } from "antd";
 
 const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModal: boolean, onCLose: () => void, fetchHighlights: () => void, data?: VideoFormData }) => {
   const [isUploading, setIsUploading] = useState(false);
@@ -281,7 +282,7 @@ const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModa
                       </button>
                       <div className="my-auto">
                         <p className="text-sm font-semibold">Upload Video</p>
-                        <p className="text-xs text-[#B6B6B6]">
+                        <p className="text-xs placeholder:text-[#B6B6B6]">
                           MP4, MOV, AVI, MKV (Max 150MB)
                         </p>
                       </div>
@@ -380,12 +381,22 @@ const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModa
             <button
               type="submit"
               disabled={isUploading}
-              className={`w-full text-white p-3 rounded-full mt-4 text-sm ${isUploading
-                ? "bg-gray-400 cursor-not-allowed"
-                : "bg-primary hover:bg-blue-600"
-                }`}
+              className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+                ${isUploading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}
+              `}
             >
-              {isUploading ? "Uploading..." : data ? "Edit Highlight" : "Upload Highlight"}
+              {isUploading ? (
+                <span className="flex items-center justify-center">
+                  <Spin size="small" style={{ color: '#0095FF' }} />
+                </span>
+              ) : (
+                <div className="flex justify-center items-center gap-3">
+                  <Plus size={15} />
+                  <span className="my-auto">
+                    {data ? "Edit Highlight" : "Upload Highlight"}
+                  </span>
+                </div>
+              )}
             </button>
           </form>
         </Modal>

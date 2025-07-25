@@ -4,6 +4,7 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import { ArrowLeftIcon, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import React, { Suspense, useState } from "react";
+import { Spin } from "antd";
 import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/utils/api";
 
@@ -131,11 +132,17 @@ const ResetPasswordContent = () => {
             </div>
 
             <button
+              type="button"
               onClick={handleResetPassword}
-              className="bg-primary w-full rounded-full text-[#FCFCFC] p-3 my-4"
+              className={`w-full rounded-full p-3 my-4 flex justify-center items-center min-h-[48px] transition-colors duration-200
+                ${loading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}`}
               disabled={loading}
             >
-              {loading ? "Resetting..." : "Reset Password"}
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <Spin size="small" style={{ color: '#0095FF' }} />
+                </span>
+              ) : "Reset Password"}
             </button>
             {error && (
               <p className="text-red-500 text-xs mb-2 text-center">{error}</p>

@@ -136,7 +136,7 @@ const players = () => {
               name="position"
               value={filters.position}
               onChange={handleFilterChange}
-              className="p-3 rounded-md text-sm bg-[#F4F4F4] text-[#B6B6B6] focus:outline-none w-full my-2"
+              className="p-3 rounded-md text-sm bg-[#F4F4F4]  focus:outline-none w-full my-2"
             >
               <option value="" className="hidden">
                 Position
@@ -150,7 +150,7 @@ const players = () => {
               name="country"
               value={filters.country}
               onChange={handleFilterChange}
-              className="p-3 rounded-md text-sm bg-[#F4F4F4] text-[#B6B6B6] focus:outline-none w-full my-2"
+              className="p-3 rounded-md text-sm bg-[#F4F4F4]  focus:outline-none w-full my-2"
             >
               <option value="" className="hidden">
                 Country
@@ -167,7 +167,7 @@ const players = () => {
               name="gender"
               value={filters.gender}
               onChange={handleFilterChange}
-              className="p-3 rounded-md text-sm bg-[#F4F4F4] text-[#B6B6B6] focus:outline-none w-full my-2"
+              className="p-3 rounded-md text-sm bg-[#F4F4F4]  focus:outline-none w-full my-2"
             >
               <option value="" className="hidden">
                 Gender

@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { Spin } from "antd";
 import Modal from "../Modal";
 import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/store/user";
@@ -421,10 +422,18 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
         {apiError && <p className="text-red-500 text-xs mt-2">{apiError}</p>}
         <button
           type="submit"
-          className="w-full bg-primary text-white p-3 rounded-full mt-4 text-sm"
+          className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+            ${loading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}
+          `}
           disabled={loading}
         >
-          {loading ? "Saving..." : "Save Changes"}
+          {loading ? (
+            <span className="flex items-center justify-center">
+              <Spin size="small" style={{ color: '#0095FF' }} />
+            </span>
+          ) : (
+            <span className="my-auto">Save Changes</span>
+          )}
         </button>
       </form>
     </Modal>

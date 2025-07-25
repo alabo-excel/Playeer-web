@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Spin } from "antd";
 import api from "@/utils/api";
 import Modal from "../Modal";
 import { Plus } from "lucide-react";
@@ -209,7 +210,7 @@ const JourneyModal = ({
                   name="highlights"
                   value={journeyForm.highlights}
                   onChange={handleJourneyInput}
-                  className="p-3 text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4] h-32"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4] h-32"
                 ></textarea>
               </div>
               {journeyError && (
@@ -217,19 +218,28 @@ const JourneyModal = ({
               )}
               <button
                 type="submit"
-                className="w-full flex justify-center gap-3 text-white p-3 rounded-full bg-primary mt-4 text-sm"
+                className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+                  ${
+                    journeySubmitting
+                      ? "border border-primary bg-[#E5F4FF] text-primary"
+                      : "bg-primary text-[#FCFCFC]"
+                  }`}
                 disabled={journeySubmitting}
               >
-                <Plus size={15} />
-                <span className="my-auto">
-                  {journeySubmitting
-                    ? journeyToEdit
-                      ? "Saving..."
-                      : "Adding..."
-                    : journeyToEdit
-                    ? "Save Changes"
-                    : "Add Club/Academy Experience"}
-                </span>
+                {journeySubmitting ? (
+                  <span className="flex items-center justify-center">
+                    <Spin size="small" style={{ color: "#0095FF" }} />
+                  </span>
+                ) : (
+                  <div className="flex justify-center items-center gap-3">
+                    <Plus size={15} />
+                    <span className="my-auto">
+                      {journeyToEdit
+                        ? "Save Changes"
+                        : "Add Club/Academy Experience"}
+                    </span>
+                  </div>
+                )}
               </button>
             </div>
           </form>

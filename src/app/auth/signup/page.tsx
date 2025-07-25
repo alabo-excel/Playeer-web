@@ -4,6 +4,7 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import { EyeOff, Eye } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
+import { Spin } from "antd";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 
@@ -204,10 +205,15 @@ const signup = () => {
             {/* <Link href={'/auth/onboarding'}> */}
             <button
               type="submit"
-              className="bg-primary w-full rounded-full text-[#FCFCFC] p-3 my-4"
+              className={`w-full rounded-full p-3 my-4 flex justify-center items-center min-h-[48px] transition-colors duration-200
+                ${loading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}`}
               disabled={loading}
             >
-              {loading ? "Creating Account..." : "Create Account"}
+              {loading ? (
+                <span className="flex items-center justify-center">
+                  <Spin size="small" style={{ color: '#0095FF' }} />
+                </span>
+              ) : "Create Account"}
             </button>
             {/* </Link> */}
 

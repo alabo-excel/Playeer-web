@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import api from "@/utils/api";
 import Modal from "../Modal";
 import { CloudUpload, Plus } from "lucide-react";
+import { Spin } from "antd";
 
 const AchievementModal = ({
   show,
@@ -117,7 +118,8 @@ const AchievementModal = ({
     if (!achievementForm.date) newErrors.date = "Date is required";
     if (!achievementForm.description.trim())
       newErrors.description = "Description is required";
-    if (!achievementForm.file && !achievementToEdit) newErrors.file = "Please select a file";
+    if (!achievementForm.file && !achievementToEdit)
+      newErrors.file = "Please select a file";
     if (Object.keys(newErrors).length > 0) {
       setAchievementErrors(newErrors);
       return;
@@ -184,7 +186,11 @@ const AchievementModal = ({
         <Modal onClose={onClose} width="600px">
           <form onSubmit={handleAchievementSubmit}>
             <div>
-              <p className="text-lg font-bold">Add New Achievement Card</p>
+              {achievementToEdit ? (
+                <p className="text-lg font-bold">Edit Achievement</p>
+              ) : (
+                <p className="text-lg font-bold">Add New Achievement Card</p>
+              )}
               <div className="grid grid-cols-2 gap-4 my-4">
                 <div>
                   <label className="font-semibold text-sm mb-2">Title</label>
@@ -354,16 +360,28 @@ const AchievementModal = ({
               </div>
               <button
                 type="submit"
-                className="w-full flex justify-center gap-3 text-white p-3 rounded-full bg-primary mt-4 text-sm"
+                className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+                  ${achievementUploading ? "border border-primary bg-[#E5F4FF] text-primary" : "bg-primary text-[#FCFCFC]"}
+                `}
                 disabled={achievementUploading}
               >
-                <Plus size={15} />
-                <span className="my-auto">
-                  {achievementUploading ? "Saving..." : "Save Achievement"}
-                </span>
+                {achievementUploading ? (
+                  <span className="flex items-center justify-center">
+                    <Spin size="small" style={{ color: "#0095FF" }} />
+                  </span>
+                ) : (
+                  <div className="flex justify-center items-center gap-3">
+                    <Plus size={15} />
+                    <span className="my-auto">
+                      {achievementToEdit ? "Save Changes" : "Save Achievement"}
+                    </span>
+                  </div>
+                )}
               </button>
               {achievementError && (
-                <p className="text-red-500 text-xs mt-3 text-center">{achievementError}</p>
+                <p className="text-red-500 text-xs mt-3 text-center">
+                  {achievementError}
+                </p>
               )}
             </div>
           </form>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { Spin } from "antd";
 import Modal from "./Modal";
 import api from "@/utils/api";
 import { userAtom } from "@/store/user";
@@ -151,8 +152,21 @@ const Tabs = () => {
             </div> */}
           </div>
           <div className="text-center">
-            <button onClick={() => toggleVisibility()} className="text-white bg-primary p-3 rounded-full w-44 mx-auto mt-4">
-              {toggle ? 'loading...' : 'Save'}
+            <button
+              type="button"
+              onClick={() => toggleVisibility()}
+              className={`w-44 rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200 mx-auto
+                ${toggle ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}
+              `}
+              disabled={toggle}
+            >
+              {toggle ? (
+                <span className="flex items-center justify-center">
+                  <Spin size="small" style={{ color: '#0095FF' }} />
+                </span>
+              ) : (
+                <span className="my-auto">Save</span>
+              )}
             </button>
           </div>
         </div>
@@ -212,11 +226,20 @@ const Tabs = () => {
               your page and videos won't be publicly accessible.
             </p>
             <button
-              className={`w-full p-3 rounded-full text-white bg-primary ${deactivateLoading ? "opacity-60 cursor-not-allowed" : ""}`}
+              type="button"
+              className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+                ${deactivateLoading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}
+              `}
               onClick={handleDeactivate}
               disabled={deactivateLoading}
             >
-              {deactivateLoading ? "Deactivating..." : "Deactivate My Profile"}
+              {deactivateLoading ? (
+                <span className="flex items-center justify-center">
+                  <Spin size="small" style={{ color: '#0095FF' }} />
+                </span>
+              ) : (
+                <span className="my-auto">Deactivate My Profile</span>
+              )}
             </button>
             {/* {deactivateSuccess && (
               <p className="text-green-600 text-sm mt-2">{deactivateSuccess}</p>
