@@ -10,7 +10,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       <div className="flex p-4">
         <div className="relative lg:block hidden w-1/2">
           <img
-            className="rounded-3xl h-full"
+            className="rounded-3xl h-screen w-full object-cover"
             src="/images/auth-img.png"
             alt=""
           />
