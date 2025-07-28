@@ -148,7 +148,7 @@ const profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Gender</p>
-                    <p className="font-bold text-base">{user?.gender}</p>
+                    <p className="font-bold capitalize text-base">{user?.gender}</p>
                   </div>
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Nationality</p>
@@ -186,7 +186,7 @@ const profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Dominant Foot</p>
-                    <p className="font-bold text-base">{user?.dominantFoot}</p>
+                    <p className="font-bold capitalize text-base">{user?.dominantFoot}</p>
                   </div>
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Jersey Number</p>

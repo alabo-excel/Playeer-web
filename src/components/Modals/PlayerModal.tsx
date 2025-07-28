@@ -25,7 +25,7 @@ const PlayerModal = ({
 }: {
   open: boolean;
   onClose: () => void;
-  data?: User;
+  data?: User | null;
 }) => {
   const countries = Country.getAllCountries();
   const countryObj = countries.find((c: any) => c.isoCode === data?.country);
@@ -104,7 +104,7 @@ const PlayerModal = ({
                   <div className="flex justify-between">
                     <p className="text-xl font-bold">Personal Information</p>
                   </div>
-                  <div className="grid grid-cols-4 gap-4 mt-3">
+                  <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
                     <div>
                       <p className="text-sm text-[#6C6C6C] mb-2">Full Name</p>
                       <p className="font-bold text-base">{data?.fullName}</p>
@@ -135,12 +135,12 @@ const PlayerModal = ({
                       <p className="text-sm text-[#6C6C6C] mb-2">City</p>
                       <p className="font-bold text-base">{data?.city}</p>
                     </div>
-                    <div>
+                    {/* <div>
                       <p className="text-sm text-[#6C6C6C] mb-2">
                         Contact Email
                       </p>
                       <p className="font-bold text-base">{data?.email}</p>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
 
@@ -152,7 +152,7 @@ const PlayerModal = ({
                   <span className="text-sm my-auto">Edit</span>
                 </button> */}
                   </div>
-                  <div className="grid grid-cols-3 gap-4 mt-3">
+                  <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
                     <div>
                       <p className="text-sm text-[#6C6C6C] mb-2">
                         Main Position
@@ -197,20 +197,19 @@ const PlayerModal = ({
                     </div>
                   </div>
                 </div>
-
-                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <div className="flex justify-between">
-                    <div>
-                      <p className="text-xl font-bold">Football Journey</p>
-                      <p className="text-sm text-[#6C6C6C]">
-                        List past clubs, academies, or events you’ve been part
-                        of.
-                      </p>
+                {data?.footballJourney && data?.footballJourney?.length > 0 && (
+                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                    <div className="flex justify-between">
+                      <div>
+                        <p className="text-xl font-bold">Football Journey</p>
+                        <p className="text-sm text-[#6C6C6C]">
+                          List past clubs, academies, or events you’ve been part
+                          of.
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div>
-                    {data?.footballJourney &&
-                      data.footballJourney.map(
+                    <div>
+                      {data.footballJourney.map(
                         (single: FootballJourneyEntry) => (
                           <div className="my-3" key={single._id}>
                             <div className="flex gap-4">
@@ -232,10 +231,12 @@ const PlayerModal = ({
                           </div>
                         )
                       )}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </section>
+
             {data?.plan !== "free" && (
               <>
                 <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
@@ -311,12 +312,13 @@ const PlayerModal = ({
                 </div>
               </>
             )}
-            <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-              <p className="text-xl font-bold">Highlight</p>
 
-              <div className="mt-4 grid grid-cols-4 gap-4">
-                {highlights.length > 0 &&
-                  highlights.map((highlight: any) => (
+            {highlights.length > 0 && (
+              <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                <p className="text-xl font-bold">Highlight</p>
+
+                <div className="mt-4 grid md:grid-cols-4 gap-4">
+                  {highlights.map((highlight: any) => (
                     <Card
                       key={highlight._id}
                       data={highlight}
@@ -324,8 +326,9 @@ const PlayerModal = ({
                       type={"video"}
                     />
                   ))}
+                </div>
               </div>
-            </div>
+            )}
           </>
         </Modal>
       )}

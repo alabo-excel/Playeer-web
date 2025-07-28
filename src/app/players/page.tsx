@@ -16,6 +16,8 @@ const players = () => {
   const [players, setPlayers] = useState([]);
   const [allPlayers, setAllPlayers] = useState([]); // Store all fetched players
   const [showModal, setShowModal] = useState(false);
+  const [data, setData] = useState(null);
+
   const [filters, setFilters] = useState({
     position: "",
     country: "",
@@ -204,7 +206,7 @@ const players = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {loading ? (
-                <div className="flex justify-center items-center min-h-[300px]">
+                <div className="col-span-2 flex justify-center items-center min-h-[300px]">
                   <Spin size="large" />
                 </div>
               ) : players.length === 0 ? (
@@ -216,7 +218,9 @@ const players = () => {
                   <div
                     key={player._id}
                     className="relative cursor-pointer"
-                    onClick={() => handlePlayerClick(player._id)}
+                    onClick={() => {
+                      setData(player), handlePlayerClick(player._id);
+                    }}
                   >
                     <img
                       src={player.profilePicture || "/images/player-2.jpg"}
@@ -244,17 +248,17 @@ const players = () => {
                         }
                       </p>
                     </div>
-                    <PlayerModal
-                      data={player}
-                      open={showModal}
-                      onClose={() => setShowModal(false)}
-                    />
                   </div>
                 ))
               )}
             </div>
           </div>
         </div>
+        <PlayerModal
+          data={data}
+          open={showModal}
+          onClose={() => setShowModal(false)}
+        />
       </section>
       <ContactComp />
       <FooterNav />
