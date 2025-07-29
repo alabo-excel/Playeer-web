@@ -8,6 +8,7 @@ import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 import { Country, City } from "country-state-city";
 import { positions } from "@/utils/positions";
+import Select from "react-select";
 
 const OnboardingForm = () => {
   const [step, setStep] = useState(1);
@@ -35,7 +36,15 @@ const OnboardingForm = () => {
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [plan, setPlan] = useState("");
   const [countries] = useState(Country.getAllCountries());
+  const countryOptions = countries.map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
   const [cities, setCities] = useState<{ name: string }[]>([]);
+  const cityOptions = cities.map((city) => ({
+    value: city.name,
+    label: city.name,
+  }));
 
   const genderOptions = [
     { label: "Male", value: "male" },
@@ -49,11 +58,11 @@ const OnboardingForm = () => {
     { label: "Both", value: "both" },
   ];
 
-  const secondaryPositionOptions = positions
+  const secondaryPositionOptions = positions;
 
   // Update handleChange to support all fields
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | any
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
@@ -64,6 +73,24 @@ const OnboardingForm = () => {
         setCities(City.getCitiesOfCountry(countryObj.isoCode) || []);
       } else {
         setCities([]);
+      }
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "weight") {
+      const cleaned = value.replace(/kg/g, "").trim();
+      if (cleaned) {
+        setForm((prev) => ({ ...prev, [name]: `${cleaned} kg` }));
+      }
+    }
+
+    if (name === "height") {
+      const cleaned = value.replace(/cm/g, "").trim();
+      if (cleaned) {
+        setForm((prev) => ({ ...prev, [name]: `${cleaned} cm` }));
       }
     }
   };
@@ -108,7 +135,7 @@ const OnboardingForm = () => {
   const handlePlanSelect = (selectedPlan: string) => {
     setPlan(selectedPlan);
     if (selectedPlan === "free") {
-      handleSubmit({ preventDefault: () => { } } as React.FormEvent);
+      handleSubmit({ preventDefault: () => {} } as React.FormEvent);
     }
   };
 
@@ -116,8 +143,9 @@ const OnboardingForm = () => {
     <>
       <HeaderNav scroll={true} />
       <section
-        className={`${step === 3 ? "" : "lg:w-[55%]"
-          } max-w-7xl my-24 bg-white lg:mx-auto mx-4 bg-[#E5E5E5] rounded-2xl border border-gray md:p-10 p-4`}
+        className={`${
+          step === 3 ? "" : "lg:w-[55%]"
+        } max-w-7xl my-24 bg-white lg:mx-auto mx-4 bg-[#E5E5E5] rounded-2xl border border-gray md:p-10 p-4`}
       >
         {/* <form id="onboarding-form" onSubmit={handleSubmit}> */}
         {/* Step indicators */}
@@ -125,8 +153,9 @@ const OnboardingForm = () => {
           {[1, 2, 3].map((s) => (
             <div
               key={s}
-              className={`w-1/2 h-2 mx-1 rounded-full ${step >= s ? "bg-primary" : "bg-[#FCFCFC]"
-                }`}
+              className={`w-1/2 h-2 mx-1 rounded-full ${
+                step >= s ? "bg-primary" : "bg-[#FCFCFC]"
+              }`}
             />
           ))}
         </div>
@@ -191,7 +220,7 @@ const OnboardingForm = () => {
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm">Country</label>
-                <select
+                {/* <select
                   name="country"
                   className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                   value={form.country}
@@ -205,11 +234,37 @@ const OnboardingForm = () => {
                       {country.name}
                     </option>
                   ))}
-                </select>
+                </select> */}
+
+                <Select
+                  name="country"
+                  isSearchable
+                  options={countryOptions}
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      border: "none",
+                      backgroundColor: "#F4F4F4",
+                    }),
+                  }}
+                  className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
+                  placeholder="Select your country"
+                  value={countryOptions.find(
+                    (option) => option.value === form.country
+                  )}
+                  onChange={(selectedOption: any) =>
+                    handleChange({
+                      target: {
+                        name: "country",
+                        value: selectedOption?.value || "",
+                      },
+                    })
+                  }
+                />
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm">City</label>
-                <select
+                {/* <select
                   name="city"
                   className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
                   value={form.city}
@@ -224,7 +279,33 @@ const OnboardingForm = () => {
                       {city.name}
                     </option>
                   ))}
-                </select>
+                </select> */}
+
+                <Select
+                  name="city"
+                  options={cityOptions}
+                  className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
+                  placeholder="Enter your city"
+                  value={cityOptions.find(
+                    (option) => option.value === form.city
+                  )}
+                  onChange={(selectedOption) =>
+                    handleChange({
+                      target: {
+                        name: "city",
+                        value: selectedOption?.value || "",
+                      },
+                    })
+                  }
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      border: "none",
+                      backgroundColor: "#F4F4F4",
+                    }),
+                  }}
+                  isDisabled={!form.country}
+                />
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm">Gender</label>
@@ -250,6 +331,7 @@ const OnboardingForm = () => {
                   name="height"
                   value={form.height}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   type="text"
                   placeholder="e.g., 178 cm"
                   className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
@@ -261,6 +343,7 @@ const OnboardingForm = () => {
                   name="weight"
                   value={form.weight}
                   onChange={handleChange}
+                  onBlur={handleBlur}
                   type="text"
                   placeholder="e.g., 70 kg"
                   className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"

@@ -6,6 +6,7 @@ import { userAtom } from "@/store/user";
 import api from "@/utils/api";
 import { Country, City } from "country-state-city";
 import { positions } from "@/utils/positions";
+import Select from "react-select";
 
 const genderOptions = [
   { label: "Male", value: "male" },
@@ -17,7 +18,7 @@ const dominantFootOptions = [
   { label: "Right", value: "right" },
   { label: "Both", value: "both" },
 ];
-const secondaryPositionOptions = positions
+const secondaryPositionOptions = positions;
 
 const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
   const user = useAtomValue(userAtom);
@@ -69,14 +70,37 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [countries] = useState(Country.getAllCountries());
-  const [cities, setCities] = useState<{ name: string }[]>([]);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const countryOptions = countries.map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
 
+  const [cities, setCities] = useState<{ name: string }[]>([]);
+  const cityOptions = cities.map((city) => ({
+    value: city.name,
+    label: city.name,
+  }));
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement> | any
   ) => {
     const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+
+    let formattedValue = value;
+
+    if (name === "weight") {
+      // Remove any existing "kg" and append it freshly
+      formattedValue = value.replace(/kg/g, "").trim() + " kg";
+    }
+
+    if (name === "height") {
+      // Remove any existing "cm" and append it freshly
+      formattedValue = value.replace(/cm/g, "").trim() + " cm";
+    }
+
+    setForm((prev) => ({ ...prev, [name]: formattedValue }));
+
     if (name === "country") {
       setForm((prev) => ({ ...prev, city: "" }));
       const countryObj = countries.find((c) => c.isoCode === value);
@@ -96,6 +120,24 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
         profilePicture: file,
         profilePicturePreview: URL.createObjectURL(file),
       }));
+    }
+  };
+
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    if (name === "weight") {
+      const cleaned = value.replace(/kg/g, "").trim();
+      if (cleaned) {
+        setForm((prev) => ({ ...prev, [name]: `${cleaned} kg` }));
+      }
+    }
+
+    if (name === "height") {
+      const cleaned = value.replace(/cm/g, "").trim();
+      if (cleaned) {
+        setForm((prev) => ({ ...prev, [name]: `${cleaned} cm` }));
+      }
     }
   };
 
@@ -213,7 +255,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
           </div>
           <div>
             <label className="font-semibold mb-2 text-sm">Country</label>
-            <select
+            {/* <select
               name="country"
               className="p-3 rounded-md w-full bg-[#F4F4F4]"
               value={form.country}
@@ -227,14 +269,39 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
                   {country.name}
                 </option>
               ))}
-            </select>
+            </select> */}
+            <Select
+              name="country"
+              isSearchable
+              options={countryOptions}
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  border: "none",
+                  backgroundColor: "#F4F4F4",
+                }),
+              }}
+              className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
+              placeholder="Select your country"
+              value={countryOptions.find(
+                (option) => option.value === form.country
+              )}
+              onChange={(selectedOption: any) =>
+                handleChange({
+                  target: {
+                    name: "country",
+                    value: selectedOption?.value || "",
+                  },
+                })
+              }
+            />
             {errors.country && (
               <p className="text-red-500 text-xs mt-1">{errors.country}</p>
             )}
           </div>
           <div>
             <label className="font-semibold mb-2 text-sm">City</label>
-            <select
+            {/* <select
               name="city"
               className="p-3 rounded-md w-full bg-[#F4F4F4]"
               value={form.city}
@@ -249,7 +316,30 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
                   {city.name}
                 </option>
               ))}
-            </select>
+            </select> */}
+            <Select
+              name="city"
+              options={cityOptions}
+              className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
+              placeholder="Enter your city"
+              value={cityOptions.find((option) => option.value === form.city)}
+              onChange={(selectedOption) =>
+                handleChange({
+                  target: {
+                    name: "city",
+                    value: selectedOption?.value || "",
+                  },
+                })
+              }
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  border: "none",
+                  backgroundColor: "#F4F4F4",
+                }),
+              }}
+              isDisabled={!form.country}
+            />
             {errors.city && (
               <p className="text-red-500 text-xs mt-1">{errors.city}</p>
             )}
@@ -281,6 +371,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
               name="height"
               value={form.height}
               onChange={handleChange}
+              onBlur={handleBlur}
               className="p-3 rounded-md w-full bg-[#F4F4F4]"
             />
             {errors.height && (
@@ -293,6 +384,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
               name="weight"
               value={form.weight}
               onChange={handleChange}
+              onBlur={handleBlur}
               className="p-3 rounded-md w-full bg-[#F4F4F4]"
             />
             {errors.weight && (
@@ -423,13 +515,17 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
         <button
           type="submit"
           className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
-            ${loading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}
+            ${
+              loading
+                ? "border border-primary bg-[#E5F4FF] text-primary"
+                : "bg-primary text-[#FCFCFC]"
+            }
           `}
           disabled={loading}
         >
           {loading ? (
             <span className="flex items-center justify-center">
-              <Spin size="small" style={{ color: '#0095FF' }} />
+              <Spin size="small" style={{ color: "#0095FF" }} />
             </span>
           ) : (
             <span className="my-auto">Save Changes</span>

@@ -125,7 +125,7 @@ const PlayerModal = ({
                     </div>
                     <div>
                       <p className="text-sm text-[#6C6C6C] mb-2">Gender</p>
-                      <p className="font-bold text-base">{data?.gender}</p>
+                      <p className="font-bold capitalize text-base">{data?.gender}</p>
                     </div>
                     <div>
                       <p className="text-sm text-[#6C6C6C] mb-2">Nationality</p>
@@ -169,7 +169,7 @@ const PlayerModal = ({
                       <p className="text-sm text-[#6C6C6C] mb-2">
                         Dominant Foot
                       </p>
-                      <p className="font-bold text-base">
+                      <p className="font-bold capitalize text-base">
                         {data?.dominantFoot}
                       </p>
                     </div>

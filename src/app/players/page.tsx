@@ -11,6 +11,7 @@ import { positions } from "@/utils/positions";
 import { Country } from "country-state-city";
 import { Spin } from "antd";
 import PlayerModal from "@/components/Modals/PlayerModal";
+import Select from "react-select";
 
 const players = () => {
   const [players, setPlayers] = useState([]);
@@ -25,7 +26,10 @@ const players = () => {
     search: "",
   });
   const [countries] = useState(Country.getAllCountries());
-
+  const countryOptions = countries.map((country) => ({
+    value: country.isoCode,
+    label: country.name,
+  }));
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -76,7 +80,7 @@ const players = () => {
 
   // Handle filter change
   const handleFilterChange = (
-    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>
+    e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement> | any
   ) => {
     setFilters({ ...filters, [e.target.name]: e.target.value });
   };
@@ -148,7 +152,33 @@ const players = () => {
               <option value="defender">Defender</option>
               <option value="goalkeeper">Goalkeeper</option>
             </select>
-            <select
+
+            <Select
+              name="country"
+              isSearchable
+              options={countryOptions}
+              styles={{
+                control: (base) => ({
+                  ...base,
+                  border: "none",
+                  backgroundColor: "#F4F4F4",
+                }),
+              }}
+              className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
+              placeholder="Select your country"
+              value={countryOptions.find(
+                (option) => option.value === filters.country
+              )}
+              onChange={(selectedOption: any) =>
+                handleFilterChange({
+                  target: {
+                    name: "country",
+                    value: selectedOption?.value || "",
+                  },
+                })
+              }
+            />
+            {/* <select
               name="country"
               value={filters.country}
               onChange={handleFilterChange}
@@ -162,8 +192,7 @@ const players = () => {
                   {country.name}
                 </option>
               ))}
-              {/* Add more countries as needed */}
-            </select>
+            </select> */}
 
             <select
               name="gender"
