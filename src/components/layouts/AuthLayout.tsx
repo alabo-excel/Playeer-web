@@ -7,10 +7,10 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   return (
     <section className="relative mx-auto">
-      <div className="flex p-4">
+      <div className="flex p-4 overflow-y-hidden">
         <div className="relative lg:block hidden w-1/2">
           <img
-            className="rounded-3xl h-screen w-full object-cover"
+            className="rounded-3xl w-screen object-cover"
             src="/images/auth-img.png"
             alt=""
           />
@@ -60,7 +60,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
             <div className="flex justify-between">
               <Link href={"/auth/signup"}>
                 <button
-                  className={`bg-[#E5F4FF] cursor-pointer lg:px-8 px-4 py-2 rounded-full text-[#0095FF] transition-colors`}
+                  className={`bg-[#E5F4FF] text-nowrap cursor-pointer lg:px-8 px-4 py-2 rounded-full text-[#0095FF] transition-colors`}
                 >
                   Sign up
                 </button>

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@paystack/inline-js": "^2.22.7",
     "antd": "^5.26.6",
     "axios": "^1.10.0",
     "country-state-city": "^3.2.1",

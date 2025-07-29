@@ -31,6 +31,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
     country: user?.country || "",
     city: user?.city || "",
     gender: user?.gender || "",
+    address: user?.address || "",
     height: user?.height || "",
     weight: user?.weight || "",
     currentTeam: user?.currentTeam || "",
@@ -51,6 +52,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
         ? new Date(user.dateOfBirth).toISOString().slice(0, 10)
         : "",
       country: user?.country || "",
+      address: user?.address || "",
       city: user?.city || "",
       gender: user?.gender || "",
       height: user?.height || "",
@@ -147,6 +149,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
     if (!form.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
     if (!form.country) newErrors.country = "Country is required";
     if (!form.city) newErrors.city = "City is required";
+    if (!form.address) newErrors.address = "Address is required";
     if (!form.gender) newErrors.gender = "Gender is required";
     if (!form.height) newErrors.height = "Height is required";
     if (!form.weight) newErrors.weight = "Weight is required";
@@ -342,6 +345,20 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             />
             {errors.city && (
               <p className="text-red-500 text-xs mt-1">{errors.city}</p>
+            )}
+          </div>
+          <div className="col-span-2">
+            <label className="font-semibold mb-2 text-sm">Address</label>
+            <input
+              name="address"
+              value={form.address}
+              onChange={handleChange}
+              type="text"
+              placeholder="Enter your address"
+              className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+            />
+            {errors.address && (
+              <p className="text-red-500 text-xs mt-1">{errors.address}</p>
             )}
           </div>
           <div>

@@ -16,6 +16,7 @@ const OnboardingForm = () => {
     // Add all other fields here as needed, e.g.:
     dateOfBirth: "",
     country: "",
+    address: "",
     city: "",
     gender: "",
     height: "",
@@ -307,6 +308,7 @@ const OnboardingForm = () => {
                   isDisabled={!form.country}
                 />
               </div>
+
               <div>
                 <label className="font-semibold mb-2 text-sm">Gender</label>
                 <select
@@ -324,6 +326,17 @@ const OnboardingForm = () => {
                     </option>
                   ))}
                 </select>
+              </div>
+              <div className="col-span-2">
+                <label className="font-semibold mb-2 text-sm">Address</label>
+                <input
+                  name="address"
+                  value={form.address}
+                  onChange={handleChange}
+                  type="text"
+                  placeholder="Enter your address"
+                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                />
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm">Height</label>

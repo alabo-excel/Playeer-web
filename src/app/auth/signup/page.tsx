@@ -16,6 +16,7 @@ const signup = () => {
     username: "",
     email: "",
     password: "",
+    phone: "",
     agree: false,
   });
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
@@ -25,6 +26,7 @@ const signup = () => {
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!form.fullName.trim()) newErrors.fullname = "Full name is required";
+    if(!form.phone.trim()) newErrors.phone = "Phone number is required";
     if (!form.username.trim()) newErrors.username = "Username is required";
     if (!form.email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
       newErrors.email = "Valid email is required";
@@ -54,9 +56,10 @@ const signup = () => {
         fullName: form.fullName,
         username: form.username,
         email: form.email,
+        phone: form.phone,
         password: form.password,
       });
-      router.push("/auth/login");
+      router.push("/auth/otp?email=" + form.email);
     } catch (err: any) {
       setApiError(err?.response?.data?.message || "Registration failed");
     } finally {
@@ -91,11 +94,11 @@ const signup = () => {
               <button className="flex p-3 border justify-center text-[#202426] border-gray rounded-full w-[48%]">
                 <img src="/images/icons/apple.png" className="mr-2" alt="" />
                 <span className="my-auto">Apple</span>
-            </button>
-          </div>
+              </button>
+            </div>
             <div className="border-b border-gray mb-6">
               <p className="text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto">or</p>
-          </div>
+            </div>
 
             <div className="my-4">
               <label htmlFor="fullName" className="font-bold mb-2">
@@ -112,7 +115,7 @@ const signup = () => {
               {errors.fullName && (
                 <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
               )}
-          </div>
+            </div>
             <div className="my-4">
               <label htmlFor="username" className="font-bold mb-2">
                 Username
@@ -128,7 +131,23 @@ const signup = () => {
               {errors.username && (
                 <p className="text-red-500 text-xs mt-1">{errors.username}</p>
               )}
-          </div>
+            </div>
+            <div className="my-4">
+              <label htmlFor="username" className="font-bold mb-2">
+                Phone Number
+              </label>
+              <input
+                name="phone"
+                type="number"
+                className="w-full rounded-md text-sm p-3 bg-[#F4F4F4]"
+                placeholder="Enter Phone Number"
+                value={form.phone}
+                onChange={handleChange}
+              />
+              {errors.phone && (
+                <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
+              )}
+            </div>
             <div className="my-4">
               <label htmlFor="email" className="font-bold mb-2">
                 Email Address
@@ -157,23 +176,23 @@ const signup = () => {
                   placeholder="Enter Password"
                   value={form.password}
                   onChange={handleChange}
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-[#6C6C6C]" />
-                ) : (
-                  <Eye className="h-5 w-5 text-[#6C6C6C]" />
-                )}
-              </button>
-            </div>
+                />
+                <button
+                  type="button"
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? (
+                    <EyeOff className="h-5 w-5 text-[#6C6C6C]" />
+                  ) : (
+                    <Eye className="h-5 w-5 text-[#6C6C6C]" />
+                  )}
+                </button>
+              </div>
               {errors.password && (
                 <p className="text-red-500 text-xs mt-1">{errors.password}</p>
               )}
-          </div>
+            </div>
 
             <div className="flex my-2">
               <input
@@ -187,7 +206,7 @@ const signup = () => {
                 By signing up, you agree to our Terms of Service and Privacy
                 Policy
               </p>
-          </div>
+            </div>
             {errors.agree && (
               <p className="text-red-500 text-xs mt-1">{errors.agree}</p>
             )}
@@ -195,7 +214,7 @@ const signup = () => {
             {apiError && (
               <div className="p-2 border border-[#FBBC05] bg-[#FFF8E6] text-[#644B02] rounded-md">
                 <p>{apiError}</p>
-          </div>
+              </div>
             )}
 
             {/* {apiError && (
@@ -206,14 +225,20 @@ const signup = () => {
             <button
               type="submit"
               className={`w-full rounded-full p-3 my-4 flex justify-center items-center min-h-[48px] transition-colors duration-200
-                ${loading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}`}
+                ${
+                  loading
+                    ? "border border-primary bg-[#E5F4FF] text-primary"
+                    : "bg-primary text-[#FCFCFC]"
+                }`}
               disabled={loading}
             >
               {loading ? (
                 <span className="flex items-center justify-center">
-                  <Spin size="small" style={{ color: '#0095FF' }} />
+                  <Spin size="small" style={{ color: "#0095FF" }} />
                 </span>
-              ) : "Create Account"}
+              ) : (
+                "Create Account"
+              )}
             </button>
             {/* </Link> */}
 
@@ -221,7 +246,7 @@ const signup = () => {
               <p className="text-[#6C6C6C] mr-2">Already have an account?</p>
               <Link href={"/auth/login"}>
                 <span className="text-primary">Login</span>
-          </Link>
+              </Link>
             </div>
           </div>
         </form>

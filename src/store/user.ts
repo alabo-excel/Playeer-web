@@ -35,6 +35,9 @@ export interface User {
   updatedAt: Date;
   _id: string;
   visibility: 'public' | 'private'
+  address?: string; // New field for address
+  phone?: string; // New field for phone number
+  [key: string]: any; // Allow additional properties
 }
 
 export interface FootballJourneyEntry {
