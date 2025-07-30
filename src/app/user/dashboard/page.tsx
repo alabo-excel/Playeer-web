@@ -183,7 +183,7 @@ const dashboard = () => {
               />
 
               <p className="text-2xl font-bold mb-4">
-                Welcome to Playeer, {user?.username}! Your profile is live, and
+                Welcome to Playeer, <span className="capitalize">{user?.username}</span>! Your profile is live, and
                 you're ready to be seen.
               </p>
               <p className="mb-6 text-sm text-[#6C6C6C]">

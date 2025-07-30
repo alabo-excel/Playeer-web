@@ -57,7 +57,7 @@ const players = () => {
   useEffect(() => {
     let filtered = [...allPlayers];
     if (filters.position) {
-      filtered = filtered.filter((p: any) => p.position === filters.position);
+      filtered = filtered.filter((p: any) => p.mainPosition === filters.position);
     }
     if (filters.country) {
       filtered = filtered.filter((p: any) => p.country === filters.country);
@@ -147,10 +147,11 @@ const players = () => {
               <option value="" className="hidden">
                 Position
               </option>
-              <option value="forward">Forward</option>
-              <option value="midfielder">Midfielder</option>
-              <option value="defender">Defender</option>
-              <option value="goalkeeper">Goalkeeper</option>
+              {positions.map((position) => (
+                <option key={position.label} value={position.value}>
+                  {position.label}
+                </option>
+              ))}
             </select>
 
             <Select
