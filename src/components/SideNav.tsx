@@ -9,11 +9,9 @@ import {
 } from "lucide-react";
 import React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { userAtom } from "@/store/user";
 import { useAtomValue } from "jotai";
-import Modal from "./Modal";
-import PricingComp from "./PricingComp";
 
 interface SideNavProps {
   open?: boolean;
@@ -21,9 +19,10 @@ interface SideNavProps {
 }
 
 const SideNav = ({ open = false, onClose }: SideNavProps) => {
+  const router = useRouter();
+
   const pathname = usePathname();
   const user = useAtomValue(userAtom);
-  const [showModal, setShowModal] = React.useState(false);
 
   const navItems = [
     { href: "/user/dashboard", icon: LayoutDashboard, label: "Dashboard" },
@@ -141,7 +140,7 @@ const SideNav = ({ open = false, onClose }: SideNavProps) => {
               increase your visibility to top scouts and clubs.
             </p>
             <button
-              onClick={() => setShowModal(true)}
+              onClick={() => router.push("/user/update-plan")}
               className="mb-2 bg-primary text-white flex p-3 rounded-full w-full justify-center"
             >
               <LockKeyholeOpen className="w-4 h-4 my-auto" />
@@ -154,12 +153,6 @@ const SideNav = ({ open = false, onClose }: SideNavProps) => {
               </p>
             </div>
           </div>
-        )}
-
-        {showModal && (
-          <Modal width="95%" onClose={() => setShowModal(false)}>
-            <PricingComp onPlanSelect={() => console.log("hello")} />
-          </Modal>
         )}
       </aside>
     </>

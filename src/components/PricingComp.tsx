@@ -82,7 +82,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
         <p className="text-[#0095FF] mb-3 font-semibold">PRO YEARLY PLAN</p>
         <div className="flex">
           <p className="text-5xl text-white font-bold">₦20,000</p>
-          <p className="text-[#E5E5E5] mt-auto ml-1">Month</p>
+          <p className="text-[#E5E5E5] mt-auto ml-1">Year</p>
         </div>
         <p className="text-[#E5E5E5] text-sm my-3">
           Serious players committed to going pro and building a long-term

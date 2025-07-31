@@ -9,8 +9,13 @@ import { useRouter } from "next/navigation";
 import { Country, City } from "country-state-city";
 import { positions } from "@/utils/positions";
 import Select from "react-select";
+import PaystackPop from "@paystack/inline-js";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/store/user";
 
 const OnboardingForm = () => {
+  const user = useAtomValue(userAtom);
+
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({
     // Add all other fields here as needed, e.g.:
@@ -132,11 +137,35 @@ const OnboardingForm = () => {
     }
   };
 
+  const handlePay = (plan : string) => {
+    const paystack = new PaystackPop();
+
+    paystack.newTransaction({
+      key:
+        process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY ||
+        "pk_test_f7cf01b996e574f4c92ea4b4067baec9a8c19925", // set in your .env
+      email: user ? user?.email : "",
+      amount:
+        plan === "monthly" ? 1000 * 100 : plan === "yearly" ? 2000 * 100 : 0, // convert Naira to kobo
+      currency: "NGN",
+      ref: `ref-${Date.now()}`,
+
+      onSuccess: (response: any) => {
+        console.log("Payment complete:", response);
+      },
+      onClose: () => {
+        console.log("Payment popup closed");
+      },
+    });
+  };
+
   // New handler for plan selection
   const handlePlanSelect = (selectedPlan: string) => {
     setPlan(selectedPlan);
     if (selectedPlan === "free") {
       handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+    } else {
+      handlePay(selectedPlan);
     }
   };
 
