@@ -10,6 +10,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'BlackHanSans';
+  src: url('/fonts/BlackHanSans-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @import "tailwindcss";
 
 @theme {
@@ -46,7 +54,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Benzin';
+  font-family: 'BlackHanSans';
   color: #232323;
 }
 
