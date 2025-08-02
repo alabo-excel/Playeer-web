@@ -68,11 +68,8 @@ const home = () => {
         </div>
       </motion.section>
 
-      <section           id="about"
- className="px-4 md:px-6 max-w-7xl mx-auto">
-        <div
-          className="flex flex-col md:flex-row gap-8 md:gap-4 justify-between my-10"
-        >
+      <section id="about" className="px-4 md:py-10 md:px-6 max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row gap-8 md:gap-4 justify-between my-10">
           <div className="my-auto w-full md:w-[45%]">
             <div className="bg-[#E5F4FF] w-52 text-center rounded-full p-3 mb-4 mx-auto md:mx-0">
               <p className="!text-[#0095FF] font-semibold">ABOUT PLAYEER</p>
@@ -475,7 +472,7 @@ const home = () => {
         </div>
       </section>
 
-      <section id="pricing" className="my-20 max-w-7xl  mx-auto px-2 md:px-4">
+      <section id="pricing" className="py-20 max-w-7xl  mx-auto px-2 md:px-4">
         <div className="w-full md:w-[30%] !text-center mx-auto pb-10">
           <div className="bg-[#E5F4FF] w-40 mx-auto text-center rounded-full p-3 mb-4">
             <p className="!text-[#0095FF] font-semibold">PRICING</p>
@@ -484,7 +481,7 @@ const home = () => {
             Affordable Plans, Maximum Impact
           </h2>
         </div>
-        <PricingComp onPlanSelect={() => console.log('hello')} />
+        <PricingComp onPlanSelect={() => console.log("hello")} />
       </section>
 
       <ContactComp />
