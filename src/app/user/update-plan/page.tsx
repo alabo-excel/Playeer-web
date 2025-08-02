@@ -4,14 +4,16 @@ import AdminLayout from "@/components/layouts/AdminLayout";
 import PricingComp from "@/components/PricingComp";
 import React, { useState } from "react";
 import PaystackPop from "@paystack/inline-js";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/store/user";
 import api from "@/utils/api";
+import { useRouter } from "next/navigation";
 
 const updatePlan = () => {
   const user = useAtomValue(userAtom);
-  const setUser = require('jotai').useSetAtom(userAtom);
+  const setUser = useSetAtom(userAtom);
   const [plan, setPlan] = useState<any>(user?.plan || "free");
+  const router = useRouter();
 
   const handlePay = (selectedPlan: string) => {
     const paystack = new PaystackPop();
@@ -50,6 +52,7 @@ const updatePlan = () => {
       const res = await api.patch("/onboarding/update-plan", { plan: selectedPlan });
       if (res?.data?.data?.plan) {
         setUser((prev: any) => ({ ...prev, plan: res.data.data.plan }));
+        router.push("/user/dashboard");
       }
     } catch (err) {
       console.log(err);
