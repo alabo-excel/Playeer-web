@@ -68,7 +68,7 @@ const home = () => {
         </div>
       </motion.section>
 
-      <section id="about" className="px-4 md:py-10 md:px-6 max-w-7xl mx-auto">
+      <section id="about" className="px-4 py-10 md:px-6 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row gap-8 md:gap-4 justify-between my-10">
           <div className="my-auto w-full md:w-[45%]">
             <div className="bg-[#E5F4FF] w-52 text-center rounded-full p-3 mb-4 mx-auto md:mx-0">
@@ -145,7 +145,7 @@ const home = () => {
               <img
                 key={single}
                 onMouseEnter={() => setActiveSlide(single)}
-                className={`h-full object-cover rounded-2xl transition-width ease-in-out ${
+                className={`md:h-full object-cover rounded-2xl transition-width ease-in-out ${
                   activeSlide === single ? "w-[55%]" : "w-[20%]"
                 }`}
                 src={`/images/players-slide/slide-${single}.png`}
@@ -378,7 +378,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className="my-20 max-w-7xl mx-auto">
+      <section className="md:my-20 max-w-7xl mx-auto">
         <div className="w-full md:w-[40%] !text-center mx-auto px-2">
           <div className="bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4">
             <p className="!text-[#0095FF] font-semibold">TESTIMONIALS</p>
@@ -452,8 +452,12 @@ const home = () => {
         </div>
       </section>
 
-      <section className="relative my-20 lg:h-auto h-[80vh] mx-auto flex flex-col md:flex-row items-center justify-center">
-        <img className="w-full" src="/images/cta-img.png" alt="" />
+      <section className="relative md:my-20 my-10 lg:h-auto h-[80vh] mx-auto flex flex-col md:flex-row items-center justify-center">
+        <img
+          className="w-full h-full object-cover object-left"
+          src="/images/cta-img.png"
+          alt=""
+        />
         <div className="w-full max-w-5xl md:w-[40%] py-20 !text-center mx-auto absolute left-0 right-0 top-1/2 -translate-y-1/2">
           <div className="bg-[#E5F4FF] w-[80%] mx-auto text-center rounded-full p-3 mb-4">
             <p className="!text-[#0095FF] font-semibold">
