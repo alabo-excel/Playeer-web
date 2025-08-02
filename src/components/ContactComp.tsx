@@ -3,13 +3,13 @@ import React from 'react';
 
 const ContactComp = () => {
   return (
-    <section className='bg-[#F6F6F6]'>
+    <section id='contact' className='bg-[#F6F6F6]'>
       <div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between p-6 md:p-20 gap-8'>
         <div className='w-full md:w-auto'>
           <div className='bg-[#E5F4FF] w-40 text-center rounded-full p-3 mb-4 mx-auto md:mx-0'>
             <p className='!text-[#0095FF] font-semibold'>CONTACT US</p>
           </div>
-          <h2 className='text-2xl md:text-3xl'>Have Questions? Let’s Talk.</h2>
+          <h2 className='text-2xl md:text-3xl'>Have Questions? <br /> Let’s Talk.</h2>
           <p className='text-[#6C6C6C] my-3'>Whether you're a player or a talent seeker, we’re here to support you.</p>
           <div className='flex items-center'>
             {/* <img src="/images/icons/location.png" alt="" className="" /> */}

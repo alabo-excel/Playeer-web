@@ -18,10 +18,13 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import Marquee from "react-fast-marquee";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const home = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSlide, setActiveSlide] = useState(1);
+  const router = useRouter();
 
   const { scrollYProgress } = useScroll();
   // Make scale and marginTop jump instantly as soon as scrolling starts
@@ -93,9 +96,11 @@ const home = () => {
               <li>Gain visibility with global scouts</li>
               <li>Receive personalized performance feedback</li>
             </ul>
-            <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white mt-4 w-full md:w-auto">
-              Sign up today
-            </button>
+            <Link href={"/auth/signup"}>
+              <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white mt-4 w-full md:w-auto">
+                Sign up today
+              </button>
+            </Link>
           </div>
           <div className="w-full md:w-1/2 mt-8 md:mt-0 object-contain">
             <Swiper
@@ -176,9 +181,11 @@ const home = () => {
               <li>Region or Country</li>
               <li>Performance Metrics</li>
             </ul>
-            <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white mt-4 w-full md:w-auto">
-              Search Now
-            </button>
+            <Link href={"/players"}>
+              <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white mt-4 w-full md:w-auto">
+                Search Now
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -485,7 +492,7 @@ const home = () => {
             Affordable Plans, Maximum Impact
           </h2>
         </div>
-        <PricingComp onPlanSelect={() => console.log("hello")} />
+        <PricingComp onPlanSelect={() => router.push("/auth/signup")} />
       </section>
 
       <ContactComp />

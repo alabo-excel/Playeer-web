@@ -66,6 +66,13 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
               </Link>
               <Link
                 className="hover:text-[#0095FF] transition-colors"
+                href={"/#contact"}
+              >
+                Contact
+              </Link>
+
+              <Link
+                className="hover:text-[#0095FF] transition-colors"
                 href="/players"
               >
                 Player directory
@@ -132,7 +139,7 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
         style={{ background: "#fff" }}
       >
         <div className="flex justify-between items-center h-16 px-4 border-b border-[#E5F4FF]">
-          <Link href={'/'}>
+          <Link href={"/"}>
             <img
               src={
                 scrolled || scroll
@@ -161,6 +168,13 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
             onClick={() => setIsMenuOpen(false)}
           >
             About
+          </Link>
+          <Link
+            href="/#contact"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Contact
           </Link>
           <Link
             href="/players"

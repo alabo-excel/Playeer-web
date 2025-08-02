@@ -153,7 +153,8 @@ const OnboardingForm = () => {
         ref: `ref-${Date.now()}`,
 
         onSuccess: (response: any) => {
-          console.log("Payment complete:", response);
+          handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+          // console.log("Payment complete:", response);
         },
         onClose: () => {
           console.log("Payment popup closed");
