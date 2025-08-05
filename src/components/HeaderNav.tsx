@@ -30,7 +30,7 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
     <nav
       className={`fixed mx-auto right-0 left-0 top-0 transition-all duration-300 transition-discrete z-50 ${
         scrolled
-          ? "bg-white rounded-full md:w-[80%] !mx-auto mt-10  shadow-lg"
+          ? "bg-white rounded-full md:w-[80%] !mx-auto mt-6  shadow-lg"
           : "w-full bg-transparent  py-4"
       } ${scroll || scrolled ? "text-black" : "text-[#FBFBFB]"}`}
     >

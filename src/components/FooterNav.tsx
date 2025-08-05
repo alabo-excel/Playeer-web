@@ -15,7 +15,7 @@ const FooterNav = () => {
             <Mail className="h-5 w-5 text-[#6C6C6C] ml-3" />
             <input type="text" className='bg-[#F4F4F4] w-full rounded-md p-3 focus:outline-none ml-2' placeholder='Email Address' />
           </div>
-          <button className='text-[#FCFCFC] p-3 bg-[#0095FF] rounded-full w-full md:w-52'>Send Message</button>
+          <button className='text-[#FCFCFC] p-3 bg-[#0095FF] rounded-full w-full md:w-52'>Submit</button>
         </div>
       </div>
       <div className='flex flex-col md:flex-row md:justify-between py-10 border-b border-b-[#B6B6B6] gap-6'>
