@@ -8,7 +8,7 @@ export interface User {
   profilePicture?: string;
   country?: string;
   city?: string;
-  gender?: 'male' | 'female' | 'other';
+  gender?: 'male' | 'female';
   height?: string;
   weight?: string;
   currentTeam?: string;

@@ -15,7 +15,7 @@ const UserComp = () => {
     <>
       <img
         src={user?.profilePicture || "/images/player-2.jpg"}
-        className="rounded-xl md:h-90 object-cover"
+        className="rounded-xl w-full md:h-90 object-cover"
         alt=""
       />
       <p className="text-lg mt-2 font-bold">{user?.fullName}</p>

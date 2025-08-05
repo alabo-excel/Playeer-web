@@ -54,7 +54,7 @@ const OnboardingForm = () => {
   const genderOptions = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
-    { label: "Other", value: "other" },
+    // { label: "Other", value: "other" },
   ];
 
   const dominantFootOptions = [

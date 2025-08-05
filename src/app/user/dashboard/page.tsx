@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import { Spin } from "antd";
 import { underscoreToSpace } from "@/utils/formatDate";
 
-
 const dashboard = () => {
   const user = useAtomValue(userAtom);
   const [showModal, setShowModal] = useState(user?.welcome);
@@ -25,14 +24,18 @@ const dashboard = () => {
   const [activitiesError, setActivitiesError] = useState<string | null>(null);
 
   const handleCompleteProfile = async () => {
+    // Close modal immediately for better UX
     setShowModal(false);
+    
+    // Navigate to profile page immediately
+    router.push("/user/profile");
+    
+    // Make API request in background
     try {
       await api.patch("/users/dismiss-welcome");
-      router.push("/user/profile");
     } catch (err) {
-      // Optionally handle error
-    } finally {
-      setLoading(false);
+      // Silently handle error or show a toast notification if needed
+      console.error("Failed to dismiss welcome:", err);
     }
   };
 
@@ -183,8 +186,9 @@ const dashboard = () => {
               />
 
               <p className="text-2xl font-bold mb-4">
-                Welcome to Playeer, <span className="capitalize">{user?.username}</span>! Your profile is live, and
-                you're ready to be seen.
+                Welcome to Playeer,{" "}
+                <span className="capitalize">{user?.username}</span>! Your
+                profile is live, and you're ready to be seen.
               </p>
               <p className="mb-6 text-sm text-[#6C6C6C]">
                 Start improving your profile, connect with scouts, and apply for
