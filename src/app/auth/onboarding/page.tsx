@@ -6,7 +6,7 @@ import { Camera } from "lucide-react";
 import React, { useState } from "react";
 import api from "@/utils/api";
 import { useRouter } from "next/navigation";
-import { Country, City } from "country-state-city";
+import { Country, City, State } from "country-state-city";
 import { positions } from "@/utils/positions";
 import Select from "react-select";
 import { useAtomValue } from "jotai";
@@ -36,6 +36,7 @@ const OnboardingForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
   const router = useRouter();
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -71,11 +72,17 @@ const OnboardingForm = () => {
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
+    
+    // Clear field error when user starts typing
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+    
     if (name === "country") {
       setForm((prev) => ({ ...prev, city: "" }));
       const countryObj = countries.find((c) => c.isoCode === value);
       if (countryObj) {
-        setCities(City.getCitiesOfCountry(countryObj.isoCode) || []);
+        setCities(State.getStatesOfCountry(countryObj.isoCode) || []);
       } else {
         setCities([]);
       }
@@ -109,8 +116,37 @@ const OnboardingForm = () => {
     }
   };
 
-  const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
+  const nextStep = () => {
+    if (validateCurrentStep()) {
+      setStep((prev) => Math.min(prev + 1, 3));
+    }
+  };
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
+
+  // Validation function for current step
+  const validateCurrentStep = (): boolean => {
+    const errors: {[key: string]: string} = {};
+    
+    if (step === 1) {
+      if (!form.dateOfBirth) errors.dateOfBirth = "Date of Birth is required";
+      if (!form.country) errors.country = "Country is required";
+      if (!form.city) errors.city = "State is required";
+      if (!form.gender) errors.gender = "Gender is required";
+      if (!form.address.trim()) errors.address = "Address is required";
+      if (!form.height.trim()) errors.height = "Height is required";
+      if (!form.weight.trim()) errors.weight = "Weight is required";
+    }
+    
+    if (step === 2) {
+      if (!form.currentTeam.trim()) errors.currentTeam = "Current Team/Academy is required";
+      if (!form.yearsOfExperience.trim()) errors.yearsOfExperience = "Years of Experience is required";
+      if (!form.mainPosition) errors.mainPosition = "Main Position is required";
+      if (!form.dominantFoot) errors.dominantFoot = "Dominant Foot is required";
+    }
+    
+    setFieldErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -177,7 +213,10 @@ const OnboardingForm = () => {
 
   return (
     <>
-      <HeaderNav scroll={true} />
+      {/* <HeaderNav scroll={true} /> */}
+      <header className="px-8 py-4">
+        <img className="w-32" src="/images/logo-colored.png" alt="" />
+      </header>
       <section
         className={`${
           step === 3 ? "" : "lg:w-[55%]"
@@ -251,27 +290,16 @@ const OnboardingForm = () => {
                   value={form.dateOfBirth}
                   onChange={handleChange}
                   type="date"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                    fieldErrors.dateOfBirth ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                  }`}
                 />
+                {fieldErrors.dateOfBirth && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.dateOfBirth}</p>
+                )}
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm">Country</label>
-                {/* <select
-                  name="country"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
-                  value={form.country}
-                  onChange={handleChange}
-                >
-                  <option className="hidden" value="">
-                    Select your country
-                  </option>
-                  {countries.map((country) => (
-                    <option key={country.isoCode} value={country.isoCode}>
-                      {country.name}
-                    </option>
-                  ))}
-                </select> */}
-
                 <Select
                   name="country"
                   isSearchable
@@ -279,8 +307,8 @@ const OnboardingForm = () => {
                   styles={{
                     control: (base) => ({
                       ...base,
-                      border: "none",
-                      backgroundColor: "#F4F4F4",
+                      border: fieldErrors.country ? "1px solid #DC2626" : "none",
+                      backgroundColor: fieldErrors.country ? "#FEF2F2" : "#F4F4F4",
                     }),
                   }}
                   className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
@@ -297,31 +325,17 @@ const OnboardingForm = () => {
                     })
                   }
                 />
+                {fieldErrors.country && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.country}</p>
+                )}
               </div>
               <div>
-                <label className="font-semibold mb-2 text-sm">City</label>
-                {/* <select
-                  name="city"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
-                  value={form.city}
-                  onChange={handleChange}
-                  disabled={!form.country}
-                >
-                  <option className="hidden" value="">
-                    Enter your city
-                  </option>
-                  {cities.map((city) => (
-                    <option key={city.name} value={city.name}>
-                      {city.name}
-                    </option>
-                  ))}
-                </select> */}
-
+                <label className="font-semibold mb-2 text-sm">State</label>
                 <Select
                   name="city"
                   options={cityOptions}
                   className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
-                  placeholder="Enter your city"
+                  placeholder="Enter your state"
                   value={cityOptions.find(
                     (option) => option.value === form.city
                   )}
@@ -336,19 +350,24 @@ const OnboardingForm = () => {
                   styles={{
                     control: (base) => ({
                       ...base,
-                      border: "none",
-                      backgroundColor: "#F4F4F4",
+                      border: fieldErrors.city ? "1px solid #DC2626" : "none",
+                      backgroundColor: fieldErrors.city ? "#FEF2F2" : "#F4F4F4",
                     }),
                   }}
                   isDisabled={!form.country}
                 />
+                {fieldErrors.city && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.city}</p>
+                )}
               </div>
 
               <div>
                 <label className="font-semibold mb-2 text-sm">Gender</label>
                 <select
                   name="gender"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                    fieldErrors.gender ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                  }`}
                   value={form.gender}
                   onChange={handleChange}
                 >
@@ -361,6 +380,9 @@ const OnboardingForm = () => {
                     </option>
                   ))}
                 </select>
+                {fieldErrors.gender && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.gender}</p>
+                )}
               </div>
               <div className="col-span-2">
                 <label className="font-semibold mb-2 text-sm">Address</label>
@@ -370,8 +392,13 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="Enter your address"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                    fieldErrors.address ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                  }`}
                 />
+                {fieldErrors.address && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.address}</p>
+                )}
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm">Height</label>
@@ -382,8 +409,13 @@ const OnboardingForm = () => {
                   onBlur={handleBlur}
                   type="text"
                   placeholder="e.g., 178 cm"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                    fieldErrors.height ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                  }`}
                 />
+                {fieldErrors.height && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.height}</p>
+                )}
               </div>
               <div>
                 <label className="font-semibold mb-2 text-sm">Weight</label>
@@ -394,8 +426,13 @@ const OnboardingForm = () => {
                   onBlur={handleBlur}
                   type="text"
                   placeholder="e.g., 70 kg"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                    fieldErrors.weight ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                  }`}
                 />
+                {fieldErrors.weight && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.weight}</p>
+                )}
               </div>
             </div>
           </div>
@@ -420,8 +457,13 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="e.g., Future Stars Academy"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                    fieldErrors.currentTeam ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                  }`}
                 />
+                {fieldErrors.currentTeam && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.currentTeam}</p>
+                )}
               </div>
 
               <div>
@@ -448,8 +490,13 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="text"
                   placeholder="e.g., 3 years"
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                    fieldErrors.yearsOfExperience ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                  }`}
                 />
+                {fieldErrors.yearsOfExperience && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.yearsOfExperience}</p>
+                )}
               </div>
 
               <div>
@@ -463,7 +510,9 @@ const OnboardingForm = () => {
                   name="mainPosition"
                   value={form.mainPosition}
                   onChange={handleChange}
-                  className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                  className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                    fieldErrors.mainPosition ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                  }`}
                 >
                   <option className="hidden" value="">
                     Select
@@ -474,6 +523,9 @@ const OnboardingForm = () => {
                     </option>
                   ))}{" "}
                 </select>
+                {fieldErrors.mainPosition && (
+                  <p className="text-red-500 text-xs mt-1">{fieldErrors.mainPosition}</p>
+                )}
               </div>
               <div className="lg:col-span-2 grid lg:grid-cols-3 gap-6">
                 <div>
@@ -503,7 +555,9 @@ const OnboardingForm = () => {
                   </label>
                   <select
                     name="dominantFoot"
-                    className="p-3 placeholder:text-[#B6B6B6] rounded-md w-full bg-[#F4F4F4]"
+                    className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
+                      fieldErrors.dominantFoot ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    }`}
                     value={form.dominantFoot}
                     onChange={handleChange}
                   >
@@ -516,6 +570,9 @@ const OnboardingForm = () => {
                       </option>
                     ))}
                   </select>
+                  {fieldErrors.dominantFoot && (
+                    <p className="text-red-500 text-xs mt-1">{fieldErrors.dominantFoot}</p>
+                  )}
                 </div>
                 <div>
                   <label className="font-semibold mb-2 text-sm">

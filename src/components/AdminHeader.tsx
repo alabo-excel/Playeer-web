@@ -32,7 +32,7 @@ const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
         >
           <Menu className="w-6 h-6" />
         </button>
-        <Link href={"/"}>
+        <Link href={"/user/dashboard"}>
           <img
             className="w-32 my-auto lg:block hidden"
             src="/images/logo-colored.png"

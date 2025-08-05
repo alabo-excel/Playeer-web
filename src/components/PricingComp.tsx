@@ -29,9 +29,13 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </p>
         <button
           type="button"
-          className="rounded-full w-full p-4 text-white bg-[#0095FF]"
+          className={`rounded-full w-full p-4 text-white ${
+            loading || selectedPlan === "free"
+              ? "bg-[#0F993E4D] cursor-not-allowed"
+              : "bg-[#0095FF] hover:bg-blue-600"
+          }`}
           onClick={() => onPlanSelect("free")}
-          disabled={loading && selectedPlan === "free"}
+          disabled={loading || selectedPlan === "free"}
         >
           {loading && selectedPlan === "free"
             ? "Loading..."
@@ -90,10 +94,17 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </p>
         <button
           type="button"
-          className="rounded-full w-full p-4 text-white bg-[#0095FF]"
+          className={`rounded-full w-full p-4 text-white ${
+            loading || selectedPlan === "yearly"
+              ? "bg-[#0F993E4D] cursor-not-allowed"
+              : "bg-[#0095FF] hover:bg-blue-600"
+          }`}
           onClick={() => onPlanSelect("yearly")}
+          disabled={loading || selectedPlan === "yearly"}
         >
-          Go Yearly Pro (Save 17%)
+          {loading && selectedPlan === "yearly"
+            ? "Loading..."
+            : "Go Yearly Pro (Save 17%)"}
         </button>
         <p className="my-3 text-[#FCFCFC]">Includes:</p>
         <ul className="space-y-3 mb-8 text-sm">
@@ -155,10 +166,17 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </p>
         <button
           type="button"
-          className="rounded-full w-full p-4 text-white bg-[#0095FF]"
+          className={`rounded-full w-full p-4 text-white ${
+            loading || selectedPlan === "monthly"
+              ? "bg-[#0F993E4D] cursor-not-allowed"
+              : "bg-[#0095FF] hover:bg-blue-600"
+          }`}
           onClick={() => onPlanSelect("monthly")}
+          disabled={loading || selectedPlan === "monthly"}
         >
-          Go Monthly Pro
+          {loading && selectedPlan === "monthly"
+            ? "Loading..."
+            : "Go Monthly Pro"}
         </button>
         <p className="my-3">Includes:</p>
         <ul className="space-y-3 mb-8 text-sm">

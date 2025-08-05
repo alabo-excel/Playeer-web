@@ -4,7 +4,7 @@ import Modal from "../Modal";
 import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/store/user";
 import api from "@/utils/api";
-import { Country, City } from "country-state-city";
+import { Country, City, State } from "country-state-city";
 import { positions } from "@/utils/positions";
 import Select from "react-select";
 
@@ -107,7 +107,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
       setForm((prev) => ({ ...prev, city: "" }));
       const countryObj = countries.find((c) => c.isoCode === value);
       if (countryObj) {
-        setCities(City.getCitiesOfCountry(countryObj.isoCode) || []);
+        setCities(State.getStatesOfCountry(countryObj.isoCode) || []);
       } else {
         setCities([]);
       }
@@ -303,7 +303,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             )}
           </div>
           <div>
-            <label className="font-semibold mb-2 text-sm">City</label>
+            <label className="font-semibold mb-2 text-sm">State</label>
             {/* <select
               name="city"
               className="p-3 rounded-md w-full bg-[#F4F4F4]"
@@ -324,7 +324,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
               name="city"
               options={cityOptions}
               className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
-              placeholder="Enter your city"
+              placeholder="Enter your state"
               value={cityOptions.find((option) => option.value === form.city)}
               onChange={(selectedOption) =>
                 handleChange({

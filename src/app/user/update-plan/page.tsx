@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
 import AdminLayout from "@/components/layouts/AdminLayout";
 import PricingComp from "@/components/PricingComp";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAtomValue, useSetAtom } from "jotai";
 import { userAtom } from "@/store/user";
 import api from "@/utils/api";
@@ -11,8 +11,12 @@ import { useRouter } from "next/navigation";
 const updatePlan = () => {
   const user = useAtomValue(userAtom);
   const setUser = useSetAtom(userAtom);
-  const [plan, setPlan] = useState<any>(user?.plan || "free");
+  const [plan, setPlan] = useState<any>("");
   const router = useRouter();
+
+  useEffect(() => {
+    setPlan(user?.plan);
+  }, [user]);
 
   const handlePay = async (selectedPlan: string) => {
     try {
@@ -26,7 +30,11 @@ const updatePlan = () => {
           "pk_test_f7cf01b996e574f4c92ea4b4067baec9a8c19925", // set in your .env
         email: user ? user?.email : "",
         amount:
-          selectedPlan === "monthly" ? 2000 * 100 : selectedPlan === "yearly" ? 20000 * 100 : 0, // convert Naira to kobo
+          selectedPlan === "monthly"
+            ? 2000 * 100
+            : selectedPlan === "yearly"
+            ? 20000 * 100
+            : 0, // convert Naira to kobo
         currency: "NGN",
         ref: `ref-${Date.now()}`,
 
@@ -54,7 +62,9 @@ const updatePlan = () => {
 
   const updatePlan = async (selectedPlan: string) => {
     try {
-      const res = await api.patch("/onboarding/update-plan", { plan: selectedPlan });
+      const res = await api.patch("/onboarding/update-plan", {
+        plan: selectedPlan,
+      });
       if (res?.data?.data?.plan) {
         setUser((prev: any) => ({ ...prev, plan: res.data.data.plan }));
         router.push("/user/dashboard");

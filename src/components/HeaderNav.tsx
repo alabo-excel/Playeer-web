@@ -64,12 +64,6 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
               >
                 About
               </Link>
-              <Link
-                className="hover:text-[#0095FF] transition-colors"
-                href={"/#contact"}
-              >
-                Contact
-              </Link>
 
               <Link
                 className="hover:text-[#0095FF] transition-colors"
@@ -84,11 +78,17 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
                 Pricing
               </Link>
               <Link
+                className="hover:text-[#0095FF] transition-colors"
+                href={"/#contact"}
+              >
+                Contact
+              </Link>
+              {/* <Link
                 href="/#"
                 className="hover:text-[#0095FF] transition-colors"
               >
                 FAQ
-              </Link>
+              </Link> */}
             </div>
           </div>
 
@@ -169,13 +169,7 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
           >
             About
           </Link>
-          <Link
-            href="/#contact"
-            className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors"
-            onClick={() => setIsMenuOpen(false)}
-          >
-            Contact
-          </Link>
+
           <Link
             href="/players"
             className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors"
@@ -191,12 +185,19 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
             Pricing
           </Link>
           <Link
+            href="/#contact"
+            className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors"
+            onClick={() => setIsMenuOpen(false)}
+          >
+            Contact
+          </Link>
+          {/* <Link
             href="/#faq"
             className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
             FAQ
-          </Link>
+          </Link> */}
 
           <Link href={"/auth/signup"}>
             <button

@@ -58,7 +58,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
               alt=""
             />
             <div className="flex justify-between">
-              <Link href={"/auth/signup"}>
+              {/* <Link href={"/auth/signup"}>
                 <button
                   className={`bg-[#E5F4FF] text-nowrap cursor-pointer lg:px-8 px-4 py-2 rounded-full text-[#0095FF] transition-colors`}
                 >
@@ -69,7 +69,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
                 <button className="bg-[#0095FF] cursor-pointer lg:px-8 px-4 py-2 ml-6 rounded-full text-white transition-colors">
                   Login
                 </button>
-              </Link>
+              </Link> */}
             </div>
           </div>
           <div className="flex-1 text-sm flex items-center justify-center">
