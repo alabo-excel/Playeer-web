@@ -157,8 +157,8 @@ const LoginPage = () => {
             <div className="border-b border-gray mb-6">
               <p className="text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto">or</p>
             </div>
-            <div className="flex justify-between mb-4">
-              <button className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-[48%]">
+            {/* <div className="flex justify-center mb-4">
+              <button className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-full">
                 <img className="mr-2" src="/images/icons/google.png" alt="" />
                 <span className="my-auto">Google</span>
               </button>
@@ -166,7 +166,7 @@ const LoginPage = () => {
                 <img src="/images/icons/apple.png" className="mr-2" alt="" />
                 <span className="my-auto">Apple</span>
               </button>
-            </div>
+            </div> */}
             <div className="flex justify-center">
               <p className="text-[#6C6C6C] mr-2">Don’t have an account?</p>
               <Link href={"/auth/signup"}>

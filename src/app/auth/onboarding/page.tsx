@@ -114,6 +114,11 @@ const OnboardingForm = () => {
     if (file) {
       setPhoto(file);
       setPhotoPreview(URL.createObjectURL(file));
+      
+      // Clear profile picture error when photo is selected
+      if (fieldErrors.profilePicture) {
+        setFieldErrors((prev) => ({ ...prev, profilePicture: "" }));
+      }
     }
   };
 
@@ -129,6 +134,7 @@ const OnboardingForm = () => {
     const errors: { [key: string]: string } = {};
 
     if (step === 1) {
+      if (!photo) errors.profilePicture = "Profile picture is required";
       if (!form.dateOfBirth) errors.dateOfBirth = "Date of Birth is required";
       if (!form.country) errors.country = "Country is required";
       if (!form.city) errors.city = "State is required";
@@ -163,7 +169,7 @@ const OnboardingForm = () => {
       if (photo) {
         formData.append("profilePicture", photo);
       }
-      formData.append("plan", plan || "free");
+      formData.append("plan", plan);
       await api.post("/onboarding/complete", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -253,7 +259,11 @@ const OnboardingForm = () => {
             </div>
             <div className="flex mb-10">
               <div className="relative">
-                <div className="w-32 h-32 rounded-full border border-primary bg-[#E5F4FF] overflow-hidden flex items-center justify-center">
+                <div className={`w-32 h-32 rounded-full border overflow-hidden flex items-center justify-center ${
+                  fieldErrors.profilePicture 
+                    ? "border-red-300 bg-red-50" 
+                    : "border-primary bg-[#E5F4FF]"
+                }`}>
                   {photoPreview ? (
                     <img
                       src={photoPreview}
@@ -280,10 +290,15 @@ const OnboardingForm = () => {
                 </button>
               </div>
               <div className="my-auto ml-6">
-                <p className="font-semibold">Upload Profile Picture</p>
+                <p className="font-semibold">Upload Profile Picture *</p>
                 <p className="text-sm text-[#5F5F5F]">
                   Image should be in Jpeg, jpg, png.
                 </p>
+                {fieldErrors.profilePicture && (
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.profilePicture}
+                  </p>
+                )}
               </div>
             </div>
             <div className="grid lg:grid-cols-2 gap-6">

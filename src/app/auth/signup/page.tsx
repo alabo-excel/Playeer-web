@@ -26,7 +26,7 @@ const signup = () => {
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
     if (!form.fullName.trim()) newErrors.fullname = "Full name is required";
-    if(!form.phone.trim()) newErrors.phone = "Phone number is required";
+    if (!form.phone.trim()) newErrors.phone = "Phone number is required";
     if (!form.username.trim()) newErrors.username = "Username is required";
     if (!form.email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
       newErrors.email = "Valid email is required";
@@ -86,8 +86,8 @@ const signup = () => {
               noticed by scouts, agents, and clubs.
             </p>
 
-            <div className="flex justify-between mb-4">
-              <button className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-[48%]">
+            {/* <div className="flex justify-center mb-4">
+              <button className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-full">
                 <img className="mr-2" src="/images/icons/google.png" alt="" />
                 <span className="my-auto">Google</span>
               </button>
@@ -95,7 +95,7 @@ const signup = () => {
                 <img src="/images/icons/apple.png" className="mr-2" alt="" />
                 <span className="my-auto">Apple</span>
               </button>
-            </div>
+            </div> */}
             <div className="border-b border-gray mb-6">
               <p className="text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto">or</p>
             </div>

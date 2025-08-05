@@ -20,11 +20,32 @@ import {
 import Marquee from "react-fast-marquee";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import api from "@/utils/api";
+import { useEffect } from "react";
 
 const home = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [activeSlide, setActiveSlide] = useState(1);
+  const [allPlayers, setAllPlayers] = useState([]);
+  const [premiumPlayers, setPremiumPlayers] = useState([]);
   const router = useRouter();
+
+  const fetchPlayers = async () => {
+    try {
+      const res = await api.get(`/users/active-not-deleted`);
+      const players = res.data.data || [];
+      setAllPlayers(players);
+
+      // Filter players who are not on free plan (monthly or yearly)
+      const nonFreePlayers = players.filter(
+        (player: any) => player.plan && player.plan !== "free"
+      );
+      setPremiumPlayers(nonFreePlayers);
+    } catch (err) {
+      setAllPlayers([]);
+      setPremiumPlayers([]);
+    }
+  };
 
   const { scrollYProgress } = useScroll();
   // Make scale and marginTop jump instantly as soon as scrolling starts
@@ -32,6 +53,12 @@ const home = () => {
 
   const marginTop = useTransform(scrollYProgress, [0, 0.01], [0, 40]);
   const borderRadius = useTransform(scrollYProgress, [0, 0.01], ["0", "40px"]);
+
+  // Fetch players on component mount
+  useEffect(() => {
+    fetchPlayers();
+    console.log(premiumPlayers);
+  }, []);
 
   return (
     <>
@@ -258,54 +285,59 @@ const home = () => {
         </div>
       </section>
 
-      <section className="my-20  mx-auto">
-        <div className="w-full md:w-[30%] !text-center mx-auto px-2">
-          <div className="bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4">
-            <p className="!text-[#0095FF] font-semibold">FEATURED PLAYERS</p>
+      {premiumPlayers.length > 0 && (
+        <section className="my-20  mx-auto">
+          <div className="w-full md:w-[30%] !text-center mx-auto px-2">
+            <div className="bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4">
+              <p className="!text-[#0095FF] font-semibold">FEATURED PLAYERS</p>
+            </div>
+            <h2 className="text-2xl md:text-3xl font-bold">
+              Rising Stars You <br /> Shouldn’t Miss
+            </h2>
+            <p className="text-[#6C6C6C] text-sm">
+              From explosive strikers to rock-solid defenders, meet the top
+              talents making waves on Playeer. Each profile is packed with
+              performance videos, match data, and more.
+            </p>
           </div>
-          <h2 className="text-2xl md:text-3xl font-bold">
-            Rising Stars You <br /> Shouldn’t Miss
-          </h2>
-          <p className="text-[#6C6C6C] text-sm">
-            From explosive strikers to rock-solid defenders, meet the top
-            talents making waves on Playeer. Each profile is packed with
-            performance videos, match data, and more.
-          </p>
-        </div>
 
-        <div className="my-20  mx-auto">
-          <Swiper
-            spaceBetween={20}
-            slidesPerView={1.5}
-            centeredSlides
-            loop
-            onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-            onSwiper={(swiper) => setActiveIndex(swiper.realIndex)}
-            breakpoints={{
-              640: { slidesPerView: 2.5 },
-              1024: { slidesPerView: 5 },
-            }}
-            modules={[Autoplay]}
-            autoplay={{ delay: 2500, disableOnInteraction: false }}
-          >
-            {[...Array(10)].map((_, i) => (
-              <SwiperSlide key={i}>
-                <div
-                  className={`transition-transform duration-500 ${
-                    activeIndex === i ? "scale-100" : "scale-80"
-                  }`}
-                >
-                  <img
-                    src="/images/player.png"
-                    alt=""
-                    className="rounded-lg w-full"
-                  />
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      </section>
+          <div className="my-20  mx-auto">
+            <Swiper
+              spaceBetween={20}
+              slidesPerView={1.5}
+              centeredSlides
+              loop
+              onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+              onSwiper={(swiper) => setActiveIndex(swiper.realIndex)}
+              breakpoints={{
+                640: { slidesPerView: 2.5 },
+                1024: { slidesPerView: 5 },
+              }}
+              modules={[Autoplay]}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+            >
+              {premiumPlayers.map((player: any, i) => (
+                <SwiperSlide key={i}>
+                  <div
+                    className={`transition-transform duration-500 ${
+                      activeIndex === i ? "scale-100" : "scale-80"
+                    }`}
+                  >
+                    <img
+                      src={"/images/player.png"}
+                      alt=""
+                      className="rounded-lg w-full"
+                    />
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </section>
+      )}
 
       <section className="bg-[#F4F4F4] rounded-3xl max-w-7xl mx-auto p-4 md:p-6">
         <div className="mx-auto lg:p-10">
