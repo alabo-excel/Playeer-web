@@ -11,6 +11,7 @@ import { positions } from "@/utils/positions";
 import Select from "react-select";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/store/user";
+import Link from "next/link";
 
 const OnboardingForm = () => {
   const user = useAtomValue(userAtom);
@@ -36,7 +37,7 @@ const OnboardingForm = () => {
   });
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
-  const [fieldErrors, setFieldErrors] = useState<{[key: string]: string}>({});
+  const [fieldErrors, setFieldErrors] = useState<{ [key: string]: string }>({});
   const router = useRouter();
   const [photo, setPhoto] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
@@ -72,12 +73,12 @@ const OnboardingForm = () => {
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
-    
+
     // Clear field error when user starts typing
     if (fieldErrors[name]) {
       setFieldErrors((prev) => ({ ...prev, [name]: "" }));
     }
-    
+
     if (name === "country") {
       setForm((prev) => ({ ...prev, city: "" }));
       const countryObj = countries.find((c) => c.isoCode === value);
@@ -125,8 +126,8 @@ const OnboardingForm = () => {
 
   // Validation function for current step
   const validateCurrentStep = (): boolean => {
-    const errors: {[key: string]: string} = {};
-    
+    const errors: { [key: string]: string } = {};
+
     if (step === 1) {
       if (!form.dateOfBirth) errors.dateOfBirth = "Date of Birth is required";
       if (!form.country) errors.country = "Country is required";
@@ -136,14 +137,16 @@ const OnboardingForm = () => {
       if (!form.height.trim()) errors.height = "Height is required";
       if (!form.weight.trim()) errors.weight = "Weight is required";
     }
-    
+
     if (step === 2) {
-      if (!form.currentTeam.trim()) errors.currentTeam = "Current Team/Academy is required";
-      if (!form.yearsOfExperience.trim()) errors.yearsOfExperience = "Years of Experience is required";
+      if (!form.currentTeam.trim())
+        errors.currentTeam = "Current Team/Academy is required";
+      if (!form.yearsOfExperience.trim())
+        errors.yearsOfExperience = "Years of Experience is required";
       if (!form.mainPosition) errors.mainPosition = "Main Position is required";
       if (!form.dominantFoot) errors.dominantFoot = "Dominant Foot is required";
     }
-    
+
     setFieldErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -194,6 +197,7 @@ const OnboardingForm = () => {
         },
         onClose: () => {
           console.log("Payment popup closed");
+          setPlan("");
         },
       });
     } catch (error) {
@@ -215,7 +219,9 @@ const OnboardingForm = () => {
     <>
       {/* <HeaderNav scroll={true} /> */}
       <header className="px-8 py-4">
-        <img className="w-32" src="/images/logo-colored.png" alt="" />
+        <Link href="/auth/login">
+          <img className="w-32" src="/images/logo-colored.png" alt="" />
+        </Link>
       </header>
       <section
         className={`${
@@ -291,11 +297,15 @@ const OnboardingForm = () => {
                   onChange={handleChange}
                   type="date"
                   className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                    fieldErrors.dateOfBirth ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    fieldErrors.dateOfBirth
+                      ? "bg-red-50 border border-red-300"
+                      : "bg-[#F4F4F4]"
                   }`}
                 />
                 {fieldErrors.dateOfBirth && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.dateOfBirth}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.dateOfBirth}
+                  </p>
                 )}
               </div>
               <div>
@@ -307,8 +317,12 @@ const OnboardingForm = () => {
                   styles={{
                     control: (base) => ({
                       ...base,
-                      border: fieldErrors.country ? "1px solid #DC2626" : "none",
-                      backgroundColor: fieldErrors.country ? "#FEF2F2" : "#F4F4F4",
+                      border: fieldErrors.country
+                        ? "1px solid #DC2626"
+                        : "none",
+                      backgroundColor: fieldErrors.country
+                        ? "#FEF2F2"
+                        : "#F4F4F4",
                     }),
                   }}
                   className="w-full p-1 placeholder:text-[#B6B6B6] rounded-md bg-[#F4F4F4]"
@@ -326,7 +340,9 @@ const OnboardingForm = () => {
                   }
                 />
                 {fieldErrors.country && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.country}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.country}
+                  </p>
                 )}
               </div>
               <div>
@@ -357,7 +373,9 @@ const OnboardingForm = () => {
                   isDisabled={!form.country}
                 />
                 {fieldErrors.city && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.city}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.city}
+                  </p>
                 )}
               </div>
 
@@ -366,7 +384,9 @@ const OnboardingForm = () => {
                 <select
                   name="gender"
                   className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                    fieldErrors.gender ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    fieldErrors.gender
+                      ? "bg-red-50 border border-red-300"
+                      : "bg-[#F4F4F4]"
                   }`}
                   value={form.gender}
                   onChange={handleChange}
@@ -381,7 +401,9 @@ const OnboardingForm = () => {
                   ))}
                 </select>
                 {fieldErrors.gender && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.gender}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.gender}
+                  </p>
                 )}
               </div>
               <div className="col-span-2">
@@ -393,11 +415,15 @@ const OnboardingForm = () => {
                   type="text"
                   placeholder="Enter your address"
                   className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                    fieldErrors.address ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    fieldErrors.address
+                      ? "bg-red-50 border border-red-300"
+                      : "bg-[#F4F4F4]"
                   }`}
                 />
                 {fieldErrors.address && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.address}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.address}
+                  </p>
                 )}
               </div>
               <div>
@@ -410,11 +436,15 @@ const OnboardingForm = () => {
                   type="text"
                   placeholder="e.g., 178 cm"
                   className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                    fieldErrors.height ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    fieldErrors.height
+                      ? "bg-red-50 border border-red-300"
+                      : "bg-[#F4F4F4]"
                   }`}
                 />
                 {fieldErrors.height && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.height}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.height}
+                  </p>
                 )}
               </div>
               <div>
@@ -427,11 +457,15 @@ const OnboardingForm = () => {
                   type="text"
                   placeholder="e.g., 70 kg"
                   className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                    fieldErrors.weight ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    fieldErrors.weight
+                      ? "bg-red-50 border border-red-300"
+                      : "bg-[#F4F4F4]"
                   }`}
                 />
                 {fieldErrors.weight && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.weight}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.weight}
+                  </p>
                 )}
               </div>
             </div>
@@ -458,11 +492,15 @@ const OnboardingForm = () => {
                   type="text"
                   placeholder="e.g., Future Stars Academy"
                   className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                    fieldErrors.currentTeam ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    fieldErrors.currentTeam
+                      ? "bg-red-50 border border-red-300"
+                      : "bg-[#F4F4F4]"
                   }`}
                 />
                 {fieldErrors.currentTeam && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.currentTeam}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.currentTeam}
+                  </p>
                 )}
               </div>
 
@@ -491,11 +529,15 @@ const OnboardingForm = () => {
                   type="text"
                   placeholder="e.g., 3 years"
                   className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                    fieldErrors.yearsOfExperience ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    fieldErrors.yearsOfExperience
+                      ? "bg-red-50 border border-red-300"
+                      : "bg-[#F4F4F4]"
                   }`}
                 />
                 {fieldErrors.yearsOfExperience && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.yearsOfExperience}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.yearsOfExperience}
+                  </p>
                 )}
               </div>
 
@@ -511,7 +553,9 @@ const OnboardingForm = () => {
                   value={form.mainPosition}
                   onChange={handleChange}
                   className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                    fieldErrors.mainPosition ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                    fieldErrors.mainPosition
+                      ? "bg-red-50 border border-red-300"
+                      : "bg-[#F4F4F4]"
                   }`}
                 >
                   <option className="hidden" value="">
@@ -524,7 +568,9 @@ const OnboardingForm = () => {
                   ))}{" "}
                 </select>
                 {fieldErrors.mainPosition && (
-                  <p className="text-red-500 text-xs mt-1">{fieldErrors.mainPosition}</p>
+                  <p className="text-red-500 text-xs mt-1">
+                    {fieldErrors.mainPosition}
+                  </p>
                 )}
               </div>
               <div className="lg:col-span-2 grid lg:grid-cols-3 gap-6">
@@ -556,7 +602,9 @@ const OnboardingForm = () => {
                   <select
                     name="dominantFoot"
                     className={`p-3 placeholder:text-[#B6B6B6] rounded-md w-full ${
-                      fieldErrors.dominantFoot ? "bg-red-50 border border-red-300" : "bg-[#F4F4F4]"
+                      fieldErrors.dominantFoot
+                        ? "bg-red-50 border border-red-300"
+                        : "bg-[#F4F4F4]"
                     }`}
                     value={form.dominantFoot}
                     onChange={handleChange}
@@ -571,7 +619,9 @@ const OnboardingForm = () => {
                     ))}
                   </select>
                   {fieldErrors.dominantFoot && (
-                    <p className="text-red-500 text-xs mt-1">{fieldErrors.dominantFoot}</p>
+                    <p className="text-red-500 text-xs mt-1">
+                      {fieldErrors.dominantFoot}
+                    </p>
                   )}
                 </div>
                 <div>
