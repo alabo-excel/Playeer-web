@@ -261,13 +261,18 @@ const players = () => {
                     <div className="absolute right-0 left-0 bottom-0 p-4 z-10 ">
                       <div className="flex justify-between my-2 text-white">
                         <p>{player.fullName}</p>
-                        <img
-                          src={`https://flagcdn.com/24x18/${player.country.toLowerCase()}.png`}
-                          // alt={countryObj.name + " flag"}
-                          className="inline-block ml-2 mr-1 rounded-sm"
-                          width={24}
-                          height={18}
-                        />
+                        {player.country && (
+                          <img
+                            src={`https://flagcdn.com/24x18/${player.country.toLowerCase()}.png`}
+                            alt={`${player.country} flag`}
+                            className="inline-block ml-2 mr-1 rounded-sm"
+                            width={24}
+                            height={18}
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                            }}
+                          />
+                        )}
                       </div>
 
                       <p className="text-xs text-[#D3D3D3]">
