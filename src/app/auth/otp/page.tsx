@@ -20,8 +20,11 @@ const OtpContent = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      api.post('/auth/otp-verify', { email, otp }).then((res) => {
-        window.location.href = "/auth/login";
+      api.post("/auth/otp-verify", { email, otp }).then((res) => {
+        if (res.data?.token) {
+          localStorage.setItem("token", res.data.token);
+        }
+        window.location.href = "/auth/onboarding";
       });
     } catch (err) {
       console.log(err);

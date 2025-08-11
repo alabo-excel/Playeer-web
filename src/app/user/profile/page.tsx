@@ -148,7 +148,9 @@ const profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Gender</p>
-                    <p className="font-bold capitalize text-base">{user?.gender}</p>
+                    <p className="font-bold capitalize text-base">
+                      {user?.gender}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Nationality</p>
@@ -158,9 +160,13 @@ const profile = () => {
                     <p className="text-sm text-[#6C6C6C] mb-2">City</p>
                     <p className="font-bold text-base">{user?.city}</p>
                   </div>
-                  <div>
+                  <div className="col-span-2">
                     <p className="text-sm text-[#6C6C6C] mb-2">Contact Email</p>
                     <p className="font-bold text-base">{user?.email}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-[#6C6C6C] mb-2">Phone Number</p>
+                    <p className="font-bold text-base">{user?.phone}</p>
                   </div>
                 </div>
               </div>
@@ -186,7 +192,9 @@ const profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Dominant Foot</p>
-                    <p className="font-bold capitalize text-base">{user?.dominantFoot}</p>
+                    <p className="font-bold capitalize text-base">
+                      {user?.dominantFoot}
+                    </p>
                   </div>
                   <div>
                     <p className="text-sm text-[#6C6C6C] mb-2">Jersey Number</p>
@@ -236,7 +244,8 @@ const profile = () => {
                             {single.teamName}
                           </p>
                           <span className="text-[#232323] text-sm whitespace-nowrap">
-                            ({formatDate(single.from)} – {formatDate(single.to)})
+                            ({formatDate(single.from)} – {formatDate(single.to)}
+                            )
                           </span>
                           <button
                             type="button"

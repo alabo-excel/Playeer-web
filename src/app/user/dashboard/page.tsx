@@ -4,7 +4,7 @@ import AdminLayout from "@/components/layouts/AdminLayout";
 import Modal from "@/components/Modal";
 import UserComp from "@/components/UserComp";
 import { userAtom } from "@/store/user";
-import { useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { BellRing, SquarePlay, TrendingDown, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
@@ -14,7 +14,7 @@ import { Spin } from "antd";
 import { underscoreToSpace } from "@/utils/formatDate";
 
 const dashboard = () => {
-  const user = useAtomValue(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [showModal, setShowModal] = useState(user?.welcome);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -24,17 +24,17 @@ const dashboard = () => {
   const [activitiesError, setActivitiesError] = useState<string | null>(null);
 
   const handleCompleteProfile = async () => {
-    // Close modal immediately for better UX
     setShowModal(false);
     
-    // Navigate to profile page immediately
+    if (user) {
+      setUser({ ...user, welcome: false });
+    }
+    
     router.push("/user/profile");
     
-    // Make API request in background
     try {
       await api.patch("/users/dismiss-welcome");
     } catch (err) {
-      // Silently handle error or show a toast notification if needed
       console.error("Failed to dismiss welcome:", err);
     }
   };

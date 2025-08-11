@@ -157,7 +157,7 @@ const OnboardingForm = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent, userPlan:string) => {
     e.preventDefault();
     setApiError("");
     setLoading(true);
@@ -169,7 +169,7 @@ const OnboardingForm = () => {
       if (photo) {
         formData.append("profilePicture", photo);
       }
-      formData.append("plan", plan);
+      formData.append("plan", userPlan);
       await api.post("/onboarding/complete", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -198,7 +198,7 @@ const OnboardingForm = () => {
         ref: `ref-${Date.now()}`,
 
         onSuccess: (response: any) => {
-          handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+          handleSubmit({ preventDefault: () => {} } as React.FormEvent, plan);
           // console.log("Payment complete:", response);
         },
         onClose: () => {
@@ -215,7 +215,7 @@ const OnboardingForm = () => {
   const handlePlanSelect = (selectedPlan: string) => {
     setPlan(selectedPlan);
     if (selectedPlan === "free") {
-      handleSubmit({ preventDefault: () => {} } as React.FormEvent);
+      handleSubmit({ preventDefault: () => {} } as React.FormEvent, selectedPlan);
     } else {
       handlePay(selectedPlan);
     }

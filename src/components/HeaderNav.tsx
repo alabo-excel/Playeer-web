@@ -1,10 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X } from "lucide-react";
+import { LogOut, Menu, X } from "lucide-react";
 import Link from "next/link";
+import { userAtom } from "@/store/user";
+import api from "@/utils/api";
+import { useAtomValue } from "jotai";
+import router from "next/router";
 
 const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
+  const user = useAtomValue(userAtom);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  const handleLogout = async () => {
+    try {
+      await api.post("/auth/logout");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    } finally {
+      localStorage.removeItem("token");
+      router.push("/auth/login");
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -92,20 +109,37 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
             </div>
           </div>
 
-          <div className="hidden md:block">
-            <Link href={"/auth/signup"}>
+          {user ? (
+            <div className="w-44 flex justify-between my-auto">
+              <img
+                src={user?.profilePicture || "/images/player-2.jpg"}
+                className="w-8 my-auto h-8 rounded-full"
+                alt="User profile"
+              />
               <button
-                className={`bg-[#E5F4FF] mr-6 px-8 py-2 rounded-full text-[#0095FF] transition-colors`}
+                className="flex text-primary bg-[#E5F4FF] p-2 px-6 rounded-full justify-center"
+                onClick={handleLogout}
               >
-                Sign up
+                <p className="text-sm my-auto mr-2">Logout</p>
+                <LogOut size={15} className="my-auto" />
               </button>
-            </Link>
-            <Link href={"/auth/login"}>
-              <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white transition-colors">
-                Login
-              </button>
-            </Link>
-          </div>
+            </div>
+          ) : (
+            <div className="hidden md:block">
+              <Link href={"/auth/signup"}>
+                <button
+                  className={`bg-[#E5F4FF] mr-6 px-8 py-2 rounded-full text-[#0095FF] transition-colors`}
+                >
+                  Sign up
+                </button>
+              </Link>
+              <Link href={"/auth/login"}>
+                <button className="bg-[#0095FF] px-8 py-2 rounded-full text-white transition-colors">
+                  Login
+                </button>
+              </Link>
+            </div>
+          )}
 
           <div className="md:hidden">
             <button
