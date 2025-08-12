@@ -5,9 +5,11 @@ import { userAtom } from "@/store/user";
 import api from "@/utils/api";
 import { useAtomValue } from "jotai";
 import router from "next/router";
+import { useRouter } from "next/navigation";
 
 const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
   const user = useAtomValue(userAtom);
+  const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -18,7 +20,7 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
     } catch (error) {
       console.error("Logout failed:", error);
     } finally {
-      localStorage.removeItem("token");
+      localStorage.clear();
       router.push("/auth/login");
     }
   };
@@ -110,12 +112,14 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
           </div>
 
           {user ? (
-            <div className="w-44 flex justify-between my-auto">
-              <img
-                src={user?.profilePicture || "/images/player-2.jpg"}
-                className="w-8 my-auto h-8 rounded-full"
-                alt="User profile"
-              />
+            <div className="w-44 hidden md:flex justify-between my-auto">
+              <Link href={"/user/profile"}>
+                <img
+                  src={user?.profilePicture || "/images/player-2.jpg"}
+                  className="w-8 my-auto h-8 rounded-full"
+                  alt="User profile"
+                />
+              </Link>
               <button
                 className="flex text-primary bg-[#E5F4FF] p-2 px-6 rounded-full justify-center"
                 onClick={handleLogout}
@@ -232,23 +236,43 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
           >
             FAQ
           </Link> */}
-
-          <Link href={"/auth/signup"}>
-            <button
-              className="w-full text-[#0095FF] bg-[#E5F4FF] px-3 py-2 rounded-full mt-4 font-semibold transition-colors hover:bg-[#0095FF] hover:text-white border border-[#0095FF]"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Sign up
-            </button>
-          </Link>
-          <Link href={"/auth/login"}>
-            <button
-              className="w-full text-white bg-[#0095FF] px-3 py-2 rounded-full mt-2 font-semibold transition-colors hover:bg-[#0077cc]"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Login
-            </button>
-          </Link>
+          {user ? (
+            <div className="flex justify-between px-3 my-auto">
+              <Link href={"/user/profile"}>
+                <img
+                  src={user?.profilePicture || "/images/player-2.jpg"}
+                  className="w-8 my-auto h-8 rounded-full"
+                  alt="User profile"
+                />
+              </Link>
+              <button
+                className="flex text-primary bg-[#E5F4FF] p-2 px-6 rounded-full justify-center"
+                onClick={handleLogout}
+              >
+                <p className="text-sm my-auto mr-2">Logout</p>
+                <LogOut size={15} className="my-auto" />
+              </button>
+            </div>
+          ) : (
+            <>
+              <Link href={"/auth/signup"}>
+                <button
+                  className="w-full text-[#0095FF] bg-[#E5F4FF] px-3 py-2 rounded-full mt-4 font-semibold transition-colors hover:bg-[#0095FF] hover:text-white border border-[#0095FF]"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Sign up
+                </button>
+              </Link>
+              <Link href={"/auth/login"}>
+                <button
+                  className="w-full text-white bg-[#0095FF] px-3 py-2 rounded-full mt-2 font-semibold transition-colors hover:bg-[#0077cc]"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Login
+                </button>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
