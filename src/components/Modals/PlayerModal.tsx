@@ -53,303 +53,353 @@ const PlayerModal = ({
     fetchHighlights();
   }, [data]);
 
+  useEffect(() => {
+    if (open) {
+      // Save the current scroll position
+      const scrollY = window.scrollY;
+
+      // Apply styles to prevent scrolling and cover scrollbar
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+    } else {
+      // Restore scroll position and styles
+      const scrollY = document.body.style.top;
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+
+      // Restore scroll position
+      if (scrollY) {
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+    };
+  }, [open]);
+
   return (
     <>
       {open && (
         // <Modal width="100%" onClose={onClose}>
-        <div className="fixed inset-0 z-50 bg-white p-6 overflow-y-auto">
-          <HeaderNav scroll={true} />
+        <div
+          className="fixed inset-0 z-[9999] bg-white overflow-y-auto"
+          style={{ right: 0, left: 0, top: 0, bottom: 0 }}
+        >
+          <div className="p-6">
+            <HeaderNav scroll={true} />
 
-          <div className="max-w-7xl mx-auto">
-            <button onClick={onClose} className="flex gap-3 mt-20">
-              <ArrowLeft />
-              <span>Back</span>
-            </button>
-            <div className="lg:flex justify-between items-center my-4">
-              <h1 className="my-auto text-3xl">Profile Details</h1>
+            <div className="max-w-7xl mx-auto">
+              <button onClick={onClose} className="flex gap-3 mt-20">
+                <ArrowLeft />
+                <span>Back</span>
+              </button>
+              <div className="lg:flex justify-between items-center my-4">
+                <h1 className="my-auto text-3xl">Profile Details</h1>
 
-              <Link href={"#contact"} onClick={onClose}>
-                <button className="my-auto bg-[#0095FF] text-white py-3 rounded-full px-8">
-                  Contact Us
-                </button>
-              </Link>
-            </div>
-            <section className="bg-[#FCFCFC] md:flex gap-4 p-3 rounded-3xl">
-              <div className="md:w-[35%]">
-                <img
-                  src={data?.profilePicture || "/images/player-2.jpg"}
-                  className="rounded-xl md:h-90 w-full object-cover"
-                  alt=""
-                />
-                <p className="text-lg mt-2 font-bold">{data?.fullName}</p>
-                <p className="my-2 text-sm text-[#6C6C6C]">{positionLabel}</p>
-                <div className="bg-[#F4F4F4] p-3 text-center rounded-xl grid grid-cols-3 gap-2">
-                  <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                    <p className="text-[#6C6C6C] text-xs">Age</p>
-                    <p className="font-bold mt-3 text-lg">
-                      {data?.dateOfBirth && getAge(data.dateOfBirth)}
-                    </p>
-                  </div>
-                  <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                    <p className="text-[#6C6C6C] text-xs">Height</p>
-                    <p className="font-bold mt-3 text-lg">{data?.height}</p>
-                  </div>
-                  <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                    <p className="text-[#6C6C6C] text-xs">Weight</p>
-                    <p className="font-bold mt-3 text-lg">{data?.weight}</p>
-                  </div>
-                  <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                    <p className="text-[#6C6C6C] text-xs">Dominant Foot</p>
-                    <p className="font-bold mt-3 capitalize text-lg">
-                      {data?.dominantFoot}
-                    </p>
-                  </div>
-                  <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                    <p className="text-[#6C6C6C] text-xs">Jersey Number</p>
-                    <p className="font-bold mt-3 text-lg">
-                      {data?.jerseyNumber}
-                    </p>
-                  </div>
-                  <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                    <p className="text-[#6C6C6C] text-xs">Gender</p>
-                    <p className="font-bold mt-3 capitalize text-lg">
-                      {data?.gender}
-                    </p>
-                  </div>
-                </div>
+                <Link href={"#contact"} onClick={onClose}>
+                  <button className="my-auto bg-[#0095FF] text-white py-3 rounded-full px-8">
+                    Contact Us
+                  </button>
+                </Link>
               </div>
-              <div className="md:w-[65%]">
-                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <div className="flex justify-between">
-                    <p className="text-xl font-bold">Personal Information</p>
-                  </div>
-                  <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">Full Name</p>
-                      <p className="font-bold text-base">{data?.fullName}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">
-                        Date of Birth
-                      </p>
-                      <p className="font-bold text-base">
-                        {data?.dateOfBirth && formatDate(data?.dateOfBirth)}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">Age</p>
-                      <p className="font-bold text-base">
+              <section className="bg-[#FCFCFC] md:flex gap-4 p-3 rounded-3xl">
+                <div className="md:w-[35%]">
+                  <img
+                    src={data?.profilePicture || "/images/player-2.jpg"}
+                    className="rounded-xl md:h-90 w-full object-cover"
+                    alt=""
+                  />
+                  <p className="text-lg mt-2 font-bold">{data?.fullName}</p>
+                  <p className="my-2 text-sm text-[#6C6C6C]">{positionLabel}</p>
+                  <div className="bg-[#F4F4F4] p-3 text-center rounded-xl grid grid-cols-3 gap-2">
+                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
+                      <p className="text-[#6C6C6C] text-xs">Age</p>
+                      <p className="font-bold mt-3 text-lg">
                         {data?.dateOfBirth && getAge(data.dateOfBirth)}
                       </p>
                     </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">Gender</p>
-                      <p className="font-bold capitalize text-base">
+                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
+                      <p className="text-[#6C6C6C] text-xs">Height</p>
+                      <p className="font-bold mt-3 text-lg">{data?.height}</p>
+                    </div>
+                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
+                      <p className="text-[#6C6C6C] text-xs">Weight</p>
+                      <p className="font-bold mt-3 text-lg">{data?.weight}</p>
+                    </div>
+                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
+                      <p className="text-[#6C6C6C] text-xs">Dominant Foot</p>
+                      <p className="font-bold mt-3 capitalize text-lg">
+                        {data?.dominantFoot}
+                      </p>
+                    </div>
+                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
+                      <p className="text-[#6C6C6C] text-xs">Jersey Number</p>
+                      <p className="font-bold mt-3 text-lg">
+                        {data?.jerseyNumber}
+                      </p>
+                    </div>
+                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
+                      <p className="text-[#6C6C6C] text-xs">Gender</p>
+                      <p className="font-bold mt-3 capitalize text-lg">
                         {data?.gender}
                       </p>
                     </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">Nationality</p>
-                      <p className="font-bold text-base">{countryObj?.name}</p>
+                  </div>
+                </div>
+                <div className="md:w-[65%]">
+                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                    <div className="flex justify-between">
+                      <p className="text-xl font-bold">Personal Information</p>
                     </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">City</p>
-                      <p className="font-bold text-base">{data?.city}</p>
-                    </div>
-                    {/* <div>
+                    <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">Full Name</p>
+                        <p className="font-bold text-base">{data?.fullName}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">
+                          Date of Birth
+                        </p>
+                        <p className="font-bold text-base">
+                          {data?.dateOfBirth && formatDate(data?.dateOfBirth)}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">Age</p>
+                        <p className="font-bold text-base">
+                          {data?.dateOfBirth && getAge(data.dateOfBirth)}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">Gender</p>
+                        <p className="font-bold capitalize text-base">
+                          {data?.gender}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">
+                          Nationality
+                        </p>
+                        <p className="font-bold text-base">
+                          {countryObj?.name}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">City</p>
+                        <p className="font-bold text-base">{data?.city}</p>
+                      </div>
+                      {/* <div>
                       <p className="text-sm text-[#6C6C6C] mb-2">
                         Contact Email
                       </p>
                       <p className="font-bold text-base">{data?.email}</p>
                     </div> */}
+                    </div>
                   </div>
-                </div>
 
-                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <div className="flex justify-between">
-                    <p className="text-xl font-bold">Football Information</p>
-                    {/* <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
+                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                    <div className="flex justify-between">
+                      <p className="text-xl font-bold">Football Information</p>
+                      {/* <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
                   <SquarePen size={15} className="my-auto" />
                   <span className="text-sm my-auto">Edit</span>
                 </button> */}
-                  </div>
-                  <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">
-                        Main Position
-                      </p>
-                      <p className="font-bold text-bse">{positionLabel}</p>
                     </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">
-                        Secondary Position
-                      </p>
-                      <p className="font-bold text-base">{secondLabe}</p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">
-                        Dominant Foot
-                      </p>
-                      <p className="font-bold capitalize text-base">
-                        {data?.dominantFoot}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">
-                        Jersey Number
-                      </p>
-                      <p className="font-bold text-base">
-                        {data?.jerseyNumber}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">
-                        Years of Expreience
-                      </p>
-                      <p className="font-bold text-base">
-                        {data?.yearsOfExperience} years
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">
-                        Current Club/Academy
-                      </p>
-                      <p className="font-bold text-base">{data?.currentTeam}</p>
-                    </div>
-                  </div>
-                </div>
-                {data?.footballJourney && data?.footballJourney?.length > 0 && (
-                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                    <div className="flex justify-between">
+                    <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
                       <div>
-                        <p className="text-xl font-bold">Football Journey</p>
-                        <p className="text-sm text-[#6C6C6C]">
-                          List past clubs, academies, or events you’ve been part
-                          of.
+                        <p className="text-sm text-[#6C6C6C] mb-2">
+                          Main Position
+                        </p>
+                        <p className="font-bold text-bse">{positionLabel}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">
+                          Secondary Position
+                        </p>
+                        <p className="font-bold text-base">{secondLabe}</p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">
+                          Dominant Foot
+                        </p>
+                        <p className="font-bold capitalize text-base">
+                          {data?.dominantFoot}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">
+                          Jersey Number
+                        </p>
+                        <p className="font-bold text-base">
+                          {data?.jerseyNumber}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">
+                          Years of Expreience
+                        </p>
+                        <p className="font-bold text-base">
+                          {data?.yearsOfExperience} years
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-[#6C6C6C] mb-2">
+                          Current Club/Academy
+                        </p>
+                        <p className="font-bold text-base">
+                          {data?.currentTeam}
                         </p>
                       </div>
                     </div>
-                    <div>
-                      {data.footballJourney.map(
-                        (single: FootballJourneyEntry) => (
-                          <div className="my-3" key={single._id}>
-                            <div className="flex gap-4">
-                              <p className="font-bold text-base">
-                                {single.teamName}
-                              </p>
-                              <span className="text-[#232323] text-sm">
-                                ({formatDate(single.from)} –{" "}
-                                {formatDate(single.to)})
-                              </span>
-                            </div>
+                  </div>
+                  {data?.footballJourney &&
+                    data?.footballJourney?.length > 0 && (
+                      <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                        <div className="flex justify-between">
+                          <div>
+                            <p className="text-xl font-bold">
+                              Football Journey
+                            </p>
                             <p className="text-sm text-[#6C6C6C]">
-                              {
-                                userPosition.find(
-                                  (pos: any) => pos.value === single?.position
-                                )?.label
-                              }
+                              List past clubs, academies, or events you’ve been
+                              part of.
                             </p>
                           </div>
-                        )
-                      )}
+                        </div>
+                        <div>
+                          {data.footballJourney.map(
+                            (single: FootballJourneyEntry) => (
+                              <div className="my-3" key={single._id}>
+                                <div className="flex gap-4">
+                                  <p className="font-bold text-base">
+                                    {single.teamName}
+                                  </p>
+                                  <span className="text-[#232323] text-sm">
+                                    ({formatDate(single.from)} –{" "}
+                                    {formatDate(single.to)})
+                                  </span>
+                                </div>
+                                <p className="text-sm text-[#6C6C6C]">
+                                  {
+                                    userPosition.find(
+                                      (pos: any) =>
+                                        pos.value === single?.position
+                                    )?.label
+                                  }
+                                </p>
+                              </div>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    )}
+                </div>
+              </section>
+
+              {data?.plan !== "free" && (
+                <>
+                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                    <p className="text-xl font-bold">Achievements</p>
+
+                    <div className="mt-4">
+                      <Swiper
+                        modules={[Navigation]}
+                        navigation
+                        spaceBetween={10}
+                        slidesPerView={1.2}
+                        breakpoints={{
+                          640: {
+                            slidesPerView: 2.2,
+                            spaceBetween: 10,
+                          },
+                          768: {
+                            slidesPerView: 3.2,
+                            spaceBetween: 10,
+                          },
+                          1024: {
+                            slidesPerView: 4.4,
+                            spaceBetween: 10,
+                          },
+                        }}
+                      >
+                        {data?.achievements &&
+                          data?.achievements.map((achievement: Achievement) => (
+                            <SwiperSlide key={achievement._id}>
+                              <Card
+                                data={achievement}
+                                hide={true}
+                                type={"achievement"}
+                              />
+                            </SwiperSlide>
+                          ))}
+                      </Swiper>
                     </div>
                   </div>
-                )}
-              </div>
-            </section>
 
-            {data?.plan !== "free" && (
-              <>
+                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                    <p className="text-xl font-bold">Certificates</p>
+
+                    <div className="mt-4">
+                      <Swiper
+                        modules={[Navigation]}
+                        navigation
+                        spaceBetween={10}
+                        slidesPerView={1.2}
+                        breakpoints={{
+                          640: {
+                            slidesPerView: 2.2,
+                            spaceBetween: 10,
+                          },
+                          768: {
+                            slidesPerView: 3.2,
+                            spaceBetween: 10,
+                          },
+                          1024: {
+                            slidesPerView: 4.4,
+                            spaceBetween: 10,
+                          },
+                        }}
+                      >
+                        {data?.certificates &&
+                          data?.certificates.map(
+                            (certificates: Certificate) => (
+                              <SwiperSlide key={certificates._id}>
+                                <Card data={certificates} hide={true} />
+                              </SwiperSlide>
+                            )
+                          )}
+                      </Swiper>
+                    </div>
+                  </div>
+                </>
+              )}
+
+              {highlights.length > 0 && (
                 <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <p className="text-xl font-bold">Achievements</p>
+                  <p className="text-xl font-bold">Highlight</p>
 
-                  <div className="mt-4">
-                    <Swiper
-                      modules={[Navigation]}
-                      navigation
-                      spaceBetween={10}
-                      slidesPerView={1.2}
-                      breakpoints={{
-                        640: {
-                          slidesPerView: 2.2,
-                          spaceBetween: 10,
-                        },
-                        768: {
-                          slidesPerView: 3.2,
-                          spaceBetween: 10,
-                        },
-                        1024: {
-                          slidesPerView: 4.4,
-                          spaceBetween: 10,
-                        },
-                      }}
-                    >
-                      {data?.achievements &&
-                        data?.achievements.map((achievement: Achievement) => (
-                          <SwiperSlide key={achievement._id}>
-                            <Card
-                              data={achievement}
-                              hide={true}
-                              type={"achievement"}
-                            />
-                          </SwiperSlide>
-                        ))}
-                    </Swiper>
+                  <div className="mt-4 grid md:grid-cols-4 gap-4">
+                    {highlights.map((highlight: any) => (
+                      <Card
+                        key={highlight._id}
+                        data={highlight}
+                        hide={true}
+                        type={"video"}
+                      />
+                    ))}
                   </div>
                 </div>
-
-                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <p className="text-xl font-bold">Certificates</p>
-
-                  <div className="mt-4">
-                    <Swiper
-                      modules={[Navigation]}
-                      navigation
-                      spaceBetween={10}
-                      slidesPerView={1.2}
-                      breakpoints={{
-                        640: {
-                          slidesPerView: 2.2,
-                          spaceBetween: 10,
-                        },
-                        768: {
-                          slidesPerView: 3.2,
-                          spaceBetween: 10,
-                        },
-                        1024: {
-                          slidesPerView: 4.4,
-                          spaceBetween: 10,
-                        },
-                      }}
-                    >
-                      {data?.certificates &&
-                        data?.certificates.map((certificates: Certificate) => (
-                          <SwiperSlide key={certificates._id}>
-                            <Card data={certificates} hide={true} />
-                          </SwiperSlide>
-                        ))}
-                    </Swiper>
-                  </div>
-                </div>
-              </>
-            )}
-
-            {highlights.length > 0 && (
-              <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                <p className="text-xl font-bold">Highlight</p>
-
-                <div className="mt-4 grid md:grid-cols-4 gap-4">
-                  {highlights.map((highlight: any) => (
-                    <Card
-                      key={highlight._id}
-                      data={highlight}
-                      hide={true}
-                      type={"video"}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         </div>
         // </Modal>
