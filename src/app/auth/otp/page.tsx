@@ -4,11 +4,15 @@ import AuthLayout from "@/components/layouts/AuthLayout";
 import api from "@/utils/api";
 import { Spin } from "antd";
 import React, { Suspense, useEffect, useState } from "react";
+import { useSetAtom } from "jotai";
+import { userAtom } from "@/store/user";
 
 const OtpContent = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [otp, setOtp] = useState<string>("");
   const [email, setEmail] = useState<string>("");
+  const setUser = useSetAtom(userAtom);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
@@ -23,6 +27,7 @@ const OtpContent = () => {
       api.post("/auth/otp-verify", { email, otp }).then((res) => {
         if (res.data?.token) {
           localStorage.setItem("token", res.data.token);
+          setUser(res.data.data);
         }
         window.location.href = "/auth/onboarding";
       });
