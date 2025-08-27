@@ -22,6 +22,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import api from "@/utils/api";
 import { useEffect } from "react";
+import { positions } from "@/utils/positions";
 
 const home = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -59,6 +60,8 @@ const home = () => {
     fetchPlayers();
     console.log(premiumPlayers);
   }, []);
+
+  const userPosition = positions;
 
   return (
     <>
@@ -304,20 +307,32 @@ const home = () => {
           <div className="my-20  mx-auto">
             <Swiper
               spaceBetween={20}
-              slidesPerView={1.5}
-              centeredSlides
-              loop
+              slidesPerView={
+                premiumPlayers.length < 5 ? premiumPlayers.length : 1.5
+              }
+              breakpoints={
+                premiumPlayers.length < 5
+                  ? {} // no responsive behavior when less than 5
+                  : {
+                      640: { slidesPerView: 2.5 },
+                      1024: { slidesPerView: 5 },
+                    }
+              }
+              // centeredSlides
+              loop={premiumPlayers.length >= 5} // only loop if 5 or more
+              centeredSlides={premiumPlayers.length < 5} // center if less than 5
               onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
               onSwiper={(swiper) => setActiveIndex(swiper.realIndex)}
-              breakpoints={{
-                640: { slidesPerView: 2.5 },
-                1024: { slidesPerView: 5 },
-              }}
+              // breakpoints={{
+              //   640: { slidesPerView: 2.5 },
+              //   1024: { slidesPerView: 5 },
+              // }}
               modules={[Autoplay]}
-              autoplay={{
-                delay: 2500,
-                disableOnInteraction: false,
-              }}
+              autoplay={
+                premiumPlayers.length >= 5
+                  ? { delay: 2500, disableOnInteraction: false }
+                  : false // disable autoplay when less than 5
+              }
             >
               {premiumPlayers.map((player: any, i) => (
                 <SwiperSlide key={i}>
@@ -326,11 +341,60 @@ const home = () => {
                       activeIndex === i ? "scale-100" : "scale-80"
                     }`}
                   >
-                    <img
+                    <div key={player._id} className="relative cursor-pointer">
+                      <img
+                        src={player.profilePicture || "/images/player-2.jpg"}
+                        className="object-cover h-80 w-full rounded-xl"
+                        alt=""
+                      />
+                      {/* <div className="blur bg-[#000310] opacity-50 absolute right-0 left-0 rounded-b-xl bottom-0 h-20"></div> */}
+                      <div className="absolute right-0 left-0 bottom-0 p-4 z-10 ">
+                        <div className="flex justify-between my-2 text-white">
+                          <div className="flex items-center gap-1">
+                            <p>{player.fullName}</p>
+                            {player.plan && player.plan !== "free" && (
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="#0095FF"
+                                className="w-4 h-4"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            )}
+                          </div>
+                          {player.country && (
+                            <img
+                              src={`https://flagcdn.com/24x18/${player.country.toLowerCase()}.png`}
+                              alt={`${player.country} flag`}
+                              className="inline-block ml-2 mr-1 rounded-sm"
+                              width={24}
+                              height={18}
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                          )}
+                        </div>
+
+                        <p className="text-xs text-[#D3D3D3]">
+                          {
+                            userPosition.find(
+                              (pos: any) => pos.value === player?.mainPosition
+                            )?.label
+                          }
+                        </p>
+                      </div>
+                    </div>
+                    {/* <img
                       src={"/images/player.png"}
                       alt=""
                       className="rounded-lg w-full"
-                    />
+                    /> */}
                   </div>
                 </SwiperSlide>
               ))}
