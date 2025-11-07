@@ -77,19 +77,19 @@ const signup = () => {
             Showcase your skills and get discovered worldwide.
           </p>
 
-          {/* <div className="grid grid-cols-2 gap-4 mb-4">
-            <button className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-full">
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <button type="button" className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-full">
               <img className="mr-2" src="/images/icons/google.png" alt="" />
               <span className="my-auto">Google</span>
             </button>
-            <button className="flex p-3 border justify-center text-[#202426] border-gray rounded-full w-full">
+            <button type="button" className="flex p-3 border justify-center text-[#202426] border-gray rounded-full w-full">
               <img src="/images/icons/apple.png" className="mr-2" alt="" />
               <span className="my-auto">Apple</span>
             </button>
           </div>
           <div className="border-b border-gray mb-6">
             <p className="text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto">or</p>
-          </div> */}
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div className="">
               <label htmlFor="fullName" className="mb-2">
