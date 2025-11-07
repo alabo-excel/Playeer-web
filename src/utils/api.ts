@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://playeer-api-r433p.ondigitalocean.app/api",
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://playeer-api.onrender.com/api",
   // You can add default headers here if needed
 });
 

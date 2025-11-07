@@ -3,7 +3,7 @@ import { Eye, Play } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import Modal from "./Modal";
 import { Dropdown, Menu } from "antd";
-import { MoreOutlined } from "@ant-design/icons";
+// import { MoreOutlined } from "@ant-design/icons";
 import NewHighlights from "./Modals/Highlights";
 import api from "@/utils/api";
 import AchievementModal from "./Modals/Achievement";
@@ -138,7 +138,7 @@ const Card: React.FC<CardProps> = ({
                 trigger={["click"]}
               >
                 <button className="p-2 hover:bg-gray-100 rounded-full">
-                  <MoreOutlined style={{ fontSize: 20 }} />
+                  {/* <MoreOutlined style={{ fontSize: 20 }} /> */}
                 </button>
               </Dropdown>
             </div>

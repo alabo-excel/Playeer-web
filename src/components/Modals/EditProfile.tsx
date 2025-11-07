@@ -7,6 +7,7 @@ import api from "@/utils/api";
 import { Country, City, State } from "country-state-city";
 import { positions } from "@/utils/positions";
 import Select from "react-select";
+import { div } from "framer-motion/client";
 
 const genderOptions = [
   { label: "Male", value: "male" },
@@ -145,27 +146,21 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
 
   const validate = () => {
     const newErrors: { [key: string]: string } = {};
-    if (!form.fullName.trim()) newErrors.fullName = "Full name is required";
+    // if (!form.fullName.trim()) newErrors.fullName = "Full name is required";
     if (!form.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
     if (!form.country) newErrors.country = "Country is required";
-    if (!form.city) newErrors.city = "City is required";
-    if (!form.address) newErrors.address = "Address is required";
+    // if (!form.city) newErrors.city = "City is required";
+    // if (!form.address) newErrors.address = "Address is required";
     if (!form.gender) newErrors.gender = "Gender is required";
     if (!form.height) newErrors.height = "Height is required";
     if (!form.weight) newErrors.weight = "Weight is required";
-    if (!form.currentTeam) newErrors.currentTeam = "Current team is required";
-    if (!form.previousClub)
-      newErrors.previousClub = "Previous club is required";
-    if (!form.yearsOfExperience)
-      newErrors.yearsOfExperience = "Years of experience is required";
-    if (!form.mainPosition)
-      newErrors.mainPosition = "Main position is required";
-    if (!form.secondaryPosition)
-      newErrors.secondaryPosition = "Secondary position is required";
-    if (!form.dominantFoot)
-      newErrors.dominantFoot = "Dominant foot is required";
-    if (!form.jerseyNumber)
-      newErrors.jerseyNumber = "Jersey number is required";
+    // if (!form.currentTeam) newErrors.currentTeam = "Current team is required";
+    // if (!form.previousClub) newErrors.previousClub = "Previous club is required";
+    // if (!form.yearsOfExperience) newErrors.yearsOfExperience = "Years of experience is required";
+    if (!form.mainPosition) newErrors.mainPosition = "Main position is required";
+    if (!form.secondaryPosition) newErrors.secondaryPosition = "Secondary position is required";
+    if (!form.dominantFoot) newErrors.dominantFoot = "Dominant foot is required";
+    // if (!form.jerseyNumber) newErrors.jerseyNumber = "Jersey number is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -201,9 +196,10 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
 
   return (
     <Modal onClose={onClose}>
-      <form onSubmit={handleSubmit}>
-        <p className="text-lg font-bold mb-4">Edit Profile</p>
-        <div className="mb-4 flex flex-col items-center">
+      <form onSubmit={handleSubmit} className="">
+        <p className="text-lg font-bold">Help us personalize your experience</p>
+        <p>Showcase your skills and get discovered worldwide.</p>
+        <div className="my-4 flex gap-4 items-center">
           <div className="w-32 h-32 rounded-full border border-primary bg-[#E5F4FF] overflow-hidden flex items-center justify-center">
             {form.profilePicturePreview ? (
               <img
@@ -211,7 +207,16 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
                 alt="Preview"
                 className="object-cover w-full h-full"
               />
-            ) : null}
+            ) : (
+              <div className="border border-[#BFBFBF] bg-[#F4F4F4] w-full h-full flex items-center justify-center text-3xl font-bold text-[#BFBFBF]">
+                {(() => {
+                  const names = form.fullName.trim().split(" ");
+                  const first = names[0]?.[0] || "";
+                  const last = names.length > 1 ? names[names.length - 1][0] : "";
+                  return (first + last).toUpperCase();
+                })()}
+              </div>
+            )}
           </div>
           <input
             type="file"
@@ -221,16 +226,21 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             ref={fileInputRef}
             onChange={handleFileChange}
           />
-          <button
-            type="button"
-            className="py-2 px-4 mt-2 text-primary rounded-full bg-white border"
-            onClick={() => fileInputRef.current?.click()}
-          >
-            Change Photo
-          </button>
+          <div>
+            <p className="font-bold text-sm">Add Your Profile Photo</p>
+            <p className="text-xs">A clear photo helps scouts and fans recognize you.</p>
+            <button
+              type="button"
+              className="py-2 px-4 mt-2 text-primary rounded-full bg-white border"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              Upload Photo
+            </button>
+          </div>
+
         </div>
         <div className="grid lg:grid-cols-2 gap-4">
-          <div>
+          {/* <div>
             <label className="font-semibold mb-2 text-sm">Full Name</label>
             <input
               name="fullName"
@@ -241,10 +251,30 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             {errors.fullName && (
               <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
             )}
-          </div>
-
+          </div> */}
           <div>
-            <label className="font-semibold mb-2 text-sm">Date of Birth</label>
+            <label className=" mb-2 text-sm">Gender</label>
+            <select
+              name="gender"
+              className="p-3 rounded-md w-full bg-[#F4F4F4]"
+              value={form.gender}
+              onChange={handleChange}
+            >
+              <option className="hidden" value="">
+                Select gender
+              </option>
+              {genderOptions.map((g) => (
+                <option key={g.value} value={g.value}>
+                  {g.label}
+                </option>
+              ))}
+            </select>
+            {errors.gender && (
+              <p className="text-red-500 text-xs mt-1">{errors.gender}</p>
+            )}
+          </div>
+          <div>
+            <label className=" mb-2 text-sm">Date of Birth</label>
             <input
               name="dateOfBirth"
               type="date"
@@ -257,22 +287,8 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             )}
           </div>
           <div>
-            <label className="font-semibold mb-2 text-sm">Country</label>
-            {/* <select
-              name="country"
-              className="p-3 rounded-md w-full bg-[#F4F4F4]"
-              value={form.country}
-              onChange={handleChange}
-            >
-              <option className="hidden" value="">
-                Select your country
-              </option>
-              {countries.map((country) => (
-                <option key={country.isoCode} value={country.isoCode}>
-                  {country.name}
-                </option>
-              ))}
-            </select> */}
+            <label className=" mb-2 text-sm">Nationality</label>
+
             <Select
               name="country"
               isSearchable
@@ -302,24 +318,10 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
               <p className="text-red-500 text-xs mt-1">{errors.country}</p>
             )}
           </div>
-          <div>
+
+          {/* <div>
             <label className="font-semibold mb-2 text-sm">State</label>
-            {/* <select
-              name="city"
-              className="p-3 rounded-md w-full bg-[#F4F4F4]"
-              value={form.city}
-              onChange={handleChange}
-              disabled={!form.country}
-            >
-              <option className="hidden" value="">
-                Enter your city
-              </option>
-              {cities.map((city) => (
-                <option key={city.name} value={city.name}>
-                  {city.name}
-                </option>
-              ))}
-            </select> */}
+            
             <Select
               name="city"
               options={cityOptions}
@@ -346,8 +348,9 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             {errors.city && (
               <p className="text-red-500 text-xs mt-1">{errors.city}</p>
             )}
-          </div>
-          <div className="col-span-2">
+          </div> */}
+
+          {/* <div className="col-span-2">
             <label className="font-semibold mb-2 text-sm">Address</label>
             <input
               name="address"
@@ -360,55 +363,31 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             {errors.address && (
               <p className="text-red-500 text-xs mt-1">{errors.address}</p>
             )}
-          </div>
+          </div> */}
           <div>
-            <label className="font-semibold mb-2 text-sm">Gender</label>
+            <label className=" mb-2 text-sm">Primary Position</label>
             <select
-              name="gender"
+              name="mainPosition"
               className="p-3 rounded-md w-full bg-[#F4F4F4]"
-              value={form.gender}
+              value={form.mainPosition}
               onChange={handleChange}
             >
               <option className="hidden" value="">
-                Select gender
+                Select
               </option>
-              {genderOptions.map((g) => (
-                <option key={g.value} value={g.value}>
-                  {g.label}
+              {secondaryPositionOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
                 </option>
               ))}
             </select>
-            {errors.gender && (
-              <p className="text-red-500 text-xs mt-1">{errors.gender}</p>
+            {errors.mainPosition && (
+              <p className="text-red-500 text-xs mt-1">{errors.mainPosition}</p>
             )}
           </div>
-          <div>
-            <label className="font-semibold mb-2 text-sm">Height</label>
-            <input
-              name="height"
-              value={form.height}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="p-3 rounded-md w-full bg-[#F4F4F4]"
-            />
-            {errors.height && (
-              <p className="text-red-500 text-xs mt-1">{errors.height}</p>
-            )}
-          </div>
-          <div>
-            <label className="font-semibold mb-2 text-sm">Weight</label>
-            <input
-              name="weight"
-              value={form.weight}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className="p-3 rounded-md w-full bg-[#F4F4F4]"
-            />
-            {errors.weight && (
-              <p className="text-red-500 text-xs mt-1">{errors.weight}</p>
-            )}
-          </div>
-          <div>
+
+
+          {/* <div>
             <label className="font-semibold mb-2 text-sm">Current Team</label>
             <input
               name="currentTeam"
@@ -431,8 +410,8 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             {errors.previousClub && (
               <p className="text-red-500 text-xs mt-1">{errors.previousClub}</p>
             )}
-          </div>
-          <div>
+          </div> */}
+          {/* <div>
             <label className="font-semibold mb-2 text-sm">
               Years of Experience
             </label>
@@ -447,30 +426,10 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
                 {errors.yearsOfExperience}
               </p>
             )}
-          </div>
+          </div> */}
+
           <div>
-            <label className="font-semibold mb-2 text-sm">Main Position</label>
-            <select
-              name="mainPosition"
-              className="p-3 rounded-md w-full bg-[#F4F4F4]"
-              value={form.mainPosition}
-              onChange={handleChange}
-            >
-              <option className="hidden" value="">
-                Select
-              </option>
-              {secondaryPositionOptions.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            {errors.mainPosition && (
-              <p className="text-red-500 text-xs mt-1">{errors.mainPosition}</p>
-            )}
-          </div>
-          <div>
-            <label className="font-semibold mb-2 text-sm">
+            <label className=" mb-2 text-sm">
               Secondary Position
             </label>
             <select
@@ -495,7 +454,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             )}
           </div>
           <div>
-            <label className="font-semibold mb-2 text-sm">Dominant Foot</label>
+            <label className=" mb-2 text-sm">Prefered Foot</label>
             <select
               name="dominantFoot"
               className="p-3 rounded-md w-full bg-[#F4F4F4]"
@@ -515,7 +474,7 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
               <p className="text-red-500 text-xs mt-1">{errors.dominantFoot}</p>
             )}
           </div>
-          <div>
+          {/* <div>
             <label className="font-semibold mb-2 text-sm">Jersey Number</label>
             <input
               name="jerseyNumber"
@@ -526,26 +485,49 @@ const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
             {errors.jerseyNumber && (
               <p className="text-red-500 text-xs mt-1">{errors.jerseyNumber}</p>
             )}
+          </div> */}
+          <div>
+            <label className=" mb-2 text-sm">Height</label>
+            <input
+              name="height"
+              value={form.height}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="p-3 rounded-md w-full bg-[#F4F4F4]"
+            />
+            {errors.height && (
+              <p className="text-red-500 text-xs mt-1">{errors.height}</p>
+            )}
           </div>
+          <div>
+            <label className=" mb-2 text-sm">Weight</label>
+            <input
+              name="weight"
+              value={form.weight}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="p-3 rounded-md w-full bg-[#F4F4F4]"
+            />
+            {errors.weight && (
+              <p className="text-red-500 text-xs mt-1">{errors.weight}</p>
+            )}
+          </div>
+
         </div>
         {apiError && <p className="text-red-500 text-xs mt-2">{apiError}</p>}
         <button
           type="submit"
           className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
-            ${
-              loading
-                ? "border border-primary bg-[#E5F4FF] text-primary"
-                : "bg-primary text-[#FCFCFC]"
-            }
+            bg-primary text-[#FCFCFC]
+            
           `}
           disabled={loading}
         >
           {loading ? (
-            <span className="flex items-center justify-center">
-              <Spin size="small" style={{ color: "#0095FF" }} />
-            </span>
+            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+
           ) : (
-            <span className="my-auto">Save Changes</span>
+            <span className="my-auto">Save</span>
           )}
         </button>
       </form>
