@@ -55,7 +55,7 @@ const forgotPassword = () => {
         </p>
 
         <div className="my-4">
-          <label htmlFor="" className="font-bold mb-2">
+          <label htmlFor="" className=" mb-2">
             Email Address
           </label>
           <input

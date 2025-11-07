@@ -79,7 +79,7 @@ const LoginPage = () => {
           </p>
 
           <div className="my-4">
-            <label htmlFor="email" className="font-bold mb-2">
+            <label htmlFor="email" className="mb-2">
               Email Address
             </label>
             <input
@@ -95,7 +95,7 @@ const LoginPage = () => {
             )}
           </div>
           <div className="my-4">
-            <label htmlFor="password" className="font-bold mb-2">
+            <label htmlFor="password" className=" mb-2">
               Password
             </label>
             <div className="relative">

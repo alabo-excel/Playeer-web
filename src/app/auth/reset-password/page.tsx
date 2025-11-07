@@ -65,8 +65,8 @@ const ResetPasswordContent = () => {
         <p className="text-[#6C6C6C] my-3">Make sure you use a strong password and do not share with anyone.
         </p>
 
-        <div className="my-4">
-          <label htmlFor="" className="font-bold mb-2">
+        <div className="my-2">
+          <label htmlFor="" className=" mb-2">
             New Password
           </label>
           <div className="relative">
@@ -91,8 +91,8 @@ const ResetPasswordContent = () => {
             </button>
           </div>
         </div>
-        <div className="my-4">
-          <label htmlFor="" className="font-bold mb-2">
+        <div className="my-2">
+          <label htmlFor="" className=" mb-2">
             Confirm Password
           </label>
           <div className="relative">
