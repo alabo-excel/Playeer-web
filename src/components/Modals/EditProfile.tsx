@@ -21,7 +21,7 @@ const dominantFootOptions = [
 ];
 const secondaryPositionOptions = positions;
 
-const EditProfile = ({ show, onClose }: { show: boolean; onClose: any }) => {
+const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any }) => {
   const user = useAtomValue(userAtom);
   const setUser = useSetAtom(userAtom);
   const [form, setForm] = useState({

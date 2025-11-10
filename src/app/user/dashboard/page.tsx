@@ -2,7 +2,7 @@
 import AdminLayout from "@/components/layouts/AdminLayout";
 import { BadgeCheck, CloudUpload, CreditCard, PencilLine, Plus, SquarePen, SquarePlay, TriangleAlert } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { useAtomValue } from "jotai";
+import { useAtomValue, useAtom } from "jotai";
 import { userAtom } from "@/store/user";
 import api from "@/utils/api";
 import EditProfile from "@/components/Modals/EditProfile";
@@ -14,9 +14,10 @@ import Link from "next/link";
 import NewHighlights from "@/components/Modals/Highlights";
 
 const dashboard = () => {
-  const user = useAtomValue(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   const [countries] = useState(Country.getAllCountries());
   const [activeTab, setActiveTab] = useState("highlights");
+  const [showWelcome, setWelcome] = useState(user?.welcome);
 
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showAchievement, setShowAchievement] = useState(false);
@@ -28,6 +29,20 @@ const dashboard = () => {
   const [highlights, setHighlights] = useState([])
   const [certificates, setCertificates] = useState([])
   const [achievements, setAchievements] = useState([])
+
+  const handleCompleteProfile = async () => {
+    setShowModal(false);
+
+    if (user) {
+      setUser({ ...user, welcome: false });
+    }
+
+    try {
+      await api.patch("/users/dismiss-welcome");
+    } catch (err) {
+      console.error("Failed to dismiss welcome:", err);
+    }
+  };
 
   const fetchHighlights = async () => {
     if (!user?._id) return;
@@ -418,6 +433,11 @@ const dashboard = () => {
           }}
           onSuccess={() => fetchProfile()}
           certificateToEdit={certToEdit}
+        />
+
+        <EditProfile
+          show={showWelcome}
+          onClose={() => handleCompleteProfile()}
         />
       </div>
     </AdminLayout>
