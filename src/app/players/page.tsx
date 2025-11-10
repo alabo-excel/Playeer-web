@@ -234,6 +234,7 @@ const players = () => {
                 />
               </svg>
             </div>
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {loading ? (
                 <div className="col-span-2 flex justify-center items-center min-h-[300px]">

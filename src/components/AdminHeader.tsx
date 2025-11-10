@@ -22,25 +22,30 @@ const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
   };
 
   return (
-    <header className="fixed top-0 w-full bg-[#FCFCFC] border-b border-gray p-6 flex justify-between lg:z-50">
+    <header className="fixed top-0 w-full bg-[#FCFCFC] border-b border-gray lg:py-6 lg:px-8 p-4 flex justify-between lg:z-50">
       <div className="flex items-center">
         {/* Hamburger menu for mobile/tablet */}
-        <button
+        {/* <button
           className="block md:hidden mr-4 p-2 rounded hover:bg-gray-100 focus:outline-none"
           onClick={onSidebarToggle}
           aria-label="Open sidebar"
         >
           <Menu className="w-6 h-6" />
-        </button>
+        </button> */}
         <Link href={"/user/dashboard"}>
           <img
-            className="w-32 my-auto lg:block hidden"
+            className="w-32 my-auto"
             src="/images/logo-colored.png"
             alt=""
           />
         </Link>
       </div>
-      <div className="w-44 flex justify-between my-auto">
+      <div className="">
+        <div className="w-12 h-12 text-center text-xl rounded-full border border-[#BFBFBF] bg-[#F4F4F4] flex justify-center align-center items-center">
+          <span className="text-[#BFBFBF] font-bold">PA</span>
+        </div>
+      </div>
+      {/* <div className="w-44 flex justify-between my-auto">
         <img
           src={user?.profilePicture || "/images/player-2.jpg"}
           className="w-8 my-auto h-8 rounded-full"
@@ -53,7 +58,7 @@ const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
           <p className="text-sm my-auto mr-2">Logout</p>
           <LogOut size={15} className="my-auto" />
         </button>
-      </div>
+      </div> */}
     </header>
   );
 };
