@@ -99,7 +99,7 @@ const updatePlan = () => {
           {/* Current Plan Card */}
           <div className="mb-8">
             <div className="bg-[#F4F4F4] p-4 rounded-2xl flex justify-between items-start mb-6">
-              <h2 className="text-xl font-bold my-auto text-[#222]">Starter Plan</h2>
+              <h2 className="text-xl font-bold capitalize my-auto text-[#222]">{user?.plan} Plan</h2>
               <div className="flex gap-4">
                 {user?.plan !== 'free' && <button className="bg-[#FFE9E9] px-6 py-3 text-[#991616] rounded-full text-sm">Cancel Subscription</button>}
                 <button

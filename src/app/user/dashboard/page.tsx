@@ -32,7 +32,7 @@ const dashboard = () => {
   const [achievements, setAchievements] = useState([])
 
   const handleCompleteProfile = async () => {
-    setShowModal(false);
+    setWelcome(false);
 
     if (user) {
       setUser({ ...user, welcome: false });
@@ -227,7 +227,7 @@ const dashboard = () => {
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full"></div>
               )}
             </button>
-            {user?.plan !== "free" && (
+            {(
               <>
                 <button
                   onClick={() => setActiveTab("achievements")}

@@ -55,11 +55,11 @@ const LoginPage = () => {
       if (res.data?.token) {
         localStorage.setItem("token", res.data.token);
       }
-      if (res.data?.data.isVerified) {
+      // if (res.data?.data.isVerified) {
         router.push("/user/dashboard");
-      } else {
-        router.push("/auth/onboarding");
-      }
+      // } else {
+      //   router.push("/auth/onboarding");
+      // }
     } catch (err: any) {
       setApiError(err?.response?.data?.message || "Login failed");
     } finally {
