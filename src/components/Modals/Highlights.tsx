@@ -1,4 +1,3 @@
-import { VideoFormData } from "@/app/user/reels/page";
 import { userAtom } from "@/store/user";
 import api from "@/utils/api";
 import Modal from "@/components/Modal";
@@ -6,6 +5,17 @@ import { useAtomValue } from "jotai";
 import { CloudUpload, X, Plus } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { Spin } from "antd";
+
+export interface VideoFormData {
+  title: string;
+  description: string;
+  tags: string;
+  file: File | null;
+  fileName: string;
+  preview: string;
+  [key: string]: any;
+}
+
 
 const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModal: boolean, onCLose: () => void, fetchHighlights: () => void, data?: VideoFormData }) => {
   const [isUploading, setIsUploading] = useState(false);

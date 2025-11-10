@@ -11,6 +11,7 @@ import CertificateModal from "@/components/Modals/Certificate";
 import { positions } from "@/utils/positions";
 import { Country } from "country-state-city";
 import Link from "next/link";
+import NewHighlights from "@/components/Modals/Highlights";
 
 const dashboard = () => {
   const user = useAtomValue(userAtom);
@@ -22,10 +23,25 @@ const dashboard = () => {
   const [showCertModal, setShowCertModal] = useState(false);
   const [achievementToEdit, setAchievementToEdit] = useState(null);
   const [certToEdit, setCertToEdit] = useState(null);
+  const [modal, setShowModal] = useState(false)
 
   const [highlights, setHighlights] = useState([])
   const [certificates, setCertificates] = useState([])
   const [achievements, setAchievements] = useState([])
+
+  const fetchHighlights = async () => {
+    if (!user?._id) return;
+    // setHighlightsLoading(true);
+    try {
+      const res = await api.get(`/highlights/user/${user._id}`);
+      console.log(res.data?.data);
+      setHighlights(res.data?.data || []);
+    } catch (err) {
+      // setHighlightsError("Failed to load highlights");
+    } finally {
+      // setHighlightsLoading(false);
+    }
+  };
 
   const fetchProfile = async () => {
     try {
@@ -37,6 +53,7 @@ const dashboard = () => {
 
   useEffect(() => {
     fetchProfile();
+    fetchHighlights();
   }, []);
 
   const getInitials = () => {
@@ -249,7 +266,7 @@ const dashboard = () => {
                 <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
                   Upload your best moments to showcase your talent and get noticed.
                 </p>
-                <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
+                <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
                   <Plus size={18} />
                   Upload Highlight Video
                 </button>
@@ -385,6 +402,12 @@ const dashboard = () => {
           }}
           onSuccess={() => fetchProfile()}
           achievementToEdit={achievementToEdit}
+        />
+
+        <NewHighlights
+          showModal={modal}
+          onCLose={() => setShowModal(false)}
+          fetchHighlights={() => fetchHighlights()}
         />
 
         <CertificateModal
