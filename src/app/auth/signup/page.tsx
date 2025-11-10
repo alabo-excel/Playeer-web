@@ -54,8 +54,7 @@ const signup = () => {
     setLoading(true);
     try {
       await api.post("/auth/register", {
-        firstName: form.firstName,
-        lastName: form.lastName,
+        fullName: `${form.firstName} ${form.lastName}`,
         email: form.email,
         phone: form.phone,
         password: form.password,
