@@ -31,6 +31,7 @@ function Profile() {
     lastName: "",
     email: "",
     phone: "",
+    phoneCountry: "NG", // Default to Nigeria
     gender: "",
     dateOfBirth: "",
     country: "",
@@ -49,11 +50,33 @@ function Profile() {
   useEffect(() => {
     if (user) {
       const nameParts = user.fullName?.split(" ") || [];
+
+      // Parse existing phone number to extract country code and number
+      let phoneNumber = user.phone || "";
+      let detectedPhoneCountry = user.phoneCountry || user.country || "NG";
+
+      if (phoneNumber.startsWith('+')) {
+        // Extract country code from existing phone number
+        const phoneMatch = phoneNumber.match(/^\+(\d{1,4})\s?(.*)$/);
+        if (phoneMatch) {
+          const extractedCode = phoneMatch[1];
+          const extractedNumber = phoneMatch[2];
+
+          // Find country by phone code
+          const foundCountry = countries.find(c => c.phonecode === extractedCode);
+          if (foundCountry) {
+            detectedPhoneCountry = foundCountry.isoCode;
+            phoneNumber = extractedNumber; // Store just the number part
+          }
+        }
+      }
+
       setForm({
         firstName: nameParts[0] || "",
         lastName: nameParts.slice(1).join(" ") || "",
         email: user.email || "",
-        phone: user.phone || "",
+        phone: phoneNumber,
+        phoneCountry: detectedPhoneCountry,
         gender: user.gender || "",
         dateOfBirth: user.dateOfBirth ? new Date(user.dateOfBirth).toISOString().slice(0, 10) : "",
         country: user.country || "",
@@ -66,7 +89,7 @@ function Profile() {
         profilePicturePreview: user.profilePicture || ""
       });
     }
-  }, [user]);
+  }, [user, countries]);
 
   const getInitials = () => {
     if (!user?.fullName) return "U";
@@ -74,9 +97,48 @@ function Profile() {
     return (names[0][0] + (names[1]?.[0] || "")).toUpperCase();
   };
 
+  const getCountryFlag = (countryCode: string) => {
+    const codePoints = countryCode
+      .toUpperCase()
+      .split('')
+      .map(char => 127397 + char.charCodeAt(0));
+    return String.fromCodePoint(...codePoints);
+  };
+
+  const getPhoneCode = (countryCode: string) => {
+    const country = countries.find(c => c.isoCode === countryCode);
+    return country?.phonecode ? `+${country.phonecode}` : '';
+  };
+
+  // Get popular countries for the dropdown
+  const getPopularCountries = () => {
+    const popularCodes = ['NG', 'US', 'GB', 'CA', 'AU', 'GH', 'KE', 'ZA'];
+    const popular = countries.filter(c => popularCodes.includes(c.isoCode));
+    const rest = countries.filter(c => !popularCodes.includes(c.isoCode));
+    return [...popular, ...rest];
+  };
+
+  const getFormattedPhoneNumber = () => {
+    if (!form.phone.trim()) return '';
+    const phoneCode = getPhoneCode(form.phoneCountry);
+    return `${phoneCode} ${form.phone}`.trim();
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-    setForm(prev => ({ ...prev, [name]: value }));
+
+    // Special handling for phone number to limit digits
+    if (name === "phone") {
+      // Remove all non-digit characters to count actual digits
+      const digits = value.replace(/\D/g, '');
+      // Limit to 15 digits (international standard)
+      if (digits.length > 15) return;
+
+      setForm(prev => ({ ...prev, [name]: value }));
+    } else {
+      setForm(prev => ({ ...prev, [name]: value }));
+    }
+
     // Clear error when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: "" }));
@@ -118,7 +180,19 @@ function Profile() {
     if (!form.firstName.trim()) newErrors.firstName = "First name is required";
     if (!form.lastName.trim()) newErrors.lastName = "Last name is required";
     if (!form.email.trim()) newErrors.email = "Email is required";
-    if (!form.phone.trim()) newErrors.phone = "Phone number is required";
+
+    // Phone validation
+    if (!form.phone.trim()) {
+      newErrors.phone = "Phone number is required";
+    } else {
+      const phoneDigits = form.phone.replace(/\D/g, '');
+      if (phoneDigits.length < 7) {
+        newErrors.phone = "Phone number is too short";
+      } else if (phoneDigits.length > 10) {
+        newErrors.phone = "Phone number is too long";
+      }
+    }
+
     if (!form.gender) newErrors.gender = "Gender is required";
     if (!form.dateOfBirth) newErrors.dateOfBirth = "Date of birth is required";
     if (!form.country) newErrors.country = "Nationality is required";
@@ -140,7 +214,7 @@ function Profile() {
       // Combine first and last name
       formData.append("fullName", `${form.firstName} ${form.lastName}`.trim());
       formData.append("email", form.email);
-      formData.append("phone", form.phone);
+      formData.append("phone", getFormattedPhoneNumber()); // Send formatted phone with country code
       formData.append("gender", form.gender);
       formData.append("dateOfBirth", form.dateOfBirth);
       formData.append("country", form.country);
@@ -181,7 +255,7 @@ function Profile() {
 
   return (
     <AdminLayout>
-      <div className="pt-8 pb-24">
+      <div className="pt-8">
         <div className="max-w-7xl mx-auto px-4">
           <button className="flex items-center gap-2 text-[#222] text-sm mb-8" onClick={() => window.history.back()}>
             <ArrowLeft />
@@ -260,16 +334,39 @@ function Profile() {
               </div>
               <div>
                 <label className="block text-[#222] mb-2">Phone Number</label>
-                <div className="flex items-center gap-2">
-                  <span className="inline-flex items-center px-2 py-1 border border-[#E8E8E8] rounded-md bg-white text-xs text-[#222]">🇳🇬</span>
+                <div className="flex items-stretch gap-2">
+                  <div className="relative">
+                    <select
+                      name="phoneCountry"
+                      value={form.phoneCountry}
+                      onChange={handleChange}
+                      className="appearance-none pl-3 pr-8 py-3 border border-[#E8E8E8] rounded-md bg-white text-xs text-[#222] max-w-[90px] h-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      {getPopularCountries().map(country => (
+                        <option key={country.isoCode} value={country.isoCode}>
+                          {getCountryFlag(country.isoCode)} {getPhoneCode(country.isoCode)}
+                        </option>
+                      ))}
+                    </select>
+                    {/* <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </div> */}
+                  </div>
                   <input
                     name="phone"
                     value={form.phone}
                     onChange={handleChange}
-                    className={`w-full rounded-md border ${errors.phone ? 'border-red-500' : 'border-[#E8E8E8]'} bg-white p-3 text-sm`}
+                    className={`flex-1 rounded-md border ${errors.phone ? 'border-red-500' : 'border-[#E8E8E8]'} bg-white p-3 text-sm`}
                     placeholder="Enter phone number"
                   />
                 </div>
+                {form.phone && (
+                  <p className="text-xs text-[#666] mt-1">
+                    Complete number: {getFormattedPhoneNumber()}
+                  </p>
+                )}
                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
               </div>
               <div>

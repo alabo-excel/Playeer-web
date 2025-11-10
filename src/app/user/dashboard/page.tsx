@@ -12,6 +12,7 @@ import { positions } from "@/utils/positions";
 import { Country } from "country-state-city";
 import Link from "next/link";
 import NewHighlights from "@/components/Modals/Highlights";
+import { getAge } from "@/utils/ageConverter";
 
 const dashboard = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -144,7 +145,9 @@ const dashboard = () => {
                 </div>
                 <div>
                   <p className="text-xs text-[#6C6C6C] mb-1">Age</p>
-                  <p className="text-sm font-medium text-[#1F1F1F]">-</p>
+                  <p className="text-sm font-medium text-[#1F1F1F]">
+                    {user?.dateOfBirth ? getAge(user.dateOfBirth) : "-"}
+                  </p>
                 </div>
                 <div>
                   <p className="text-xs text-[#6C6C6C] mb-1">Nationality</p>
