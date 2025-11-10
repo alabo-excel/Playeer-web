@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/store/user";
+import DropdownAction from "./DropDown";
 
 const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
   const router = useRouter();
@@ -41,9 +42,21 @@ const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
         </Link>
       </div>
       <div className="">
-        <div className="w-12 h-12 text-center text-xl rounded-full border border-[#BFBFBF] bg-[#F4F4F4] flex justify-center align-center items-center">
-          <span className="text-[#BFBFBF] font-bold">PA</span>
-        </div>
+        <DropdownAction actions={[{
+          label: "Settings", onClick: () => router.push('/user/settings'), color: 'black', 
+        },
+          {
+            label: "Subscription", onClick: () => router.push('/user/update-plan'), color: 'black',
+          },
+          {
+            label: "Logout", onClick: () => handleLogout(), color: 'red',
+          }
+        ]}>
+          <div className="w-12 h-12 text-center text-xl rounded-full border border-[#BFBFBF] bg-[#F4F4F4] flex justify-center align-center items-center">
+            <span className="text-[#BFBFBF] font-bold">PA</span>
+          </div>
+        </DropdownAction>
+
       </div>
       {/* <div className="w-44 flex justify-between my-auto">
         <img

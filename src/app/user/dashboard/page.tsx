@@ -1,6 +1,6 @@
 "use client";
 import AdminLayout from "@/components/layouts/AdminLayout";
-import { BadgeCheck, CloudUpload, Plus, SquarePen } from "lucide-react";
+import { BadgeCheck, CloudUpload, CreditCard, PencilLine, Plus, SquarePen, SquarePlay, TriangleAlert } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/store/user";
@@ -22,6 +22,10 @@ const dashboard = () => {
   const [showCertModal, setShowCertModal] = useState(false);
   const [achievementToEdit, setAchievementToEdit] = useState(null);
   const [certToEdit, setCertToEdit] = useState(null);
+
+  const [highlights, setHighlights] = useState([])
+  const [certificates, setCertificates] = useState([])
+  const [achievements, setAchievements] = useState([])
 
   const fetchProfile = async () => {
     try {
@@ -55,7 +59,7 @@ const dashboard = () => {
     <AdminLayout>
       <div className="pt-3 lg:px-8">
         {/* Profile Header Card */}
-        <div className="bg-white rounded-3xl p-8 mb-6 border border-[#E8E8E8]">
+        <div className="bg-[#F4F4F4] rounded-3xl p-8 mb-6">
           <div className="flex gap-6 mb-6">
             {/* Avatar */}
             <div className="w-32 h-32 rounded-full border-2 border-[#DFDFDF] bg-[#F5F5F5] flex items-center justify-center flex-shrink-0">
@@ -82,27 +86,12 @@ const dashboard = () => {
                   {user?.plan === "free" ?
                     <span className="inline-block my-auto bg-[#E8F4E8] text-[#0F973D] px-3 py-1 rounded-full text-xs font-medium">
                       {user?.plan === "free" ? "Free" : user?.plan || "Free"}
-                    </span> : <BadgeCheck fill='#1969FE' className='text-white' />}
-                </div>
-                <div className="flex gap-2">
-                  <Link href={'/user/profile'}>
-                    <button
-                      className="flex items-center gap-2 bg-primary text-white px-6 py-2 rounded-full text-sm font-medium hover:opacity-90 transition"
-                    >
-                      <SquarePen size={16} />
-                      Edit Profile
-                    </button>
-                  </Link>
-                  <Link href={'/user/update-plan'}>
-                    <button className="flex items-center gap-2 border border-primary text-primary px-6 py-2 rounded-full text-sm font-medium hover:bg-[#E5F4FF] transition">
-                      My Subscription
-                    </button>
-                  </Link>
+                    </span> : <BadgeCheck fill='#1969FE' className='text-white my-auto' />}
                 </div>
               </div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-5 gap-6">
+              <div className="grid grid-cols-6 gap-6">
                 <div>
                   <p className="text-xs text-[#6C6C6C] mb-1">Email address</p>
                   <p className="text-sm font-medium text-[#1F1F1F]">
@@ -131,9 +120,18 @@ const dashboard = () => {
                     {countryName}
                   </p>
                 </div>
+                <Link href={'/user/profile'}>
+                  <button
+                    className="flex w-full justify-center items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
+                  >
+                    <PencilLine size={16} />
+                    Edit Profile
+                  </button>
+                </Link>
+
               </div>
 
-              <div className="grid grid-cols-5 gap-6 mt-4 pt-4 border-t border-[#E8E8E8]">
+              <div className="grid grid-cols-6 gap-6 mt-4 pt-4">
                 <div>
                   <p className="text-xs text-[#6C6C6C] mb-1">
                     Preferred Position
@@ -168,6 +166,12 @@ const dashboard = () => {
                     {user?.weight || "-"}
                   </p>
                 </div>
+                <Link href={'/user/update-plan'}>
+                  <button className="flex w-full items-center justify-center gap-2 border border-primary text-primary px-6 py-3 rounded-full text-sm font-medium hover:bg-[#E5F4FF] transition">
+                    <CreditCard size={16} />
+                    My Subscription
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
@@ -179,8 +183,8 @@ const dashboard = () => {
             <button
               onClick={() => setActiveTab("highlights")}
               className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === "highlights"
-                  ? "text-[#1F1F1F]"
-                  : "text-[#6C6C6C] hover:text-[#1F1F1F]"
+                ? "text-[#1F1F1F]"
+                : ""
                 }`}
             >
               Highlight Videos
@@ -193,8 +197,8 @@ const dashboard = () => {
                 <button
                   onClick={() => setActiveTab("achievements")}
                   className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === "achievements"
-                      ? "text-[#1F1F1F]"
-                      : "text-[#6C6C6C] hover:text-[#1F1F1F]"
+                    ? "text-[#1F1F1F]"
+                    : "text-[#6C6C6C] hover:text-[#1F1F1F]"
                     }`}
                 >
                   Achievements
@@ -205,8 +209,8 @@ const dashboard = () => {
                 <button
                   onClick={() => setActiveTab("certifications")}
                   className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === "certifications"
-                      ? "text-[#1F1F1F]"
-                      : "text-[#6C6C6C] hover:text-[#1F1F1F]"
+                    ? "text-[#1F1F1F]"
+                    : "text-[#6C6C6C] hover:text-[#1F1F1F]"
                     }`}
                 >
                   Certifications
@@ -223,83 +227,147 @@ const dashboard = () => {
         <div className="min-h-[400px]">
           {/* Highlights Tab */}
           {activeTab === "highlights" && (
-            <div className="flex flex-col items-center justify-center py-20">
-              <div className="flex justify-center mb-6">
-                <div className="bg-primary bg-opacity-10 p-4 rounded-full">
-                  <svg
-                    className="w-12 h-12 text-primary"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
+            highlights.length >= 1 ? (
+              <div>
+                {/* TODO: Display highlights list */}
+                {highlights.map((highlight, index) => (
+                  <div key={index}>
+                    {/* Highlight item component */}
+                  </div>
+                ))}
               </div>
-              <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
-                No highlights yet.
-              </h3>
-              <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
-                Upload your best moments to showcase your talent and get noticed.
-              </p>
-              <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
-                <Plus size={18} />
-                Upload Highlight Video
-              </button>
-            </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="flex justify-center mb-6">
+                  <div className="bg-primary bg-opacity-10 p-4 rounded-full">
+                    <SquarePlay className="text-white" />
+                  </div>
+                </div>
+                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                  No highlights yet.
+                </h3>
+                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                  Upload your best moments to showcase your talent and get noticed.
+                </p>
+                <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
+                  <Plus size={18} />
+                  Upload Highlight Video
+                </button>
+              </div>
+            )
           )}
 
           {/* Achievements Tab */}
-          {activeTab === "achievements" && user?.plan !== "free" && (
-            <div className="flex flex-col items-center justify-center py-20">
-              <div className="flex justify-center mb-6">
-                <div className="bg-[#FFF8E6] p-4 rounded-full">
-                  <svg
-                    className="w-12 h-12 text-[#FBBC05]"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                  </svg>
-                </div>
+          {activeTab === "achievements" && (
+            achievements.length >= 1 ? (
+              <div>
+                {/* TODO: Display achievements list */}
+                {achievements.map((achievement, index) => (
+                  <div key={index}>
+                    {/* Achievement item component */}
+                  </div>
+                ))}
               </div>
-              <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
-                No achievements yet.
-              </h3>
-              <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
-                Add your accomplishments to highlight your success and achievements.
-              </p>
-              <button
-                onClick={() => setShowAchievement(true)}
-                className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
-              >
-                <Plus size={18} />
-                Add First Achievement
-              </button>
-            </div>
+            ) : user?.plan === 'free' ? (
+              // Free plan - show upgrade message
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="flex justify-center mb-6">
+                  <img src="/images/icons/achievements-lo.png" alt="" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                  Show Your Achievements and Make Your Profile Stand Out
+                </h3>
+                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                  Highlight your awards, tournament wins, MVP moments, or national selections to prove your competitive edge.                </p>
+
+                <button className="text-[#FFE9E9] py-3 bg-[#EE9C2E] rounded-full px-4 flex items-center gap-2 text-sm mb-3">
+                  <TriangleAlert />
+                  Achievements can only be added on the Pro Plan.
+                </button>
+                <Link href="/user/update-plan">
+                  <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
+                    {/* <CreditCard size={18} /> */}
+                    Upgrade Plan
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              // Premium plan - show add achievements message
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="flex justify-center mb-6">
+                  <img src="/images/icons/achievements.png" alt="" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                  No achievements added yet.
+                </h3>
+                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                  Showcase your career milestones whether it’s tournament wins, MVP awards, trials, or big moments on the pitch.                </p>
+
+                <button
+                  onClick={() => setShowAchievement(true)}
+                  className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
+                >
+                  <Plus size={18} />
+                  Add Achievement
+                </button>
+              </div>
+            )
           )}
 
           {/* Certifications Tab */}
-          {activeTab === "certifications" && user?.plan !== "free" && (
-            <div className="flex flex-col items-center justify-center py-20">
-              <div className="flex justify-center mb-6">
-                <div className="bg-[#E8F5E9] p-4 rounded-full">
-                  <CloudUpload className="w-12 h-12 text-[#0F973D]" />
-                </div>
+          {activeTab === "certifications" && (
+            certificates.length >= 1 ? (
+              <div>
+                {/* TODO: Display certificates list */}
+                {certificates.map((certificate, index) => (
+                  <div key={index}>
+                    {/* Certificate item component */}
+                  </div>
+                ))}
               </div>
-              <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
-                No certificates yet.
-              </h3>
-              <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
-                If you've completed a football program, trial, camp, or training, upload proof here.
-              </p>
-              <button
-                onClick={() => setShowCertModal(true)}
-                className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
-              >
-                <CloudUpload size={18} />
-                Upload Certificate
-              </button>
-            </div>
+            ) : user?.plan === 'free' ? (
+              // Free plan - show upgrade message
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="flex justify-center mb-6">
+                  <img src="/images/icons/certification-lo.png" alt="" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                  Upload Your Certifications Unlock Credibility
+                </h3>
+                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                  Showcase your training licenses, academy acceptance letters, or verified documents to boost your profile and gain trust from scouts and coaches.
+                </p>
+                <button className="text-[#FFE9E9] py-3 bg-[#EE9C2E] rounded-full px-4 flex items-center gap-2 text-sm mb-3">
+                  <TriangleAlert />
+                  Certification uploads are available only on the Pro Plan.
+                </button>
+                <Link href="/user/update-plan">
+                  <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
+                    {/* <CreditCard size={18} /> */}
+                    Upgrade Plan
+                  </button>
+                </Link>
+              </div>
+            ) : (
+              // Premium plan - show add certificates message
+              <div className="flex flex-col items-center justify-center py-20">
+                <div className="flex justify-center mb-6">
+                  <img src="/images/icons/certification.png" alt="" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                  No certification uploaded yet.
+                </h3>
+                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                  Add your verified training certificates, academy licenses, or fitness test results to build credibility.                </p>
+                <button
+                  onClick={() => setShowCertModal(true)}
+                  className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
+                >
+                  <Plus size={18} />
+                  Add Certification
+                </button>
+              </div>
+            )
           )}
         </div>
 

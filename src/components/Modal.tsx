@@ -19,7 +19,7 @@ const Modal: React.FC<ModalProps> = ({
         onClick={onClose}
       ></div>
       <div
-        className="bg-white rounded-3xl shadow-lg p-6 z-70 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-h-[80vh] hide-scrollbar overflow-y-auto w-[95%] md:w-full flex flex-col justify-center items-center"
+        className="bg-white rounded-3xl shadow-lg p-6 z-70 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-h-[90vh] hide-scrollbar overflow-y-auto w-[95%] md:w-full flex flex-col justify-center items-center"
         style={{ maxWidth: width }}
         onClick={(e) => e.stopPropagation()}
       >
