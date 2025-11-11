@@ -13,27 +13,30 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
 }) => {
   return (
-    <>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto"
+      style={{ backgroundColor: 'rgba(191, 191, 191, 0.8)' }}
+    >
       <div
-        className="fixed inset-0 z-60 flex items-center justify-center bg-[#232323] opacity-40"
-        onClick={onClose}
-      ></div>
-      <div
-        className="bg-white rounded-3xl shadow-lg p-6 z-70 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-h-[90vh] hide-scrollbar overflow-y-auto w-[95%] md:w-full flex flex-col justify-center items-center"
+        className="bg-white rounded-3xl shadow-lg relative w-full my-8 max-h-[calc(100vh-4rem)]"
         style={{ maxWidth: width }}
         onClick={(e) => e.stopPropagation()}
       >
-        {onClose && <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 font-bold focus:outline-none"
-          onClick={onClose}
-          aria-label="Close modal"
-        >
-          <X />
-        </button>}
+        {onClose && (
+          <button
+            className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-700 transition-colors duration-200 bg-white rounded-full p-1"
+            onClick={onClose}
+            aria-label="Close modal"
+          >
+            <X size={20} />
+          </button>
+        )}
 
-        {children}
+        <div className="overflow-y-auto max-h-[calc(100vh-4rem)] p-6 text-center">
+          {children}
+        </div>
       </div>
-    </>
+    </div>
   );
 };
 
