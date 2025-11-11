@@ -183,7 +183,7 @@ const dashboard = () => {
                     {countryName}
                   </p>
                 </div>
-                <div className="sm:col-span-2 lg:col-span-1">
+                <div className="hidden lg:block">
                   <Link href={'/user/profile'}>
                     <button
                       className="flex w-full justify-center items-center gap-2 bg-primary text-white px-4 sm:px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
@@ -194,10 +194,7 @@ const dashboard = () => {
                     </button>
                   </Link>
                 </div>
-              </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6 mt-4 pt-4 border-t border-[#DFDFDF] lg:border-t-0 lg:pt-4">
-                <div>
+              <div>
                   <p className="text-xs text-[#6C6C6C] mb-1">
                     Preferred Position
                   </p>
@@ -231,7 +228,7 @@ const dashboard = () => {
                     {user?.weight || "-"}
                   </p>
                 </div>
-                <div className="sm:col-span-2 lg:col-span-1">
+                <div className="hidden lg:block">
                   <Link href={'/user/update-plan'}>
                     <button className="flex w-full items-center justify-center gap-2 border border-primary text-primary px-4 sm:px-6 py-3 rounded-full text-sm font-medium hover:bg-[#E5F4FF] transition">
                       <CreditCard size={16} />
@@ -240,6 +237,24 @@ const dashboard = () => {
                     </button>
                   </Link>
                 </div>
+              </div>
+
+              {/* Mobile Action Buttons */}
+              <div className="flex flex-col gap-3 mt-6 lg:hidden">
+                <Link href={'/user/profile'}>
+                  <button
+                    className="flex w-full justify-center items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
+                  >
+                    <PencilLine size={16} />
+                    Edit Profile
+                  </button>
+                </Link>
+                <Link href={'/user/update-plan'}>
+                  <button className="flex w-full items-center justify-center gap-2 border border-primary text-primary px-6 py-3 rounded-full text-sm font-medium hover:bg-[#E5F4FF] transition">
+                    <CreditCard size={16} />
+                    My Subscription
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
