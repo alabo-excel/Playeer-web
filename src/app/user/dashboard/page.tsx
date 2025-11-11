@@ -13,6 +13,7 @@ import { Country } from "country-state-city";
 import Link from "next/link";
 import NewHighlights from "@/components/Modals/Highlights";
 import { getAge } from "@/utils/ageConverter";
+import Card from "@/components/Card";
 
 const dashboard = () => {
   const [user, setUser] = useAtom(userAtom);
@@ -49,7 +50,7 @@ const dashboard = () => {
     if (!user?._id) return;
     // setHighlightsLoading(true);
     try {
-      const res = await api.get(`/highlights/user/${user._id}`);
+      const res = await api.get(`/highlights/user/${user?._id}`);
       console.log(res.data?.data);
       setHighlights(res.data?.data || []);
     } catch (err) {
@@ -62,6 +63,9 @@ const dashboard = () => {
   const fetchProfile = async () => {
     try {
       const res = await api.get("/users/profile");
+      // console.log("Profile data:", res.data?.data);
+      setAchievements(res.data?.data?.achievements || []);
+      setCertificates(res.data?.data?.certificates || []);
     } catch (err) {
       console.error("Error fetching profile:", err);
     }
@@ -70,7 +74,7 @@ const dashboard = () => {
   useEffect(() => {
     fetchProfile();
     fetchHighlights();
-  }, []);
+  }, [user?._id]);
 
   const getInitials = () => {
     if (!user?.fullName) return "U";
@@ -264,12 +268,32 @@ const dashboard = () => {
           {activeTab === "highlights" && (
             highlights.length >= 1 ? (
               <div>
-                {/* TODO: Display highlights list */}
-                {highlights.map((highlight, index) => (
-                  <div key={index}>
-                    {/* Highlight item component */}
+                <div className="flex justify-between items-center mb-6">
+                  <div className="relative flex-1 max-w-md">
+                    <input
+                      type="text"
+                      placeholder="Search highlights..."
+                      // value={searchQuery}
+                      // onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                    </span>
                   </div>
-                ))}
+                  <button
+                    onClick={() => setShowModal(true)}
+                    className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                  >
+                    <Plus size={18} />
+                    Upload Highlight
+                  </button>
+                </div>
+                <div className="grid grid-cols-4 gap-4">
+                  {highlights.map((highlight, index) => (
+                    <Card key={index} data={highlight} fetchData={fetchHighlights} type="video" />
+                  ))}
+                </div>
               </div>
             ) : (
               <div className="flex flex-col items-center justify-center py-20">
@@ -296,12 +320,32 @@ const dashboard = () => {
           {activeTab === "achievements" && (
             achievements.length >= 1 ? (
               <div>
-                {/* TODO: Display achievements list */}
-                {achievements.map((achievement, index) => (
-                  <div key={index}>
-                    {/* Achievement item component */}
+                <div className="flex justify-between items-center mb-6">
+                  <div className="relative flex-1 max-w-md">
+                    <input
+                      type="text"
+                      placeholder="Search Achievements..."
+                      // value={searchQuery}
+                      // onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                    </span>
                   </div>
-                ))}
+                  <button
+                    onClick={() => setShowAchievement(true)}
+                    className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                  >
+                    <Plus size={18} />
+                    Add Achievement
+                  </button>
+                </div>
+                <div className="grid grid-cols-4 gap-4">
+                  {achievements.map((achievement, index) => (
+                    <Card key={index} data={achievement} fetchData={fetchProfile} type="achievement" />
+                  ))}
+                </div>
               </div>
             ) : user?.plan === 'free' ? (
               // Free plan - show upgrade message
@@ -353,12 +397,34 @@ const dashboard = () => {
           {activeTab === "certifications" && (
             certificates.length >= 1 ? (
               <div>
-                {/* TODO: Display certificates list */}
-                {certificates.map((certificate, index) => (
-                  <div key={index}>
-                    {/* Certificate item component */}
+                <div className="flex justify-between items-center mb-6">
+                  <div className="relative flex-1 max-w-md">
+                    <input
+                      type="text"
+                      placeholder="Search Certificates..."
+                      // value={searchQuery}
+                      // onChange={(e) => setSearchQuery(e.target.value)}
+                      className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    />
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                    </span>
                   </div>
-                ))}
+                  <button
+                    onClick={() => setShowCertModal(true)}
+                    className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                  >
+                    <Plus size={18} />
+                    Add Certificate
+                  </button>
+                </div>
+                <div className="grid grid-cols-4 gap-4">
+                  {certificates.map((certificate, index) => (
+                    <div key={index}>
+                      <Card key={index} data={certificate} fetchData={fetchProfile} type="certificate" />
+                    </div>
+                  ))}
+                </div>
               </div>
             ) : user?.plan === 'free' ? (
               // Free plan - show upgrade message

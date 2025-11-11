@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({
   };
 
   return (
-    <div className="border border-[#E5E5E5] bg-[#FCFCFC] p-1 rounded-md">
+    <div className="rounded-md">
       <div className="relative">
         {type === "video" ? (
           <video
@@ -60,11 +60,18 @@ const Card: React.FC<CardProps> = ({
             className="w-full h-48 object-cover rounded-lg"
           />
         ) : (
-          <img
-            src={data?.photo}
-            alt="Video thumbnail"
-            className="w-full max-h-80 h-44 object-cover rounded-md"
-          />
+          <div className="relative h-48 flex items-center justify-center overflow-hidden group">
+            <img
+              src={data.photo}
+              alt={data.title}
+              className="w-full h-full object-cover group-hover:opacity-40 transition-opacity"
+            />
+            <button className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors opacity-0 group-hover:opacity-100">
+              <div className="px-6 py-3 bg-primary text-white rounded-full font-medium text-sm hover:bg-blue-600 transition-colors">
+                Click to view
+              </div>
+            </button>
+          </div>
         )}
 
         {type === "video" ? (
@@ -101,48 +108,49 @@ const Card: React.FC<CardProps> = ({
             )}
             <div></div>
           </div>
-          {hide ? null : (
-            <div className="ml-auto">
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      key: "edit",
-                      label: "Edit",
-                      onClick: () => {
-                        if (type === "video") {
-                          setShowHighlight(true);
-                        } else if (type === "achievement") {
-                          editAction && editAction();
-                        } else {
-                          editAction && editAction();
-                        }
-                      },
+          {/* {hide ? null : ( */}
+          <div className="ml-auto">
+            <Dropdown
+              menu={{
+                items: [
+                  {
+                    key: "edit",
+                    label: "Edit",
+                    onClick: () => {
+                      if (type === "video") {
+                        setShowHighlight(true);
+                      } else if (type === "achievement") {
+                        editAction && editAction();
+                      } else {
+                        editAction && editAction();
+                      }
                     },
-                    {
-                      key: "delete",
-                      label: "Delete",
-                      danger: true,
-                      onClick: () => {
-                        if (type === "video") {
-                          deletHighlight();
-                        } else if (type === "achievement") {
-                          deleteAchievement();
-                        } else {
-                          deleteCertificate();
-                        }
-                      },
+                  },
+                  {
+                    key: "delete",
+                    label: "Delete",
+                    danger: true,
+                    onClick: () => {
+                      if (type === "video") {
+                        deletHighlight();
+                      } else if (type === "achievement") {
+                        deleteAchievement();
+                      } else {
+                        deleteCertificate();
+                      }
                     },
-                  ],
-                }}
-                trigger={["click"]}
-              >
-                <button className="p-2 hover:bg-gray-100 rounded-full">
-                  {/* <MoreOutlined style={{ fontSize: 20 }} /> */}
-                </button>
-              </Dropdown>
-            </div>
-          )}
+                  },
+                ],
+              }}
+              trigger={["click"]}
+            >
+              <button className="p-2 hover:bg-gray-100 rounded-full">
+                &#8942;
+                {/* <MoreOutlined style={{ fontSize: 20 }} /> */}
+              </button>
+            </Dropdown>
+          </div>
+          {/* )} */}
         </div>
         <div className="">
           <p className="text-sm font-bold my-2">

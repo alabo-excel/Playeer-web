@@ -11,7 +11,7 @@ export interface DropdownAction {
 interface DropdownActionProps {
     isLastRow?: boolean;
     actions: DropdownAction[];
-    children: any;
+    children?: any;
 }
 
 const DropdownAction: React.FC<DropdownActionProps> = ({ isLastRow, actions, children }) => {
