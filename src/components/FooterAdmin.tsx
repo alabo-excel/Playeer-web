@@ -4,7 +4,7 @@ import { Linkedin, Twitter, Instagram } from 'lucide-react';
 
 const FooterAdmin = () => {
     return (
-        <footer className="fixed bottom-0 left-0 right-0 bg-white border-t border-[#DFDFDF] py-6 lg:px-8 z-40">
+        <footer className="lg:fixed bottom-0 left-0 right-0 bg-white border-t border-[#DFDFDF] py-6 lg:px-8 z-40">
             <div className="px-4 md:px-6 flex flex-col md:flex-row justify-between items-center gap-6 md:gap-4">
                 {/* Social Links */}
                 <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">

@@ -355,7 +355,7 @@ const dashboard = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid lg:grid-cols-4 gap-4">
                   {filteredHighlights.map((highlight, index) => (
                     <Card key={index} data={highlight} fetchData={fetchHighlights} type="highlight" />
                   ))}
@@ -458,7 +458,7 @@ const dashboard = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid lg:grid-cols-4 gap-4">
                   {filteredAchievements.map((achievement, index) => (
                     <Card key={index} data={achievement} fetchData={fetchProfile} type="achievement" />
                   ))}
@@ -560,7 +560,7 @@ const dashboard = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-4 gap-4">
+                <div className="grid lg:grid-cols-4 gap-4">
                   {filteredCertificates.map((certificate, index) => (
                     <div key={index}>
                       <Card key={index} data={certificate} fetchData={fetchProfile} type="certificate" />

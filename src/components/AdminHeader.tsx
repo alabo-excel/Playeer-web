@@ -23,7 +23,7 @@ const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
   };
 
   return (
-    <header className="fixed top-0 w-full bg-[#FCFCFC] border-b border-gray lg:py-6 lg:px-8 p-4 flex justify-between lg:z-50">
+    <header className="fixed top-0 w-full bg-[#FCFCFC] border-b border-gray lg:py-6 lg:px-8 p-4 flex justify-between z-50">
       <div className="flex items-center">
         {/* Hamburger menu for mobile/tablet */}
         {/* <button

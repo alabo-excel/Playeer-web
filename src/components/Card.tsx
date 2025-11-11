@@ -190,7 +190,7 @@ const Card: React.FC<CardProps> = ({
                 />
               ) : <video
                 src={data.video}
-                  className="w-full h-96 object-cover rounded-lg"
+                className="w-full h-96 object-cover rounded-lg"
                 controls
               />}
 
