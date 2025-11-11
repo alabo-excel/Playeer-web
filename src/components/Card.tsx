@@ -26,6 +26,8 @@ const Card: React.FC<CardProps> = ({
 }) => {
   const [play, showPlay] = useState(false);
   const [showHighlight, setShowHighlight] = useState(false);
+  const [showAchievement, setShowAchievement] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false);
 
   const deletHighlight = async () => {
     await api.delete(`/highlights/${data._id}`);
@@ -54,7 +56,7 @@ const Card: React.FC<CardProps> = ({
   return (
     <div className="rounded-md">
       <div className="relative">
-        {type === "video" ? (
+        {type === "highlight" ? (
           <video
             src={data.video}
             className="w-full h-48 object-cover rounded-lg"
@@ -66,7 +68,7 @@ const Card: React.FC<CardProps> = ({
               alt={data.title}
               className="w-full h-full object-cover group-hover:opacity-40 transition-opacity"
             />
-            <button className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors opacity-0 group-hover:opacity-100">
+            <button onClick={() => showPlay(true)} className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-black/40 transition-colors opacity-0 group-hover:opacity-100">
               <div className="px-6 py-3 bg-primary text-white rounded-full font-medium text-sm hover:bg-blue-600 transition-colors">
                 Click to view
               </div>
@@ -74,7 +76,7 @@ const Card: React.FC<CardProps> = ({
           </div>
         )}
 
-        {type === "video" ? (
+        {type === "highlight" ? (
           <button
             onClick={() => {
               showPlay(true);
@@ -89,7 +91,7 @@ const Card: React.FC<CardProps> = ({
       <div className="p-2">
         <div className="flex w-full justify-between">
           <div className="flex gap-3">
-            {type === "video" ? (
+            {type === "highlight" ? (
               <>
                 <button className="flex text-xs my-auto bg-[#E5F4FF] justify-between py-1 px-3 rounded-full text-primary">
                   <Eye size={18} />
@@ -110,48 +112,52 @@ const Card: React.FC<CardProps> = ({
           </div>
           {/* {hide ? null : ( */}
           <div className="ml-auto">
-            <Dropdown
-              menu={{
-                items: [
-                  {
-                    key: "edit",
-                    label: "Edit",
-                    onClick: () => {
-                      if (type === "video") {
-                        setShowHighlight(true);
-                      } else if (type === "achievement") {
-                        editAction && editAction();
-                      } else {
-                        editAction && editAction();
-                      }
+            <div className="relative">
+              <Dropdown
+                menu={{
+                  items: [
+                    {
+                      key: "edit",
+                      label: "Edit",
+                      onClick: () => {
+                        if (type === "highlight") {
+                          setShowHighlight(true);
+                        } else if (type === "achievement") {
+                          setShowAchievement(true);
+                        } else if (type === "certificate") {
+                          setShowCertificate(true);
+                        } else if (editAction) {
+                          editAction();
+                        }
+                      },
                     },
-                  },
-                  {
-                    key: "delete",
-                    label: "Delete",
-                    danger: true,
-                    onClick: () => {
-                      if (type === "video") {
-                        deletHighlight();
-                      } else if (type === "achievement") {
-                        deleteAchievement();
-                      } else {
-                        deleteCertificate();
-                      }
+                    {
+                      key: "delete",
+                      label: <span style={{ color: "red" }}>Delete</span>,
+                      onClick: () => {
+                        if (type === "highlight") {
+                          deletHighlight();
+                        } else if (type === "achievement") {
+                          deleteAchievement();
+                        } else if (type === "certificate") {
+                          deleteCertificate();
+                        }
+                      },
                     },
-                  },
-                ],
-              }}
-              trigger={["click"]}
-            >
-              <button className="p-2 hover:bg-gray-100 rounded-full">
-                &#8942;
-                {/* <MoreOutlined style={{ fontSize: 20 }} /> */}
-              </button>
-            </Dropdown>
+                  ],
+                }}
+                trigger={["click"]}
+                placement="bottomRight"
+              >
+                <button className="p-2 hover:bg-gray-100 rounded-full">
+                  &#8942;
+                </button>
+              </Dropdown>
+            </div>
           </div>
           {/* )} */}
         </div>
+
         <div className="">
           <p className="text-sm font-bold my-2">
             {data.title || data.certificateTitle}
@@ -170,17 +176,26 @@ const Card: React.FC<CardProps> = ({
 
       {play && (
         <Modal onClose={() => showPlay(false)} width="800px">
-          <>
-            <p className="text-lg font-bold">{data.title}</p>
+          <section className="w-full">
+            <div>
+              <p className="text-lg font-bold">{data.title || data.certificateTitle}</p>
 
-            <div className="mt-4">
-              <video
-                src={data.video}
-                className="w-full object-cover rounded-lg"
-                controls
-              />
             </div>
-          </>
+            <div className="mt-4">
+              {type !== "highlight" ? (
+                <img
+                  src={data.photo}
+                  className="w-full h-96 object-cover rounded-lg"
+                  alt={data.title}
+                />
+              ) : <video
+                src={data.video}
+                  className="w-full h-96 object-cover rounded-lg"
+                controls
+              />}
+
+            </div>
+          </section>
         </Modal>
       )}
 
@@ -189,6 +204,20 @@ const Card: React.FC<CardProps> = ({
         showModal={showHighlight}
         data={data}
         onCLose={() => setShowHighlight(false)}
+      />
+
+      <AchievementModal
+        show={showAchievement}
+        onClose={() => setShowAchievement(false)}
+        onSuccess={() => fetchData && fetchData()}
+        achievementToEdit={data}
+      />
+
+      <CertificateModal
+        showModal={showCertificate}
+        setShowModal={() => setShowCertificate(false)}
+        onSuccess={() => fetchData && fetchData()}
+        certificateToEdit={data}
       />
     </div>
   );

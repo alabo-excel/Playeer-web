@@ -31,6 +31,7 @@ const dashboard = () => {
   const [highlights, setHighlights] = useState([])
   const [certificates, setCertificates] = useState([])
   const [achievements, setAchievements] = useState([])
+  const [searchQuery, setSearchQuery] = useState("")
 
   const handleCompleteProfile = async () => {
     setWelcome(false);
@@ -91,6 +92,29 @@ const dashboard = () => {
 
   const countryObj = countries.find((c: any) => c.isoCode === user?.country);
   const countryName = countryObj?.name || "-";
+
+  // Filter functions for search
+  const filteredHighlights = highlights.filter((highlight: any) =>
+    searchQuery === "" ||
+    highlight.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    highlight.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    highlight.tags?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredAchievements = achievements.filter((achievement: any) =>
+    searchQuery === "" ||
+    achievement.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    achievement.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    achievement.organizer?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const filteredCertificates = certificates.filter((certificate: any) =>
+    searchQuery === "" ||
+    certificate.certificateTitle?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    certificate.title?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    certificate.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    certificate.issuedBy?.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <AdminLayout>
@@ -266,209 +290,285 @@ const dashboard = () => {
         <div className="min-h-[400px]">
           {/* Highlights Tab */}
           {activeTab === "highlights" && (
-            highlights.length >= 1 ? (
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <div className="relative flex-1 max-w-md">
-                    <input
-                      type="text"
-                      placeholder="Search highlights..."
-                      // value={searchQuery}
-                      // onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    />
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setShowModal(true)}
-                    className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
-                  >
-                    <Plus size={18} />
-                    Upload Highlight
-                  </button>
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div className="relative flex-1 max-w-md">
+                  <input
+                    type="text"
+                    placeholder="Search highlights..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                  </span>
                 </div>
-                <div className="grid grid-cols-4 gap-4">
-                  {highlights.map((highlight, index) => (
-                    <Card key={index} data={highlight} fetchData={fetchHighlights} type="video" />
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="flex justify-center mb-6">
-                  <div className="bg-primary bg-opacity-10 p-4 rounded-full">
-                    <SquarePlay className="text-white" />
-                  </div>
-                </div>
-                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
-                  No highlights yet.
-                </h3>
-                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
-                  Upload your best moments to showcase your talent and get noticed.
-                </p>
-                <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
+                <button
+                  onClick={() => setShowModal(true)}
+                  className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                >
                   <Plus size={18} />
-                  Upload Highlight Video
+                  Upload Highlight
                 </button>
               </div>
-            )
+
+              {highlights.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20">
+                  <div className="flex justify-center mb-6">
+                    <div className="bg-primary bg-opacity-10 p-4 rounded-full">
+                      <SquarePlay className="text-white" />
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                    No highlights yet.
+                  </h3>
+                  <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                    Upload your best moments to showcase your talent and get noticed.
+                  </p>
+                  <button onClick={() => setShowModal(true)} className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
+                    <Plus size={18} />
+                    Upload Highlight Video
+                  </button>
+                </div>
+              ) : filteredHighlights.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20">
+                  <div className="flex justify-center mb-6">
+                    <div className="bg-gray-100 p-4 rounded-full">
+                      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21l-4.35-4.35" />
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                    No highlights found
+                  </h3>
+                  <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                    No highlights match your search "{searchQuery}". Try different keywords or clear your search.
+                  </p>
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="text-primary text-sm font-medium hover:underline"
+                  >
+                    Clear search
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-4 gap-4">
+                  {filteredHighlights.map((highlight, index) => (
+                    <Card key={index} data={highlight} fetchData={fetchHighlights} type="highlight" />
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           {/* Achievements Tab */}
           {activeTab === "achievements" && (
-            achievements.length >= 1 ? (
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <div className="relative flex-1 max-w-md">
-                    <input
-                      type="text"
-                      placeholder="Search Achievements..."
-                      // value={searchQuery}
-                      // onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    />
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
-                    </span>
-                  </div>
-                  <button
-                    onClick={() => setShowAchievement(true)}
-                    className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
-                  >
-                    <Plus size={18} />
-                    Add Achievement
-                  </button>
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div className="relative flex-1 max-w-md">
+                  <input
+                    type="text"
+                    placeholder="Search Achievements..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                  </span>
                 </div>
-                <div className="grid grid-cols-4 gap-4">
-                  {achievements.map((achievement, index) => (
-                    <Card key={index} data={achievement} fetchData={fetchProfile} type="achievement" />
-                  ))}
-                </div>
-              </div>
-            ) : user?.plan === 'free' ? (
-              // Free plan - show upgrade message
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="flex justify-center mb-6">
-                  <img src="/images/icons/achievements-lo.png" alt="" />
-                </div>
-                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
-                  Show Your Achievements and Make Your Profile Stand Out
-                </h3>
-                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
-                  Highlight your awards, tournament wins, MVP moments, or national selections to prove your competitive edge.                </p>
-
-                <button className="text-[#FFE9E9] py-3 bg-[#EE9C2E] rounded-full px-4 flex items-center gap-2 text-sm mb-3">
-                  <TriangleAlert />
-                  Achievements can only be added on the Pro Plan.
-                </button>
-                <Link href="/user/update-plan">
-                  <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
-                    {/* <CreditCard size={18} /> */}
-                    Upgrade Plan
-                  </button>
-                </Link>
-              </div>
-            ) : (
-              // Premium plan - show add achievements message
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="flex justify-center mb-6">
-                  <img src="/images/icons/achievements.png" alt="" />
-                </div>
-                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
-                  No achievements added yet.
-                </h3>
-                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
-                  Showcase your career milestones whether it’s tournament wins, MVP awards, trials, or big moments on the pitch.                </p>
-
                 <button
                   onClick={() => setShowAchievement(true)}
-                  className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
+                  className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
                 >
                   <Plus size={18} />
                   Add Achievement
                 </button>
               </div>
-            )
+
+              {achievements.length === 0 ? (
+                user?.plan === 'free' ? (
+                  // Free plan - show upgrade message
+                  <div className="flex flex-col items-center justify-center py-20">
+                    <div className="flex justify-center mb-6">
+                      <img src="/images/icons/achievements-lo.png" alt="" />
+                    </div>
+                    <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                      Show Your Achievements and Make Your Profile Stand Out
+                    </h3>
+                    <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                      Highlight your awards, tournament wins, MVP moments, or national selections to prove your competitive edge.                </p>
+
+                    <button className="text-[#FFE9E9] py-3 bg-[#EE9C2E] rounded-full px-4 flex items-center gap-2 text-sm mb-3">
+                      <TriangleAlert />
+                      Achievements can only be added on the Pro Plan.
+                    </button>
+                    <Link href="/user/update-plan">
+                      <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
+                        {/* <CreditCard size={18} /> */}
+                        Upgrade Plan
+                      </button>
+                    </Link>
+                  </div>
+                ) : (
+                  // Premium plan - show add achievements message
+                  <div className="flex flex-col items-center justify-center py-20">
+                    <div className="flex justify-center mb-6">
+                      <img src="/images/icons/achievements.png" alt="" />
+                    </div>
+                    <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                      No achievements added yet.
+                    </h3>
+                    <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                      Showcase your career milestones whether it’s tournament wins, MVP awards, trials, or big moments on the pitch.                </p>
+
+                    <button
+                      onClick={() => setShowAchievement(true)}
+                      className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
+                    >
+                      <Plus size={18} />
+                      Add Achievement
+                    </button>
+                  </div>
+                )
+              ) : filteredAchievements.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20">
+                  <div className="flex justify-center mb-6">
+                    <div className="bg-gray-100 p-4 rounded-full">
+                      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21l-4.35-4.35" />
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                    No achievements found
+                  </h3>
+                  <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                    No achievements match your search "{searchQuery}". Try different keywords or clear your search.
+                  </p>
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="text-primary text-sm font-medium hover:underline"
+                  >
+                    Clear search
+                  </button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-4 gap-4">
+                  {filteredAchievements.map((achievement, index) => (
+                    <Card key={index} data={achievement} fetchData={fetchProfile} type="achievement" />
+                  ))}
+                </div>
+              )}
+            </>
           )}
 
           {/* Certifications Tab */}
           {activeTab === "certifications" && (
-            certificates.length >= 1 ? (
-              <div>
-                <div className="flex justify-between items-center mb-6">
-                  <div className="relative flex-1 max-w-md">
-                    <input
-                      type="text"
-                      placeholder="Search Certificates..."
-                      // value={searchQuery}
-                      // onChange={(e) => setSearchQuery(e.target.value)}
-                      className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    />
-                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
-                    </span>
+            <>
+              <div className="flex justify-between items-center mb-6">
+                <div className="relative flex-1 max-w-md">
+                  <input
+                    type="text"
+                    placeholder="Search Certificates..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  />
+                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                    <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                  </span>
+                </div>
+                <button
+                  onClick={() => setShowCertModal(true)}
+                  className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                >
+                  <Plus size={18} />
+                  Add Certificate
+                </button>
+              </div>
+
+              {certificates.length === 0 ? (
+                user?.plan === 'free' ? (
+                  // Free plan - show upgrade message
+                  <div className="flex flex-col items-center justify-center py-20">
+                    <div className="flex justify-center mb-6">
+                      <img src="/images/icons/certification-lo.png" alt="" />
+                    </div>
+                    <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                      Upload Your Certifications Unlock Credibility
+                    </h3>
+                    <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                      Showcase your training licenses, academy acceptance letters, or verified documents to boost your profile and gain trust from scouts and coaches.
+                    </p>
+                    <button className="text-[#FFE9E9] py-3 bg-[#EE9C2E] rounded-full px-4 flex items-center gap-2 text-sm mb-3">
+                      <TriangleAlert />
+                      Certification uploads are available only on the Pro Plan.
+                    </button>
+                    <Link href="/user/update-plan">
+                      <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
+                        {/* <CreditCard size={18} /> */}
+                        Upgrade Plan
+                      </button>
+                    </Link>
                   </div>
+                ) : (
+                  // Premium plan - show add certificates message
+                  <div className="flex flex-col items-center justify-center py-20">
+                    <div className="flex justify-center mb-6">
+                      <img src="/images/icons/certification.png" alt="" />
+                    </div>
+                    <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                      No certification uploaded yet.
+                    </h3>
+                    <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                      Add your verified training certificates, academy licenses, or fitness test results to build credibility.                </p>
+                    <button
+                      onClick={() => setShowCertModal(true)}
+                      className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
+                    >
+                      <Plus size={18} />
+                      Add Certification
+                    </button>
+                  </div>
+                )
+              ) : filteredCertificates.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20">
+                  <div className="flex justify-center mb-6">
+                    <div className="bg-gray-100 p-4 rounded-full">
+                      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                        <circle cx="11" cy="11" r="8" />
+                        <path d="M21 21l-4.35-4.35" />
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                    No certificates found
+                  </h3>
+                  <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                    No certificates match your search "{searchQuery}". Try different keywords or clear your search.
+                  </p>
                   <button
-                    onClick={() => setShowCertModal(true)}
-                    className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                    onClick={() => setSearchQuery("")}
+                    className="text-primary text-sm font-medium hover:underline"
                   >
-                    <Plus size={18} />
-                    Add Certificate
+                    Clear search
                   </button>
                 </div>
+              ) : (
                 <div className="grid grid-cols-4 gap-4">
-                  {certificates.map((certificate, index) => (
+                  {filteredCertificates.map((certificate, index) => (
                     <div key={index}>
                       <Card key={index} data={certificate} fetchData={fetchProfile} type="certificate" />
                     </div>
                   ))}
                 </div>
-              </div>
-            ) : user?.plan === 'free' ? (
-              // Free plan - show upgrade message
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="flex justify-center mb-6">
-                  <img src="/images/icons/certification-lo.png" alt="" />
-                </div>
-                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
-                  Upload Your Certifications Unlock Credibility
-                </h3>
-                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
-                  Showcase your training licenses, academy acceptance letters, or verified documents to boost your profile and gain trust from scouts and coaches.
-                </p>
-                <button className="text-[#FFE9E9] py-3 bg-[#EE9C2E] rounded-full px-4 flex items-center gap-2 text-sm mb-3">
-                  <TriangleAlert />
-                  Certification uploads are available only on the Pro Plan.
-                </button>
-                <Link href="/user/update-plan">
-                  <button className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition">
-                    {/* <CreditCard size={18} /> */}
-                    Upgrade Plan
-                  </button>
-                </Link>
-              </div>
-            ) : (
-              // Premium plan - show add certificates message
-              <div className="flex flex-col items-center justify-center py-20">
-                <div className="flex justify-center mb-6">
-                  <img src="/images/icons/certification.png" alt="" />
-                </div>
-                <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
-                  No certification uploaded yet.
-                </h3>
-                <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
-                  Add your verified training certificates, academy licenses, or fitness test results to build credibility.                </p>
-                <button
-                  onClick={() => setShowCertModal(true)}
-                  className="flex items-center gap-2 bg-primary text-white px-8 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
-                >
-                  <Plus size={18} />
-                  Add Certification
-                </button>
-              </div>
-            )
+              )}
+            </>
           )}
         </div>
 
