@@ -29,7 +29,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       )} */}
       <section className="flex dashboard">
         {/* <SideNav open={sidebarOpen} onClose={() => setSidebarOpen(false)} /> */}
-        <section className="w-full p-4 mt-20 mb-32 transition-all duration-300">
+        <section className="w-full lg:p-4 mt-20 lg:mb-32 transition-all duration-300">
           {children}
         </section>
       </section>

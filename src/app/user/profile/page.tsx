@@ -255,18 +255,18 @@ function Profile() {
 
   return (
     <AdminLayout>
-      <div className="pt-8">
-        <div className="max-w-7xl mx-auto px-4">
-          <button className="flex items-center gap-2 text-[#222] text-sm mb-8" onClick={() => window.history.back()}>
-            <ArrowLeft />
+      <div className="pt-4 sm:pt-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <button className="flex items-center gap-2 text-[#222] text-sm mb-6 sm:mb-8 hover:text-primary transition" onClick={() => window.history.back()}>
+            <ArrowLeft size={16} />
             Back
           </button>
-          <h1 className="text-2xl font-bold text-[#222] mb-2">Edit Profile</h1>
-          <p className="text-[#666] mb-8">Keep your profile updated so you stand out and get noticed.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            <div>
-              <div className="border border-[#E8E8E8] rounded-2xl p-8 flex gap-4 mb-4">
-                <div className="w-28 h-28 rounded-full bg-[#F4F4F4] border border-[#BFBFBF] flex items-center justify-center mb-4 overflow-hidden">
+          <h1 className="text-xl sm:text-2xl font-bold text-[#222] mb-2">Edit Profile</h1>
+          <p className="text-sm sm:text-base text-[#666] mb-6 sm:mb-8">Keep your profile updated so you stand out and get noticed.</p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
+            <div className="order-1 lg:order-none">
+              <div className="border border-[#E8E8E8] rounded-2xl p-4 sm:p-6 lg:p-8 flex flex-col sm:flex-row lg:flex-col gap-4 mb-4">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-28 lg:h-28 rounded-full bg-[#F4F4F4] border border-[#BFBFBF] flex items-center justify-center mx-auto sm:mx-0 lg:mx-auto mb-4 sm:mb-0 lg:mb-4 overflow-hidden flex-shrink-0">
                   {form.profilePicturePreview ? (
                     <img
                       src={form.profilePicturePreview}
@@ -274,10 +274,10 @@ function Profile() {
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span className="text-4xl font-bold text-[#BFBFBF]">{getInitials()}</span>
+                    <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#BFBFBF]">{getInitials()}</span>
                   )}
                 </div>
-                <div>
+                <div className="text-center sm:text-left lg:text-center flex-1">
                   <p className="font-semibold text-sm mb-1">Add Your Profile Photo</p>
                   <p className="text-xs text-[#666] mb-3">A clear photo helps scouts and fans recognize you.</p>
                   <input
@@ -290,16 +290,16 @@ function Profile() {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="border border-primary text-primary rounded-full px-5 py-2 bg-white text-sm font-medium hover:bg-blue-50 transition"
+                    className="border border-primary text-primary rounded-full px-4 sm:px-5 py-2 bg-white text-sm font-medium hover:bg-blue-50 transition w-full sm:w-auto"
                   >
                     Upload Photo
                   </button>
                 </div>
               </div>
             </div>
-            <form className="grid grid-cols-2 gap-6" onSubmit={handleSubmit}>
-              <div>
-                <label className="block text-[#222] mb-2">First Name</label>
+            <form className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 order-2 lg:order-none" onSubmit={handleSubmit}>
+              <div className="sm:col-span-1">
+                <label className="block text-[#222] mb-2 text-sm font-medium">First Name</label>
                 <input
                   name="firstName"
                   value={form.firstName}
@@ -309,8 +309,8 @@ function Profile() {
                 />
                 {errors.firstName && <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Last Name</label>
+              <div className="sm:col-span-1">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Last Name</label>
                 <input
                   name="lastName"
                   value={form.lastName}
@@ -320,8 +320,8 @@ function Profile() {
                 />
                 {errors.lastName && <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Email Address</label>
+              <div className="sm:col-span-2">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Email Address</label>
                 <input
                   name="email"
                   type="email"
@@ -332,15 +332,15 @@ function Profile() {
                 />
                 {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Phone Number</label>
+              <div className="sm:col-span-2">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Phone Number</label>
                 <div className="flex items-stretch gap-2">
                   <div className="relative">
                     <select
                       name="phoneCountry"
                       value={form.phoneCountry}
                       onChange={handleChange}
-                      className="appearance-none pl-3 pr-8 py-3 border border-[#E8E8E8] rounded-md bg-white text-xs text-[#222] max-w-[90px] h-full focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="appearance-none pl-2 sm:pl-3 pr-6 sm:pr-8 py-3 border border-[#E8E8E8] rounded-md bg-white text-xs text-[#222] w-16 sm:w-20 lg:max-w-[90px] h-full focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                       {getPopularCountries().map(country => (
                         <option key={country.isoCode} value={country.isoCode}>
@@ -348,11 +348,6 @@ function Profile() {
                         </option>
                       ))}
                     </select>
-                    {/* <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                      <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </div> */}
                   </div>
                   <input
                     name="phone"
@@ -369,8 +364,8 @@ function Profile() {
                 )}
                 {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Gender</label>
+              <div className="sm:col-span-1">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Gender</label>
                 <select
                   name="gender"
                   value={form.gender}
@@ -384,8 +379,8 @@ function Profile() {
                 </select>
                 {errors.gender && <p className="text-red-500 text-xs mt-1">{errors.gender}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Date of Birth</label>
+              <div className="sm:col-span-1">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Date of Birth</label>
                 <div className="relative">
                   <input
                     name="dateOfBirth"
@@ -400,8 +395,8 @@ function Profile() {
                 </div>
                 {errors.dateOfBirth && <p className="text-red-500 text-xs mt-1">{errors.dateOfBirth}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Nationality</label>
+              <div className="sm:col-span-2">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Nationality</label>
                 <select
                   name="country"
                   value={form.country}
@@ -415,8 +410,8 @@ function Profile() {
                 </select>
                 {errors.country && <p className="text-red-500 text-xs mt-1">{errors.country}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Primary Position</label>
+              <div className="sm:col-span-1">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Primary Position</label>
                 <select
                   name="mainPosition"
                   value={form.mainPosition}
@@ -430,8 +425,8 @@ function Profile() {
                 </select>
                 {errors.mainPosition && <p className="text-red-500 text-xs mt-1">{errors.mainPosition}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Secondary Position</label>
+              <div className="sm:col-span-1">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Secondary Position</label>
                 <select
                   name="secondaryPosition"
                   value={form.secondaryPosition}
@@ -444,8 +439,8 @@ function Profile() {
                   ))}
                 </select>
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Preferred Foot</label>
+              <div className="sm:col-span-2">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Preferred Foot</label>
                 <select
                   name="dominantFoot"
                   value={form.dominantFoot}
@@ -459,8 +454,8 @@ function Profile() {
                 </select>
                 {errors.dominantFoot && <p className="text-red-500 text-xs mt-1">{errors.dominantFoot}</p>}
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Height</label>
+              <div className="sm:col-span-1">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Height</label>
                 <input
                   name="height"
                   value={form.height}
@@ -470,8 +465,8 @@ function Profile() {
                   placeholder="E.g 162 cm"
                 />
               </div>
-              <div>
-                <label className="block text-[#222] mb-2">Weight</label>
+              <div className="sm:col-span-1">
+                <label className="block text-[#222] mb-2 text-sm font-medium">Weight</label>
                 <input
                   name="weight"
                   value={form.weight}
@@ -482,15 +477,15 @@ function Profile() {
                 />
               </div>
               {errors.submit && (
-                <div className="col-span-2">
+                <div className="sm:col-span-2">
                   <p className="text-red-500 text-sm">{errors.submit}</p>
                 </div>
               )}
-              <div className="col-span-2 flex justify-end mt-4">
+              <div className="sm:col-span-2 flex justify-end mt-4">
                 <button
                   type="submit"
                   disabled={loading}
-                  className={`rounded-full w-full text-white px-16 py-3 font-semibold text-base shadow-sm transition ${loading
+                  className={`rounded-full w-full text-white px-8 sm:px-16 py-3 font-semibold text-base shadow-sm transition ${loading
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-primary hover:opacity-90'
                     }`}

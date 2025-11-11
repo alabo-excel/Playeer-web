@@ -118,12 +118,12 @@ const dashboard = () => {
 
   return (
     <AdminLayout>
-      <div className="pt-3 lg:px-8">
+      <div className="pt-3 px-4 sm:px-6 lg:px-8">
         {/* Profile Header Card */}
-        <div className="bg-[#F4F4F4] rounded-3xl p-8 mb-6">
-          <div className="flex gap-6 mb-6">
+        <div className="bg-[#F4F4F4] rounded-3xl p-4 sm:p-6 lg:p-8 mb-6">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-6">
             {/* Avatar */}
-            <div className="w-32 h-32 rounded-full border-2 border-[#DFDFDF] bg-[#F5F5F5] flex items-center justify-center flex-shrink-0">
+            <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-full border-2 border-[#DFDFDF] bg-[#F5F5F5] flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0">
               {user?.profilePicture ? (
                 <img
                   src={user.profilePicture}
@@ -131,31 +131,31 @@ const dashboard = () => {
                   className="w-full h-full rounded-full object-cover"
                 />
               ) : (
-                <span className="text-4xl font-bold text-[#BFBFBF]">
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#BFBFBF]">
                   {getInitials()}
                 </span>
               )}
             </div>
 
             {/* User Info */}
-            <div className="flex-1">
-              <div className="flex justify-between items-start mb-4">
-                <div className="flex gap-4">
-                  <h1 className="text-2xl font-bold text-[#1F1F1F] mb-1">
+            <div className="flex-1 text-center sm:text-left">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
+                <div className="flex sm:gap-4 justify-center items-center">
+                  <h1 className="text-xl sm:text-2xl font-bold text-[#1F1F1F] mb-2 sm:mb-1">
                     {user?.fullName || "User"}
                   </h1>
                   {user?.plan === "free" ?
-                    <span className="inline-block my-auto bg-[#E8F4E8] text-[#0F973D] px-3 py-1 rounded-full text-xs font-medium">
+                    <span className="inline-block bg-[#E8F4E8] text-[#0F973D] px-3 py-1 rounded-full text-xs font-medium">
                       {user?.plan === "free" ? "Free" : user?.plan || "Free"}
-                    </span> : <BadgeCheck fill='#1969FE' className='text-white my-auto' />}
+                    </span> : <BadgeCheck fill='#1969FE' className='text-white' />}
                 </div>
               </div>
 
               {/* Stats Grid */}
-              <div className="grid grid-cols-6 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6">
                 <div>
                   <p className="text-xs text-[#6C6C6C] mb-1">Email address</p>
-                  <p className="text-sm font-medium text-[#1F1F1F]">
+                  <p className="text-sm font-medium text-[#1F1F1F] break-all">
                     {user?.email || "-"}
                   </p>
                 </div>
@@ -183,18 +183,20 @@ const dashboard = () => {
                     {countryName}
                   </p>
                 </div>
-                <Link href={'/user/profile'}>
-                  <button
-                    className="flex w-full justify-center items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
-                  >
-                    <PencilLine size={16} />
-                    Edit Profile
-                  </button>
-                </Link>
-
+                <div className="sm:col-span-2 lg:col-span-1">
+                  <Link href={'/user/profile'}>
+                    <button
+                      className="flex w-full justify-center items-center gap-2 bg-primary text-white px-4 sm:px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition"
+                    >
+                      <PencilLine size={16} />
+                      <span className="hidden sm:inline">Edit Profile</span>
+                      <span className="sm:hidden">Edit</span>
+                    </button>
+                  </Link>
+                </div>
               </div>
 
-              <div className="grid grid-cols-6 gap-6 mt-4 pt-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-6 gap-4 lg:gap-6 mt-4 pt-4 border-t border-[#DFDFDF] lg:border-t-0 lg:pt-4">
                 <div>
                   <p className="text-xs text-[#6C6C6C] mb-1">
                     Preferred Position
@@ -229,12 +231,15 @@ const dashboard = () => {
                     {user?.weight || "-"}
                   </p>
                 </div>
-                <Link href={'/user/update-plan'}>
-                  <button className="flex w-full items-center justify-center gap-2 border border-primary text-primary px-6 py-3 rounded-full text-sm font-medium hover:bg-[#E5F4FF] transition">
-                    <CreditCard size={16} />
-                    My Subscription
-                  </button>
-                </Link>
+                <div className="sm:col-span-2 lg:col-span-1">
+                  <Link href={'/user/update-plan'}>
+                    <button className="flex w-full items-center justify-center gap-2 border border-primary text-primary px-4 sm:px-6 py-3 rounded-full text-sm font-medium hover:bg-[#E5F4FF] transition">
+                      <CreditCard size={16} />
+                      <span className="hidden sm:inline">My Subscription</span>
+                      <span className="sm:hidden">Plan</span>
+                    </button>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
@@ -242,15 +247,16 @@ const dashboard = () => {
 
         {/* Tabs Navigation */}
         <div className="border-b border-[#DFDFDF] mb-6">
-          <div className="flex gap-8">
+          <div className="flex flex-wrap gap-4 sm:gap-8 overflow-x-auto">
             <button
               onClick={() => setActiveTab("highlights")}
-              className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === "highlights"
+              className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === "highlights"
                 ? "text-[#1F1F1F]"
                 : ""
                 }`}
             >
-              Highlight Videos
+              <span className="hidden sm:inline">Highlight Videos</span>
+              <span className="sm:hidden">Highlights</span>
               {activeTab === "highlights" && (
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full"></div>
               )}
@@ -259,7 +265,7 @@ const dashboard = () => {
               <>
                 <button
                   onClick={() => setActiveTab("achievements")}
-                  className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === "achievements"
+                  className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === "achievements"
                     ? "text-[#1F1F1F]"
                     : "text-[#6C6C6C] hover:text-[#1F1F1F]"
                     }`}
@@ -271,12 +277,13 @@ const dashboard = () => {
                 </button>
                 <button
                   onClick={() => setActiveTab("certifications")}
-                  className={`pb-4 text-sm font-medium transition-colors relative ${activeTab === "certifications"
+                  className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === "certifications"
                     ? "text-[#1F1F1F]"
                     : "text-[#6C6C6C] hover:text-[#1F1F1F]"
                     }`}
                 >
-                  Certifications
+                  <span className="hidden sm:inline">Certifications</span>
+                  <span className="sm:hidden">Certificates</span>
                   {activeTab === "certifications" && (
                     <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full"></div>
                   )}
@@ -291,8 +298,8 @@ const dashboard = () => {
           {/* Highlights Tab */}
           {activeTab === "highlights" && (
             <>
-              <div className="flex justify-between items-center mb-6">
-                <div className="relative flex-1 max-w-md">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+                <div className="relative flex-1 max-w-full sm:max-w-md">
                   <input
                     type="text"
                     placeholder="Search highlights..."
@@ -306,10 +313,11 @@ const dashboard = () => {
                 </div>
                 <button
                   onClick={() => setShowModal(true)}
-                  className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                  className="flex items-center justify-center gap-2 bg-primary text-white px-4 sm:px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition w-full sm:w-auto"
                 >
                   <Plus size={18} />
-                  Upload Highlight
+                  <span className="hidden sm:inline">Upload Highlight</span>
+                  <span className="sm:hidden">Upload</span>
                 </button>
               </div>
 
@@ -355,7 +363,7 @@ const dashboard = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {filteredHighlights.map((highlight, index) => (
                     <Card key={index} data={highlight} fetchData={fetchHighlights} type="highlight" />
                   ))}
@@ -367,8 +375,8 @@ const dashboard = () => {
           {/* Achievements Tab */}
           {activeTab === "achievements" && (
             <>
-              <div className="flex justify-between items-center mb-6">
-                <div className="relative flex-1 max-w-md">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+                <div className="relative flex-1 max-w-full sm:max-w-md">
                   <input
                     type="text"
                     placeholder="Search Achievements..."
@@ -382,10 +390,11 @@ const dashboard = () => {
                 </div>
                 <button
                   onClick={() => setShowAchievement(true)}
-                  className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                  className="flex items-center justify-center gap-2 bg-primary text-white px-4 sm:px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition w-full sm:w-auto"
                 >
                   <Plus size={18} />
-                  Add Achievement
+                  <span className="hidden sm:inline">Add Achievement</span>
+                  <span className="sm:hidden">Add</span>
                 </button>
               </div>
 
@@ -458,7 +467,7 @@ const dashboard = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {filteredAchievements.map((achievement, index) => (
                     <Card key={index} data={achievement} fetchData={fetchProfile} type="achievement" />
                   ))}
@@ -470,8 +479,8 @@ const dashboard = () => {
           {/* Certifications Tab */}
           {activeTab === "certifications" && (
             <>
-              <div className="flex justify-between items-center mb-6">
-                <div className="relative flex-1 max-w-md">
+              <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+                <div className="relative flex-1 max-w-full sm:max-w-md">
                   <input
                     type="text"
                     placeholder="Search Certificates..."
@@ -485,10 +494,11 @@ const dashboard = () => {
                 </div>
                 <button
                   onClick={() => setShowCertModal(true)}
-                  className="flex items-center gap-2 bg-primary text-white px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition ml-4"
+                  className="flex items-center justify-center gap-2 bg-primary text-white px-4 sm:px-6 py-3 rounded-full text-sm font-medium hover:opacity-90 transition w-full sm:w-auto"
                 >
                   <Plus size={18} />
-                  Add Certificate
+                  <span className="hidden sm:inline">Add Certificate</span>
+                  <span className="sm:hidden">Add</span>
                 </button>
               </div>
 
@@ -560,7 +570,7 @@ const dashboard = () => {
                   </button>
                 </div>
               ) : (
-                <div className="grid lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                   {filteredCertificates.map((certificate, index) => (
                     <div key={index}>
                       <Card key={index} data={certificate} fetchData={fetchProfile} type="certificate" />
