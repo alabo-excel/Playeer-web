@@ -183,206 +183,207 @@ const AchievementModal = ({
   return (
     <>
       {show && (
-        <Modal onClose={onClose} width="600px">
-          <form onSubmit={handleAchievementSubmit}>
+        <Modal onClose={onClose} width="900px">
+          <form className="w-full" onSubmit={handleAchievementSubmit}>
             <div>
-              {achievementToEdit ? (
-                <p className="text-lg font-bold">Edit Achievement</p>
-              ) : (
-                <p className="text-lg font-bold">Add New Achievement Card</p>
-              )}
-              <div className="grid grid-cols-2 gap-4 my-4">
-                <div>
-                  <label className="font-semibold text-sm mb-2">Title</label>
-                  <input
-                    placeholder="e.g., Top Scorer – U17 Cup"
-                    type="text"
-                    name="title"
-                    value={achievementForm.title}
-                    onChange={handleAchievementInput}
-                    className={`p-3 rounded-md w-full ${
-                      achievementErrors.title
-                        ? "border border-red-500"
-                        : "bg-[#F4F4F4]"
-                    }`}
-                  />
-                  {achievementErrors.title && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {achievementErrors.title}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="font-semibold text-sm mb-2">
-                    Competition Name
-                  </label>
-                  <input
-                    placeholder="e.g., Shell Cup"
-                    type="text"
-                    name="competition"
-                    value={achievementForm.competition}
-                    onChange={handleAchievementInput}
-                    className={`p-3 rounded-md w-full ${
-                      achievementErrors.competition
-                        ? "border border-red-500"
-                        : "bg-[#F4F4F4]"
-                    }`}
-                  />
-                  {achievementErrors.competition && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {achievementErrors.competition}
-                    </p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="font-semibold text-sm mb-2">
-                    Organizer
-                  </label>
-                  <input
-                    placeholder="e.g., Lagos FA"
-                    type="text"
-                    name="organizer"
-                    value={achievementForm.organizer}
-                    onChange={handleAchievementInput}
-                    className={`p-3 rounded-md w-full ${
-                      achievementErrors.organizer
-                        ? "border border-red-500"
-                        : "bg-[#F4F4F4]"
-                    }`}
-                  />
-                  {achievementErrors.organizer && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {achievementErrors.organizer}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="font-semibold text-sm mb-2">Date</label>
-                  <input
-                    type="date"
-                    name="date"
-                    value={achievementForm.date}
-                    onChange={handleAchievementInput}
-                    className={`p-3 rounded-md w-full ${
-                      achievementErrors.date
-                        ? "border border-red-500"
-                        : "bg-[#F4F4F4]"
-                    }`}
-                  />
-                  {achievementErrors.date && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {achievementErrors.date}
-                    </p>
-                  )}
-                </div>
-              </div>
-
-              <div className="my-4">
-                <label className="font-semibold text-sm mb-2">
-                  Description
-                </label>
-                <textarea
-                  placeholder="Brief details about this achievement"
-                  name="description"
-                  value={achievementForm.description}
-                  onChange={handleAchievementInput}
-                  className={`p-3 rounded-md w-full h-32 ${
-                    achievementErrors.description
-                      ? "border border-red-500"
-                      : "bg-[#F4F4F4]"
-                  }`}
-                ></textarea>
-                {achievementErrors.description && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {achievementErrors.description}
-                  </p>
-                )}
-              </div>
-
-              <div
-                className={`my-4 border border-dashed rounded-xl p-3 ${
-                  achievementErrors.file ? "border-red-500" : "border-[#D8DADE]"
-                }`}
-              >
-                {achievementForm.preview ? (
-                  <div className="relative">
-                    <img
-                      src={achievementForm.preview}
-                      alt="Preview"
-                      className="w-full h-32 object-cover rounded-lg"
-                    />
-                    <button
-                      type="button"
-                      onClick={removeAchievementImage}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
-                    >
-                      ×
-                    </button>
-                  </div>
+              <div className="my-6">
+                {achievementToEdit ? (
+                  <p className="text-xl font-bold">Edit Achievement</p>
                 ) : (
-                  <>
-                    <div className="mb-3 flex gap-3">
-                      <button
-                        type="button"
-                        className="bg-[#F4F4F4] rounded-full p-4"
-                      >
-                        <CloudUpload />
-                      </button>
-                      <div className="my-auto">
-                        <p className="text-sm font-semibold">Upload Photos</p>
-                        <p className="text-xs text-[#B6B6B6]">
-                          JPG, PNG accepted (max 4mb)
-                        </p>
-                      </div>
-                    </div>
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png"
-                      onChange={handleAchievementFile}
-                      ref={achievementUploadRef}
-                      className="hidden"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => achievementUploadRef.current?.click()}
-                      className="bg-[#E5F4FF] text-primary p-2 rounded-xl text-sm w-full"
-                    >
-                      Click to upload
-                    </button>
-                  </>
+                  <p className="text-xl font-bold">Add New Achievement</p>
                 )}
-                {achievementErrors.file && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {achievementErrors.file}
-                  </p>
-                )}
+                <p className="text-sm">Highlight your proudest football moments, trophies, awards, or personal milestones.</p>
+
               </div>
-              <button
-                type="submit"
-                className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+
+              <div className="flex gap-6">
+                <div className="w-[40%] text-center">
+                  <div
+                    className={`my-4 border border-dashed rounded-xl p-3 ${achievementErrors.file ? "border-red-500" : "border-[#D8DADE]"
+                      }`}
+                  >
+                    {achievementForm.preview ? (
+                      <div className="relative">
+                        <img
+                          src={achievementForm.preview}
+                          alt="Preview"
+                          className="w-full h-44 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={removeAchievementImage}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="mb-3 flex flex-col items-center text-center gap-3">
+                          <button
+                            type="button"
+                            className="bg-[#F4F4F4] rounded-full p-4"
+                          >
+                            <CloudUpload />
+                          </button>
+                          <div className="my-auto">
+                            <p className="text-sm font-semibold">Upload Photos</p>
+                            <p className="text-xs text-[#B6B6B6]">
+                              JPG, PNG accepted (max 4mb)
+                            </p>
+                          </div>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png"
+                          onChange={handleAchievementFile}
+                          ref={achievementUploadRef}
+                          className="hidden"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => achievementUploadRef.current?.click()}
+                          className="bg-[#F4F4F4] p-2 rounded-full px-6 mx-auto text-sm"
+                        >
+                          Browse File
+                        </button>
+                      </>
+                    )}
+                    {achievementErrors.file && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {achievementErrors.file}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="w-[60%]">
+                  <div className="my-4">
+                    <label className="mb-2">Achievement Title</label>
+                    <input
+                      placeholder="e.g., Top Scorer – U17 Cup"
+                      type="text"
+                      name="title"
+                      value={achievementForm.title}
+                      onChange={handleAchievementInput}
+                      className={`p-3 bg-white rounded-md w-full ${achievementErrors.title
+                        ? "border border-red-500"
+                        : "border border-[#DFDFDF]"
+                        }`}
+                    />
+                    {achievementErrors.title && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {achievementErrors.title}
+                      </p>
+                    )}
+                  </div>
+                  <div className="my-4">
+                    <label className="mb-2">
+                      Competition Name
+                    </label>
+                    <input
+                      placeholder="e.g., Shell Cup"
+                      type="text"
+                      name="competition"
+                      value={achievementForm.competition}
+                      onChange={handleAchievementInput}
+                      className={`p-3 bg-white rounded-md w-full ${achievementErrors.competition
+                        ? "border border-red-500"
+                        : "border border-[#DFDFDF]"
+                        }`}
+                    />
+                    {achievementErrors.competition && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {achievementErrors.competition}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="my-4">
+                    <label className="mb-2">Organizer</label>
+                    <input
+                      placeholder="e.g., Lagos FA"
+                      type="text"
+                      name="organizer"
+                      value={achievementForm.organizer}
+                      onChange={handleAchievementInput}
+                      className={`p-3 bg-white rounded-md w-full ${achievementErrors.organizer
+                        ? "border border-red-500"
+                        : "border border-[#DFDFDF]"
+                        }`}
+                    />
+                    {achievementErrors.organizer && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {achievementErrors.organizer}
+                      </p>
+                    )}
+                  </div>
+                  <div className="my-4">
+                    <label className="mb-2">Date Earned</label>
+                    <input
+                      type="date"
+                      name="date"
+                      value={achievementForm.date}
+                      onChange={handleAchievementInput}
+                      className={`p-3 bg-white rounded-md w-full ${achievementErrors.date
+                        ? "border border-red-500"
+                        : "border border-[#DFDFDF]"
+                        }`}
+                    />
+                    {achievementErrors.date && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {achievementErrors.date}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="my-4">
+                    <label className="mb-2">
+                      Description
+                    </label>
+                    <textarea
+                      placeholder="Brief details about this achievement"
+                      name="description"
+                      value={achievementForm.description}
+                      onChange={handleAchievementInput}
+                      className={`p-3 bg-white rounded-md w-full h-32 ${achievementErrors.description
+                        ? "border border-red-500"
+                        : "border border-[#DFDFDF]"
+                        }`}
+                    ></textarea>
+                    {achievementErrors.description && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {achievementErrors.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
                   ${achievementUploading ? "border border-primary bg-[#E5F4FF] text-primary" : "bg-primary text-[#FCFCFC]"}
                 `}
-                disabled={achievementUploading}
-              >
-                {achievementUploading ? (
-                  <span className="flex items-center justify-center">
-                    <Spin size="small" style={{ color: "#0095FF" }} />
-                  </span>
-                ) : (
-                  <div className="flex justify-center items-center gap-3">
-                    <Plus size={15} />
-                    <span className="my-auto">
-                      {achievementToEdit ? "Save Changes" : "Save Achievement"}
-                    </span>
-                  </div>
-                )}
-              </button>
-              {achievementError && (
-                <p className="text-red-500 text-xs mt-3 text-center">
-                  {achievementError}
-                </p>
-              )}
+                    disabled={achievementUploading}
+                  >
+                    {achievementUploading ? (
+                      <span className="flex items-center justify-center">
+                        <Spin size="small" style={{ color: "#0095FF" }} />
+                      </span>
+                    ) : (
+                      <div className="flex justify-center items-center gap-3">
+                        <Plus size={15} />
+                        <span className="my-auto">
+                          {achievementToEdit ? "Save Changes" : "Publish Achievement"}
+                        </span>
+                      </div>
+                    )}
+                  </button>
+                  {achievementError && (
+                    <p className="text-red-500 text-xs mt-3 text-center">
+                      {achievementError}
+                    </p>
+                  )}
+                </div>
+              </div>
             </div>
           </form>
         </Modal>

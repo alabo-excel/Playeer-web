@@ -291,7 +291,7 @@ const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModa
                         onClick={() => fileInputRef.current?.click()}
                         className="bg-[#F4F4F4] p-2 rounded-full px-6 mx-auto text-sm"
                       >
-                        Browse
+                        Browse File
                       </button>
                     </>
                   ) : (
@@ -390,9 +390,7 @@ const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModa
                     <p className="text-red-500 text-xs mt-1">{errors.tags}</p>
                   )}
                 </div>
-
-
-
+                
                 <button
                   type="submit"
                   disabled={isUploading}

@@ -176,180 +176,184 @@ const CertificateModal = ({
   return (
     <>
       {showModal && (
-        <Modal onClose={() => setShowModal()} width="600px">
-          <form onSubmit={handleCertSubmit}>
+        <Modal onClose={() => setShowModal()} width="900px">
+          <form className="w-full" onSubmit={handleCertSubmit}>
             <div>
-              {certificateToEdit ? (
-                <p className="text-lg font-bold">Edit Certificate</p>
-              ) : (
-                <p className="text-lg font-bold">Upload New Certificate</p>
-              )}
-              <div className="grid grid-cols-2 gap-4 my-4">
-                <div>
-                  <label className="font-semibold text-sm mb-2">
-                    Certificate Title
-                  </label>
-                  <input
-                    placeholder="e.g., Trial Participation – GFA Showcase"
-                    type="text"
-                    name="title"
-                    value={certForm.title}
-                    onChange={handleCertInput}
-                    className={`p-3 rounded-md w-full ${
-                      certErrors.title
-                        ? "border border-red-500"
-                        : "bg-[#F4F4F4]"
-                    }`}
-                  />
-                  {certErrors.title && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {certErrors.title}
-                    </p>
-                  )}
-                </div>
-                <div>
-                  <label className="font-semibold text-sm mb-2">
-                    Issued By
-                  </label>
-                  <input
-                    placeholder="Name of the organization or event"
-                    type="text"
-                    name="issuedBy"
-                    value={certForm.issuedBy}
-                    onChange={handleCertInput}
-                    className={`p-3 rounded-md w-full ${
-                      certErrors.issuedBy
-                        ? "border border-red-500"
-                        : "bg-[#F4F4F4]"
-                    }`}
-                  />
-                  {certErrors.issuedBy && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {certErrors.issuedBy}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <div className="my-4">
-                <label className="font-semibold text-sm mb-2">
-                  Date Issued
-                </label>
-                <input
-                  type="date"
-                  name="date"
-                  value={certForm.date}
-                  onChange={handleCertInput}
-                  className={`p-3 rounded-md w-full ${
-                    certErrors.date ? "border border-red-500" : "bg-[#F4F4F4]"
-                  }`}
-                />
-                {certErrors.date && (
-                  <p className="text-red-500 text-xs mt-1">{certErrors.date}</p>
+              <div className="my-6">
+                {certificateToEdit ? (
+                  <p className="text-xl font-bold">Edit Certificate</p>
+                ) : (
+                  <p className="text-xl font-bold">Add Certificate</p>
                 )}
-              </div>
-              <div className="my-4">
-                <label className="font-semibold text-sm mb-2">
-                  Description
-                </label>
-                <textarea
-                  placeholder="Brief details on why or how you earned it"
-                  name="description"
-                  value={certForm.description}
-                  onChange={handleCertInput}
-                  className={`p-3 rounded-md w-full h-32 ${
-                    certErrors.description
-                      ? "border border-red-500"
-                      : "bg-[#F4F4F4]"
-                  }`}
-                ></textarea>
-                {certErrors.description && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {certErrors.description}
-                  </p>
-                )}
+                <p className="text-sm">Upload official documents that prove your eligibility, training, or professional status.</p>
               </div>
 
-              <div
-                className={`my-4 border border-dashed rounded-xl p-3 ${
-                  certErrors.file ? "border-red-500" : "border-[#D8DADE]"
-                }`}
-              >
-                {certForm.preview ? (
-                  <div className="relative">
-                    <img
-                      src={certForm.preview}
-                      alt="Preview"
-                      className="w-full h-32 object-cover rounded-lg"
-                    />
-                    <button
-                      type="button"
-                      onClick={removeCertImage}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ) : (
-                  <>
-                    <div className="mb-3 flex gap-3">
-                      <button
-                        type="button"
-                        className="bg-[#F4F4F4] rounded-full p-4"
-                      >
-                        <CloudUpload />
-                      </button>
-                      <div className="my-auto">
-                        <p className="text-sm font-semibold">Upload Photos</p>
-                        <p className="text-xs placeholder:text-[#B6B6B6]">
-                          JPG, PNG accepted (max 4mb)
-                        </p>
+              <div className="flex gap-6">
+                <div className="w-[40%] text-center">
+                  <div
+                    className={`my-4 border border-dashed rounded-xl p-3 ${certErrors.file ? "border-red-500" : "border-[#D8DADE]"
+                      }`}
+                  >
+                    {certForm.preview ? (
+                      <div className="relative">
+                        <img
+                          src={certForm.preview}
+                          alt="Preview"
+                          className="w-full h-44 object-cover rounded-lg"
+                        />
+                        <button
+                          type="button"
+                          onClick={removeCertImage}
+                          className="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600"
+                        >
+                          ×
+                        </button>
                       </div>
-                    </div>
+                    ) : (
+                      <>
+                        <div className="mb-3 flex flex-col items-center gap-3">
+                          <button
+                            type="button"
+                            className="bg-[#F4F4F4] rounded-full p-4"
+                          >
+                            <CloudUpload />
+                          </button>
+                          <div className="my-auto">
+                            <p className="text-sm font-semibold">Upload Photos</p>
+                            <p className="text-xs placeholder:text-[#B6B6B6]">
+                              JPG, PNG accepted (max 4mb)
+                            </p>
+                          </div>
+                        </div>
+                        <input
+                          type="file"
+                          accept="image/jpeg,image/png"
+                          onChange={handleCertFile}
+                          ref={certUploadRef}
+                          className="hidden"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => certUploadRef.current?.click()}
+                          className="bg-[#F4F4F4] p-2 rounded-full px-6 mx-auto text-sm"
+                        >
+                          Browse File
+                        </button>
+                      </>
+                    )}
+                    {certErrors.file && (
+                      <p className="text-red-500 text-xs mt-1">{certErrors.file}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="w-[60%]">
+                  <div className="my-4">
+                    <label className="mb-2">
+                      Certificate Title
+                    </label>
                     <input
-                      type="file"
-                      accept="image/jpeg,image/png"
-                      onChange={handleCertFile}
-                      ref={certUploadRef}
-                      className="hidden"
+                      placeholder="e.g., Trial Participation – GFA Showcase"
+                      type="text"
+                      name="title"
+                      value={certForm.title}
+                      onChange={handleCertInput}
+                      className={`p-3 bg-white rounded-md w-full ${certErrors.title
+                        ? "border border-red-500"
+                        : "border border-[#DFDFDF]"
+                        }`}
                     />
-                    <button
-                      type="button"
-                      onClick={() => certUploadRef.current?.click()}
-                      className="bg-[#E5F4FF] text-primary p-2 rounded-xl text-sm w-full"
-                    >
-                      Click to upload
-                    </button>
-                  </>
-                )}
-                {certErrors.file && (
-                  <p className="text-red-500 text-xs mt-1">{certErrors.file}</p>
-                )}
-              </div>
-              <button
-                type="submit"
-                className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+                    {certErrors.title && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {certErrors.title}
+                      </p>
+                    )}
+                  </div>
+                  <div className="my-4">
+                    <label className="mb-2">
+                      Issued By
+                    </label>
+                    <input
+                      placeholder="Name of the organization or event"
+                      type="text"
+                      name="issuedBy"
+                      value={certForm.issuedBy}
+                      onChange={handleCertInput}
+                      className={`p-3 bg-white rounded-md w-full ${certErrors.issuedBy
+                        ? "border border-red-500"
+                        : "border border-[#DFDFDF]"
+                        }`}
+                    />
+                    {certErrors.issuedBy && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {certErrors.issuedBy}
+                      </p>
+                    )}
+                  </div>
+                  <div className="my-4">
+                    <label className="mb-2">
+                      Date Issued
+                    </label>
+                    <input
+                      type="date"
+                      name="date"
+                      value={certForm.date}
+                      onChange={handleCertInput}
+                      className={`p-3 rounded-md bg-white w-full ${certErrors.date ? "border border-red-500" : "border border-[#DFDFDF]"
+                        }`}
+                    />
+                    {certErrors.date && (
+                      <p className="text-red-500 text-xs mt-1">{certErrors.date}</p>
+                    )}
+                  </div>
+                  <div className="my-4">
+                    <label className="mb-2">
+                      Description
+                    </label>
+                    <textarea
+                      placeholder="Brief details on why or how you earned it"
+                      name="description"
+                      value={certForm.description}
+                      onChange={handleCertInput}
+                      className={`p-3 bg-white rounded-md w-full h-32 ${certErrors.description
+                        ? "border border-red-500"
+                        : "border border-[#DFDFDF]"
+                        }`}
+                    ></textarea>
+                    {certErrors.description && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {certErrors.description}
+                      </p>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
                   ${certUploading ? "border border-primary bg-[#E5F4FF] text-primary" : "bg-primary text-[#FCFCFC]"}
                 `}
-                disabled={certUploading}
-              >
-                {certUploading ? (
-                  <span className="flex items-center justify-center">
-                    <Spin size="small" style={{ color: "#0095FF" }} />
-                  </span>
-                ) : (
-                  <div className="flex justify-center items-center gap-3">
-                    <CloudUpload size={15} />
-                    <span className="my-auto">
-                      {certificateToEdit ? "Save Changes" : "Upload Certificate"}
-                    </span>
-                  </div>
-                )}
-              </button>
-              {certError && (
-                <p className="text-red-500 text-xs mt-3 text-center">
-                  {certError}
-                </p>
-              )}
+                    disabled={certUploading}
+                  >
+                    {certUploading ? (
+                      <span className="flex items-center justify-center">
+                        <Spin size="small" style={{ color: "#0095FF" }} />
+                      </span>
+                    ) : (
+                      <div className="flex justify-center items-center gap-3">
+                        <CloudUpload size={15} />
+                        <span className="my-auto">
+                          {certificateToEdit ? "Save Changes" : "Upload Certificate"}
+                        </span>
+                      </div>
+                    )}
+                  </button>
+                  {certError && (
+                    <p className="text-red-500 text-xs mt-3 text-center">
+                      {certError}
+                    </p>
+                  )}
+                </div>
+              </div>
+
             </div>
           </form>
         </Modal>
