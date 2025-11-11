@@ -15,9 +15,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
   return (
     <div className="grid md:grid-cols-3 gap-8">
       <div
-        className={`bg-[#E5F4FF] rounded-2xl p-8 my-auto ${
-          selectedPlan === "free" ? "ring-2 ring-primary" : ""
-        }`}
+        className={`bg-[#F4F4F4] rounded-2xl p-8 my-auto`}
       >
         <p className="text-[#0095FF] mb-3 font-semibold">FREE PLAN</p>
         <div className="flex">
@@ -29,11 +27,10 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </p>
         <button
           type="button"
-          className={`rounded-full w-full p-4 text-white ${
-            loading || selectedPlan === "free"
-              ? "bg-[#0F993E4D] cursor-not-allowed"
-              : "bg-[#0095FF] hover:bg-blue-600"
-          }`}
+          className={`rounded-full w-full p-4 text-white ${loading || selectedPlan === "free"
+            ? "bg-transparent !text-[#BFBFBF] cursor-not-allowed"
+            : "bg-primary"
+            }`}
           onClick={() => onPlanSelect("free")}
           disabled={loading || selectedPlan === "free"}
         >
@@ -79,9 +76,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </ul>
       </div>
       <div
-        className={`bg-[#000B42] rounded-2xl p-8 relative ${
-          selectedPlan === "yearly" ? "ring-2 ring-primary" : ""
-        }`}
+        className={`bg-[#000B42] rounded-2xl p-8 relative`}
       >
         <p className="text-[#0095FF] mb-3 font-semibold">PRO YEARLY PLAN</p>
         <div className="flex">
@@ -94,11 +89,10 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </p>
         <button
           type="button"
-          className={`rounded-full w-full p-4 text-white ${
-            loading || selectedPlan === "yearly"
-              ? "bg-[#0F993E4D] cursor-not-allowed"
-              : "bg-[#0095FF] hover:bg-blue-600"
-          }`}
+          className={`rounded-full w-full p-4 text-white ${loading || selectedPlan === "yearly"
+            ? "bg-transparent !text-[#BFBFBF] cursor-not-allowed"
+            : "bg-primary"
+            }`}
           onClick={() => onPlanSelect("yearly")}
           disabled={loading || selectedPlan === "yearly"}
         >
@@ -151,9 +145,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </div>
       </div>
       <div
-        className={`bg-[#E5F4FF] rounded-2xl p-8 my-auto ${
-          selectedPlan === "monthly" ? "ring-2 ring-primary" : ""
-        }`}
+        className={`bg-[#F4F4F4] rounded-2xl p-8 my-auto`}
       >
         <p className="text-[#0095FF] mb-3 font-semibold">PRO MONTHLY PLAN</p>
         <div className="flex">
@@ -166,11 +158,10 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </p>
         <button
           type="button"
-          className={`rounded-full w-full p-4 text-white ${
-            loading || selectedPlan === "monthly"
-              ? "bg-[#0F993E4D] cursor-not-allowed"
-              : "bg-[#0095FF] hover:bg-blue-600"
-          }`}
+          className={`rounded-full w-full p-4 text-white ${loading || selectedPlan === "monthly"
+            ? "bg-transparent !text-[#BFBFBF] cursor-not-allowed"
+            : "bg-primary"
+            }`}
           onClick={() => onPlanSelect("monthly")}
           disabled={loading || selectedPlan === "monthly"}
         >

@@ -27,7 +27,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           onClick={() => setSidebarOpen(false)}
         />
       )} */}
-      <section className="flex">
+      <section className="flex dashboard">
         {/* <SideNav open={sidebarOpen} onClose={() => setSidebarOpen(false)} /> */}
         <section className="w-full p-4 mt-20 mb-32 transition-all duration-300">
           {children}

@@ -253,161 +253,169 @@ const NewHighlights = ({ showModal, onCLose, fetchHighlights, data }: { showModa
   return (
     <>
       {showModal && (
-        <Modal onClose={() => onCLose()} width="600px">
-          <form onSubmit={handleSubmit}>
-            {data ?
-              <p className="text-lg font-bold">Edit Highlight</p> : <p className="text-lg font-bold">Upload New Highlight</p>
-            }
-
-            <div className="my-4">
-              <label className="font-semibold text-sm mb-2">Video Title</label>
-              <input
-                placeholder="e.g., Trial Participation – GFA Showcase"
-                type="text"
-                value={formData.title}
-                onChange={(e) => handleInputChange("title", e.target.value)}
-                className={`p-3 rounded-md w-full ${errors.title ? "border border-red-500" : "bg-[#F4F4F4]"
-                  }`}
-              />
-              {errors.title && (
-                <p className="text-red-500 text-xs mt-1">{errors.title}</p>
-              )}
+        <Modal onClose={() => onCLose()} width="900px">
+          <form className="w-full" onSubmit={handleSubmit}>
+            <div className="my-6">
+              {data ?
+                <p className="text-xl font-bold">Edit Highlight Video</p> : <p className="text-xl font-bold">Upload Highlight Video</p>
+              }
+              <p className="text-sm">Showcase your best moments scouts, coaches, and fans are watching.</p>
             </div>
 
-            <div className="my-4">
-              <label className="font-semibold text-sm mb-2">Upload Video</label>
-              <div
-                className={`border border-dashed rounded-xl p-3 ${errors.file ? "border-red-500" : "border-[#D8DADE]"
-                  }`}
-              >
-                {!formData.preview ? (
-                  <>
-                    <div className="mb-3 flex gap-3">
+            <div className="flex gap-6">
+              <div className="w-[40%] text-center">
+                {/* <label className="font-semibold text-sm mb-2">Upload Video</label> */}
+                <div
+                  className={`border border-dashed rounded-xl p-3 ${errors.file ? "border-red-500" : "border-[#D8DADE]"
+                    }`}
+                >
+                  {!formData.preview ? (
+                    <>
+                      <div className="mb-3 flex flex-col items-center text-center gap-3">
+                        <button
+                          type="button"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="bg-[#F4F4F4] rounded-full p-4"
+                        >
+                          <CloudUpload />
+                        </button>
+                        <div className="my-auto">
+                          <p className="text-sm font-semibold">Upload Video</p>
+                          <p className="text-xs placeholder:text-[#B6B6B6]">
+                            MP4, MOV, AVI, MKV (Max 150MB)
+                          </p>
+                        </div>
+                      </div>
                       <button
                         type="button"
                         onClick={() => fileInputRef.current?.click()}
-                        className="bg-[#F4F4F4] rounded-full p-4"
+                        className="bg-[#F4F4F4] p-2 rounded-full px-6 mx-auto text-sm"
                       >
-                        <CloudUpload />
+                        Browse
                       </button>
-                      <div className="my-auto">
-                        <p className="text-sm font-semibold">Upload Video</p>
-                        <p className="text-xs placeholder:text-[#B6B6B6]">
-                          MP4, MOV, AVI, MKV (Max 150MB)
-                        </p>
-                      </div>
+                    </>
+                  ) : (
+                    <div className="relative">
+                      <video
+                        src={formData.preview}
+                        className="w-full h-48 object-cover rounded-lg"
+                        controls
+                      />
+                      <button
+                        type="button"
+                        onClick={handleRemoveFile}
+                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                      >
+                        <X className="w-4 h-4" />
+                      </button>
+                      <p className="text-sm text-gray-600 mt-2">
+                        {formData.fileName}
+                      </p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="bg-[#E5F4FF] text-primary p-2 rounded-xl text-sm w-full"
-                    >
-                      Click to upload
-                    </button>
-                  </>
-                ) : (
-                  <div className="relative">
-                    <video
-                      src={formData.preview}
-                      className="w-full h-48 object-cover rounded-lg"
-                      controls
-                    />
-                    <button
-                      type="button"
-                      onClick={handleRemoveFile}
-                      className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
-                    >
-                      <X className="w-4 h-4" />
-                    </button>
-                    <p className="text-sm text-gray-600 mt-2">
-                      {formData.fileName}
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="video/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                </div>
+                {errors.file && (
+                  <p className="text-red-500 text-xs mt-1">{errors.file}</p>
+                )}
+                {isUploading && (
+                  <div className="my-4">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-primary h-2 rounded-full transition-all duration-300"
+                        style={{ width: `${uploadProgress}%` }}
+                      ></div>
+                    </div>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Uploading... {uploadProgress}%
                     </p>
                   </div>
                 )}
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept="video/*"
-                  onChange={handleFileChange}
-                  className="hidden"
-                />
               </div>
-              {errors.file && (
-                <p className="text-red-500 text-xs mt-1">{errors.file}</p>
-              )}
-            </div>
-
-            <div className="my-4">
-              <label className="font-semibold text-sm mb-2">Description</label>
-              <textarea
-                placeholder="Short context or what to focus on in the video"
-                value={formData.description}
-                onChange={(e) =>
-                  handleInputChange("description", e.target.value)
-                }
-                className={`p-3 rounded-md w-full h-32 ${errors.description ? "border border-red-500" : "bg-[#F4F4F4]"
-                  }`}
-              />
-              {errors.description && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.description}
-                </p>
-              )}
-            </div>
-
-            <div className="my-4">
-              <label className="font-semibold text-sm mb-2">
-                Tags (Separate with comma)
-              </label>
-              <input
-                placeholder="e.g., Passing, Speed, Dribbling, Long Ball"
-                type="text"
-                value={formData.tags}
-                onChange={(e) => handleInputChange("tags", e.target.value)}
-                className={`p-3 rounded-md w-full ${errors.tags
-                  ? "border border-red-500 bg-[#F4F4F4]"
-                  : "bg-[#F4F4F4]"
-                  }`}
-              />
-              {errors.tags && (
-                <p className="text-red-500 text-xs mt-1">{errors.tags}</p>
-              )}
-            </div>
-
-            {isUploading && (
-              <div className="my-4">
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div
-                    className="bg-primary h-2 rounded-full transition-all duration-300"
-                    style={{ width: `${uploadProgress}%` }}
-                  ></div>
+              <div className="w-[60%]">
+                <div className="">
+                  <label className="mb-2">Video Title</label>
+                  <input
+                    placeholder="e.g., Trial Participation – GFA Showcase"
+                    type="text"
+                    value={formData.title}
+                    onChange={(e) => handleInputChange("title", e.target.value)}
+                    className={`p-3 rounded-md bg-white w-full ${errors.title ? "border border-red-500" : "bg-white border border-[#DFDFDF]"
+                      }`}
+                  />
+                  {errors.title && (
+                    <p className="text-red-500 text-xs mt-1">{errors.title}</p>
+                  )}
                 </div>
-                <p className="text-sm text-gray-600 mt-1">
-                  Uploading... {uploadProgress}%
-                </p>
-              </div>
-            )}
 
-            <button
-              type="submit"
-              disabled={isUploading}
-              className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
+                <div className="my-4">
+                  <label className=" mb-2">Description</label>
+                  <textarea
+                    placeholder="Short context or what to focus on in the video"
+                    value={formData.description}
+                    onChange={(e) =>
+                      handleInputChange("description", e.target.value)
+                    }
+                    className={`p-3 rounded-md w-full bg-white h-32 ${errors.description ? "border border-red-500" : "bg-white border border-[#DFDFDF]"
+                      }`}
+                  />
+                  {errors.description && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.description}
+                    </p>
+                  )}
+                </div>
+
+                <div className="my-4">
+                  <label className="mb-2">
+                    Tags (Separate with comma)
+                  </label>
+                  <input
+                    placeholder="e.g., Passing, Speed, Dribbling, Long Ball"
+                    type="text"
+                    value={formData.tags}
+                    onChange={(e) => handleInputChange("tags", e.target.value)}
+                    className={`p-3 rounded-md w-full ${errors.tags
+                      ? "border border-red-500 bg-white"
+                      : "bg-white border border-[#DFDFDF]"
+                      }`}
+                  />
+                  {errors.tags && (
+                    <p className="text-red-500 text-xs mt-1">{errors.tags}</p>
+                  )}
+                </div>
+
+
+
+                <button
+                  type="submit"
+                  disabled={isUploading}
+                  className={`w-full rounded-full p-3 my-4 min-h-[48px] transition-colors duration-200
                 ${isUploading ? 'border border-primary bg-[#E5F4FF] text-primary' : 'bg-primary text-[#FCFCFC]'}
               `}
-            >
-              {isUploading ? (
-                <span className="flex items-center justify-center">
-                  <Spin size="small" style={{ color: '#0095FF' }} />
-                </span>
-              ) : (
-                <div className="flex justify-center items-center gap-3">
-                  <Plus size={15} />
-                  <span className="my-auto">
-                    {data ? "Edit Highlight" : "Upload Highlight"}
-                  </span>
-                </div>
-              )}
-            </button>
+                >
+                  {isUploading ? (
+                    <span className="flex items-center justify-center">
+                      <Spin size="small" style={{ color: '#0095FF' }} />
+                    </span>
+                  ) : (
+                    <div className="flex justify-center items-center gap-3">
+                      <Plus size={15} />
+                      <span className="my-auto">
+                        {data ? "Edit Highlight" : "Upload Highlight"}
+                      </span>
+                    </div>
+                  )}
+                </button>
+              </div>
+            </div>
+
           </form>
         </Modal>
       )}
