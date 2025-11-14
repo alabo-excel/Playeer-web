@@ -6,6 +6,7 @@ import { ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import api from '@/utils/api';
 
 // Password Input Component
 const PasswordInput = React.memo(({
@@ -64,24 +65,11 @@ const Settings = () => {
     setIsLoading(true);
     try {
       // TODO: Implement API call to change password
-      // const response = await fetch('/api/change-password', {
-      //     method: 'POST',
-      //     headers: { 'Content-Type': 'application/json' },
-      //     body: JSON.stringify({ currentPassword, newPassword })
-      // });
-
-      // if (response.ok) {
-      //     alert('Password changed successfully');
-      //     setCurrentPassword('');
-      //     setNewPassword('');
-      //     setConfirmPassword('');
-      // } else {
-      //     alert('Failed to change password');
-      // }
-
-      // Temporary success message
-      // alert('Password changed successfully');
-      setShow(true);
+      const response = await api.put('/auth/change-password', {
+        currentPassword,
+        newPassword
+      });
+      setShow(true)
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
