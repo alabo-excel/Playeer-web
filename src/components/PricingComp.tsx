@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CircleCheckBig, CircleX } from "lucide-react";
+import api from "@/utils/api";
 
 interface PricingCompProps {
   onPlanSelect: (plan: string) => void;
@@ -12,19 +13,38 @@ const PricingComp: React.FC<PricingCompProps> = ({
   selectedPlan,
   loading,
 }) => {
+
+  const [plans, setPlans] = useState<any[]>([]);
+  const [plansLoading, setPlansLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      setPlansLoading(true);
+      try {
+        const res = await api.get("/plans");
+        setPlans(res.data?.data?.plans || []);
+      } catch (err) {
+        console.error("Failed to fetch plans:", err);
+        setPlans([]);
+      }
+      setPlansLoading(false);
+    };
+    fetchPlans();
+  }, []);
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
       <div
         className={`bg-[#F4F4F4] rounded-2xl p-4 sm:p-6 lg:p-8 my-auto`}
       >
-        <p className="text-[#0095FF] mb-3 font-semibold text-sm sm:text-base">FREE PLAN</p>
-        <div className="flex items-end">
-          <p className="text-3xl sm:text-4xl lg:text-5xl font-bold">₦0</p>
+        <p className="text-[#0095FF] mb-3 font-semibold uppercase text-sm sm:text-base">{plans[0]?.displayName}</p>
+        <div className="flex items-end mb-3">
+          <p className="text-3xl sm:text-4xl lg:text-5xl font-bold">₦{plans[0]?.price?.toLocaleString()}</p>
           <p className="text-[#6C6C6C] mb-1 ml-1 text-sm sm:text-base">Forever</p>
         </div>
-        <p className="text-[#6C6C6C] text-xs sm:text-sm my-3 leading-relaxed">
+        {/* <p className="text-[#6C6C6C] text-xs sm:text-sm my-3 leading-relaxed">
           Beginners getting started with their football journey.
-        </p>
+        </p> */}
         <button
           type="button"
           className={`rounded-full w-full p-3 sm:p-4 text-white text-sm sm:text-base font-medium ${loading || selectedPlan === "free"
@@ -40,11 +60,13 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </button>
         <p className="my-3 font-medium text-sm sm:text-base">Includes:</p>
         <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8 text-xs sm:text-sm">
-          <li className="flex items-center gap-2">
-            <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
-            <span className="text-[#6C6C6C]">Player profile</span>
-          </li>
-          <li className="flex items-center gap-2">
+          {plans[0]?.perks?.map((feature: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, index: React.Key | null | undefined) => (
+            <li key={index} className="flex items-center gap-2">
+              <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
+              <span className="text-[#6C6C6C]">{feature}</span>
+            </li>
+          ))}
+          {/* <li className="flex items-center gap-2">
             <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
             <span className="text-[#6C6C6C]">Upload up to 2 videos</span>
           </li>
@@ -71,21 +93,21 @@ const PricingComp: React.FC<PricingCompProps> = ({
             <span className="text-[#6C6C6C]">
               Verified badge for credibility
             </span>
-          </li>
+          </li> */}
         </ul>
       </div>
       <div
         className={`bg-[#000B42] rounded-2xl p-4 sm:p-6 lg:p-8 relative`}
       >
-        <p className="text-[#0095FF] mb-3 font-semibold text-sm sm:text-base">PRO YEARLY PLAN</p>
-        <div className="flex items-end">
-          <p className="text-3xl sm:text-4xl lg:text-5xl text-white font-bold">₦20,000</p>
-          <p className="text-[#E5E5E5] mb-1 ml-1 text-sm sm:text-base">Year</p>
+        <p className="text-[#0095FF] mb-3 font-semibold text-sm sm:text-base">{plans[1]?.displayName}</p>
+        <div className="flex items-end mb-3">
+          <p className="text-3xl sm:text-4xl lg:text-5xl text-white font-bold">₦{plans[1]?.price?.toLocaleString()}</p>
+          <p className="text-[#E5E5E5] mb-1 ml-1 text-sm sm:text-base">{plans[1]?.planName}</p>
         </div>
-        <p className="text-[#E5E5E5] text-xs sm:text-sm my-3 leading-relaxed">
+        {/* <p className="text-[#E5E5E5] text-xs sm:text-sm my-3 leading-relaxed">
           Serious players committed to going pro and building a long-term
           presence.
-        </p>
+        </p> */}
         <button
           type="button"
           className={`rounded-full w-full p-3 sm:p-4 text-white text-sm sm:text-base font-medium ${loading || selectedPlan === "yearly"
@@ -97,15 +119,17 @@ const PricingComp: React.FC<PricingCompProps> = ({
         >
           {loading && selectedPlan === "yearly"
             ? "Loading..."
-            : "Go Yearly Pro (Save 17%)"}
+            : "Go Yearly Pro"}
         </button>
         <p className="my-3 text-[#FCFCFC] font-medium text-sm sm:text-base">Includes:</p>
         <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8 text-xs sm:text-sm">
-          <li className="flex items-center gap-2">
-            <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
-            <span className="text-[#FCFCFC]">Player profile</span>
-          </li>
-          <li className="flex items-center gap-2">
+          {plans[1]?.perks?.map((feature: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, index: React.Key | null | undefined) => (
+            <li key={index} className="flex items-center gap-2">
+              <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
+              <span className="text-[#FCFCFC]">{feature}</span>
+            </li>
+          ))}
+          {/* <li className="flex items-center gap-2">
             <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
             <span className="text-[#FCFCFC]">Unlimited highlight videos</span>
           </li>
@@ -132,7 +156,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
             <span className="text-[#FCFCFC]">
               Verified badge for credibility
             </span>
-          </li>
+          </li> */}
         </ul>
         <div className="text-center">
           <button
@@ -146,15 +170,15 @@ const PricingComp: React.FC<PricingCompProps> = ({
       <div
         className={`bg-[#F4F4F4] rounded-2xl p-4 sm:p-6 lg:p-8 my-auto`}
       >
-        <p className="text-[#0095FF] mb-3 font-semibold text-sm sm:text-base">PRO MONTHLY PLAN</p>
-        <div className="flex items-end">
-          <p className="text-3xl sm:text-4xl lg:text-5xl font-bold">₦2,000</p>
-          <p className="text-[#6C6C6C] mb-1 ml-1 text-sm sm:text-base">Month</p>
+        <p className="text-[#0095FF] mb-3 font-semibold text-sm sm:text-base">{plans[2]?.displayName}</p>
+        <div className="flex items-end mb-3">
+          <p className="text-3xl sm:text-4xl lg:text-5xl font-bold">₦{plans[2]?.price?.toLocaleString()}</p>
+          <p className="text-[#6C6C6C] mb-1 ml-1 text-sm sm:text-base">{plans[2]?.planName}</p>
         </div>
-        <p className="text-[#6C6C6C] text-xs sm:text-sm my-3 leading-relaxed">
+        {/* <p className="text-[#6C6C6C] text-xs sm:text-sm my-3 leading-relaxed">
           Active players ready to showcase their full potential and get
           discovered faster.
-        </p>
+        </p> */}
         <button
           type="button"
           className={`rounded-full w-full p-3 sm:p-4 text-white text-sm sm:text-base font-medium ${loading || selectedPlan === "monthly"
@@ -170,11 +194,13 @@ const PricingComp: React.FC<PricingCompProps> = ({
         </button>
         <p className="my-3 font-medium text-sm sm:text-base">Includes:</p>
         <ul className="space-y-2 sm:space-y-3 mb-6 sm:mb-8 text-xs sm:text-sm">
-          <li className="flex items-center gap-2">
-            <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
-            <span className="text-[#6C6C6C]">Player profile</span>
-          </li>
-          <li className="flex items-center gap-2">
+          {plans[2]?.perks?.map((feature: string | number | bigint | boolean | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | Promise<string | number | bigint | boolean | React.ReactPortal | React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | null | undefined> | null | undefined, index: React.Key | null | undefined) => (
+            <li key={index} className="flex items-center gap-2">
+              <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
+              <span className="text-[#6C6C6C]">{feature}</span>
+            </li>
+          ))}
+          {/* <li className="flex items-center gap-2">
             <CircleCheckBig className="h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 text-[#0F973D] flex-shrink-0" />
             <span className="text-[#6C6C6C]">Unlimited highlight videos</span>
           </li>
@@ -201,7 +227,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
             <span className="text-[#6C6C6C]">
               Verified badge for credibility
             </span>
-          </li>
+          </li> */}
         </ul>
       </div>
     </div>

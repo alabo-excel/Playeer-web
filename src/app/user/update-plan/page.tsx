@@ -16,10 +16,33 @@ const updatePlan = () => {
   const [plan, setPlan] = useState<any>("");
   const router = useRouter();
   const [open, setOpen] = useState(false)
+  const [plans, setPlans] = useState<any[]>([]);
+  const [plansLoading, setPlansLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const fetchPlans = async () => {
+      setPlansLoading(true);
+      try {
+        const res = await api.get("/plans");
+        setPlans(res.data?.data?.plans || []);
+      } catch (err) {
+        console.error("Failed to fetch plans:", err);
+        setPlans([]);
+      }
+      setPlansLoading(false);
+    };
+    fetchPlans();
+  }, []);
+
 
   useEffect(() => {
     setPlan(user?.plan);
   }, [user]);
+
+  // Get current user's plan details
+  const currentPlanDetails = plans.find(
+    (p) => p.planName?.toLowerCase() === user?.plan?.toLowerCase()
+  );
 
   const handlePay = async (selectedPlan: string) => {
     try {
@@ -77,6 +100,20 @@ const updatePlan = () => {
     }
   };
 
+  const handleCancelSubscription = async () => {
+    if (!user?._id) return;
+    try {
+      const res = await api.post(`/subscriptions/${user._id}/cancel`);
+      if (res?.data?.success) {
+        setUser((prev: any) => ({ ...prev, plan: 'free' }));
+        router.push("/user/dashboard");
+      }
+    } catch (err) {
+      console.error("Failed to cancel subscription:", err);
+    }
+  }
+
+
   return (
     <AdminLayout>
       <div className="pt-4 sm:pt-8">
@@ -102,7 +139,10 @@ const updatePlan = () => {
               <h2 className="text-lg sm:text-xl font-bold capitalize text-center sm:text-left sm:my-auto text-[#222]">{user?.plan} Plan</h2>
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
                 {user?.plan !== 'free' && (
-                  <button className="bg-[#FFE9E9] px-4 sm:px-6 py-3 text-[#991616] rounded-full text-sm order-2 sm:order-1">
+                  <button
+                    className="bg-[#FFE9E9] px-4 sm:px-6 py-3 text-[#991616] rounded-full text-sm order-2 sm:order-1"
+                    onClick={() => handleCancelSubscription()}
+                  >
                     Cancel Subscription
                   </button>
                 )}
@@ -119,38 +159,22 @@ const updatePlan = () => {
             <div className="space-y-4">
               <h3 className="text-base font-semibold text-[#222] mb-4">Features:</h3>
               <div className="space-y-3">
-                <div className="flex items-start sm:items-center gap-3">
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
-                    <svg width="12" height="12" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                  </div>
-                  <span className="text-[#222] text-sm leading-relaxed">Upload up to 2 highlight videos</span>
-                </div>
-                <div className="flex items-start sm:items-center gap-3">
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
-                    <svg width="12" height="12" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                  </div>
-                  <span className="text-[#222] text-sm leading-relaxed">Basic player profile (bio, stats, position)</span>
-                </div>
-                <div className="flex items-start sm:items-center gap-3">
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
-                    <svg width="12" height="12" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                  </div>
-                  <span className="text-[#222] text-sm leading-relaxed">Visible in Playeer global directory</span>
-                </div>
-                <div className="flex items-start sm:items-center gap-3">
-                  <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
-                    <svg width="12" height="12" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                  </div>
-                  <span className="text-[#222] text-sm leading-relaxed">Access to free training tips & articles</span>
-                </div>
+                {plansLoading ? (
+                  <p className="text-[#666] text-sm">Loading features...</p>
+                ) : currentPlanDetails?.perks && currentPlanDetails.perks.length > 0 ? (
+                  currentPlanDetails.perks.map((perk: string, index: number) => (
+                    <div key={index} className="flex items-start sm:items-center gap-3">
+                      <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 sm:mt-0">
+                        <svg width="12" height="12" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
+                          <path d="M20 6L9 17l-5-5" />
+                        </svg>
+                      </div>
+                      <span className="text-[#222] text-sm leading-relaxed">{perk}</span>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-[#666] text-sm">No features available for this plan.</p>
+                )}
               </div>
             </div>
           </div>
