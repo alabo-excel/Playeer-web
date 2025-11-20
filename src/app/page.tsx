@@ -342,7 +342,7 @@ const home = () => {
                             <img
                               src={`https://flagcdn.com/24x18/${player.country.toLowerCase()}.png`}
                               alt={`${player.country} flag`}
-                              className="inline-block ml-2 mr-1 rounded-sm"
+                              className="inline-block ml-2 mr-1 !m-auto rounded-sm"
                               width={24}
                               height={18}
                               onError={(e) => {
@@ -418,7 +418,7 @@ const home = () => {
                                 <img
                                   src={`https://flagcdn.com/24x18/${player.country.toLowerCase()}.png`}
                                   alt={`${player.country} flag`}
-                                  className="inline-block ml-2 mr-1 rounded-sm"
+                                  className="inline-block ml-2 mr-1 !my-auto rounded-sm"
                                   width={24}
                                   height={18}
                                   onError={(e) => {
