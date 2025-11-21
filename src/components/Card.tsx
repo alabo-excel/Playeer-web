@@ -110,52 +110,52 @@ const Card: React.FC<CardProps> = ({
             )}
             <div></div>
           </div>
-          {/* {hide ? null : ( */}
-          <div className="ml-auto">
-            <div className="relative">
-              <Dropdown
-                menu={{
-                  items: [
-                    {
-                      key: "edit",
-                      label: "Edit",
-                      onClick: () => {
-                        if (type === "highlight") {
-                          setShowHighlight(true);
-                        } else if (type === "achievement") {
-                          setShowAchievement(true);
-                        } else if (type === "certificate") {
-                          setShowCertificate(true);
-                        } else if (editAction) {
-                          editAction();
-                        }
+          {hide ? null : (
+            <div className="ml-auto">
+              <div className="relative">
+                <Dropdown
+                  menu={{
+                    items: [
+                      {
+                        key: "edit",
+                        label: "Edit",
+                        onClick: () => {
+                          if (type === "highlight") {
+                            setShowHighlight(true);
+                          } else if (type === "achievement") {
+                            setShowAchievement(true);
+                          } else if (type === "certificate") {
+                            setShowCertificate(true);
+                          } else if (editAction) {
+                            editAction();
+                          }
+                        },
                       },
-                    },
-                    {
-                      key: "delete",
-                      label: <span style={{ color: "red" }}>Delete</span>,
-                      onClick: () => {
-                        if (type === "highlight") {
-                          deletHighlight();
-                        } else if (type === "achievement") {
-                          deleteAchievement();
-                        } else if (type === "certificate") {
-                          deleteCertificate();
-                        }
+                      {
+                        key: "delete",
+                        label: <span style={{ color: "red" }}>Delete</span>,
+                        onClick: () => {
+                          if (type === "highlight") {
+                            deletHighlight();
+                          } else if (type === "achievement") {
+                            deleteAchievement();
+                          } else if (type === "certificate") {
+                            deleteCertificate();
+                          }
+                        },
                       },
-                    },
-                  ],
-                }}
-                trigger={["click"]}
-                placement="bottomRight"
-              >
-                <button className="p-2 hover:bg-gray-100 rounded-full">
-                  &#8942;
-                </button>
-              </Dropdown>
+                    ],
+                  }}
+                  trigger={["click"]}
+                  placement="bottomRight"
+                >
+                  <button className="p-2 hover:bg-gray-100 rounded-full">
+                    &#8942;
+                  </button>
+                </Dropdown>
+              </div>
             </div>
-          </div>
-          {/* )} */}
+          )}
         </div>
 
         <div className="">

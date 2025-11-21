@@ -261,7 +261,7 @@ const PlayerModal = ({
                       </div>
                     </div>
                   </div>
-                  {data?.footballJourney &&
+                  {/* {data?.footballJourney &&
                     data?.footballJourney?.length > 0 && (
                       <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
                         <div className="flex justify-between">
@@ -301,17 +301,17 @@ const PlayerModal = ({
                           )}
                         </div>
                       </div>
-                    )}
+                    )} */}
                 </div>
               </section>
 
-              {data?.plan !== "free" && (
-                <>
-                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                    <p className="text-xl font-bold">Achievements</p>
+              {/* {data?.plan !== "free" && ( */}
+              <>
+                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                  <p className="text-xl font-bold">Achievements</p>
 
-                    <div className="mt-4">
-                      <Swiper
+                  <div className="mt-4 grid md:grid-cols-4 gap-4">
+                    {/* <Swiper
                         modules={[Navigation]}
                         navigation
                         spaceBetween={10}
@@ -330,58 +330,57 @@ const PlayerModal = ({
                             spaceBetween: 10,
                           },
                         }}
-                      >
-                        {data?.achievements &&
-                          data?.achievements.map((achievement: Achievement) => (
-                            <SwiperSlide key={achievement._id}>
-                              <Card
-                                data={achievement}
-                                hide={true}
-                                type={"achievement"}
-                              />
-                            </SwiperSlide>
-                          ))}
-                      </Swiper>
-                    </div>
+                      > */}
+                    {data?.achievements &&
+                      data?.achievements.map((achievement: Achievement) => (
+                        // <SwiperSlide key={achievement._id}>
+                        <Card
+                          data={achievement}
+                          hide={true}
+                          type="achievement"
+                        />
+                      ))}
+                    {/* </Swiper> */}
                   </div>
+                </div>
 
-                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                    <p className="text-xl font-bold">Certificates</p>
+                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                  <p className="text-xl font-bold">Certificates</p>
 
-                    <div className="mt-4">
-                      <Swiper
-                        modules={[Navigation]}
-                        navigation
-                        spaceBetween={10}
-                        slidesPerView={1.2}
-                        breakpoints={{
-                          640: {
-                            slidesPerView: 2.2,
-                            spaceBetween: 10,
-                          },
-                          768: {
-                            slidesPerView: 3.2,
-                            spaceBetween: 10,
-                          },
-                          1024: {
-                            slidesPerView: 4.4,
-                            spaceBetween: 10,
-                          },
-                        }}
-                      >
-                        {data?.certificates &&
-                          data?.certificates.map(
-                            (certificates: Certificate) => (
-                              <SwiperSlide key={certificates._id}>
-                                <Card data={certificates} hide={true} />
-                              </SwiperSlide>
-                            )
-                          )}
-                      </Swiper>
-                    </div>
+                  <div className="mt-4 grid md:grid-cols-4 gap-4">
+                    {/* <Swiper
+                      modules={[Navigation]}
+                      navigation
+                      spaceBetween={10}
+                      slidesPerView={1.2}
+                      breakpoints={{
+                        640: {
+                          slidesPerView: 2.2,
+                          spaceBetween: 10,
+                        },
+                        768: {
+                          slidesPerView: 3.2,
+                          spaceBetween: 10,
+                        },
+                        1024: {
+                          slidesPerView: 4.4,
+                          spaceBetween: 10,
+                        },
+                      }}
+                    > */}
+                    {data?.certificates &&
+                      data?.certificates.map(
+                        (certificates: Certificate) => (
+                          // <SwiperSlide key={certificates._id}>
+                          <Card data={certificates} hide={true} type="certificate" />
+                          // </SwiperSlide>
+                        )
+                      )}
+                    {/* </Swiper> */}
                   </div>
-                </>
-              )}
+                </div>
+              </>
+              {/* )} */}
 
               {highlights.length > 0 && (
                 <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
@@ -393,7 +392,7 @@ const PlayerModal = ({
                         key={highlight._id}
                         data={highlight}
                         hide={true}
-                        type={"video"}
+                        type="highlight"
                       />
                     ))}
                   </div>
