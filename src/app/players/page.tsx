@@ -12,9 +12,14 @@ import { Country } from "country-state-city";
 import { Spin } from "antd";
 import PlayerModal from "@/components/Modals/PlayerModal";
 import Select from "react-select";
+import { useRef } from "react";
 
 const players = () => {
   const [players, setPlayers] = useState([]);
+  const [visiblePlayers, setVisiblePlayers] = useState<any[]>([]);
+  const [page, setPage] = useState(1);
+  const pageSize = 20;
+  const [hasMore, setHasMore] = useState(true);
   const [allPlayers, setAllPlayers] = useState([]); // Store all fetched players
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState(null);
@@ -32,6 +37,7 @@ const players = () => {
   }));
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   // Fetch all active and not deleted users (no filters in API call)
   const fetchPlayers = async () => {
@@ -76,7 +82,36 @@ const players = () => {
       );
     }
     setPlayers(filtered);
+    // Reset pagination on filter changes
+    setPage(1);
+    setVisiblePlayers(filtered.slice(0, pageSize));
+    setHasMore(filtered.length > pageSize);
   }, [filters, allPlayers]);
+
+  // IntersectionObserver to load more
+  useEffect(() => {
+    if (!sentinelRef.current) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const [entry] = entries;
+        if (entry.isIntersecting && hasMore && !loading) {
+          setPage((prev) => prev + 1);
+        }
+      },
+      { root: null, rootMargin: "0px", threshold: 1.0 }
+    );
+    observer.observe(sentinelRef.current);
+
+    return () => observer.disconnect();
+  }, [hasMore, loading]);
+
+  // Load more when page changes
+  useEffect(() => {
+    if (page === 1) return;
+    const next = players.slice(0, page * pageSize);
+    setVisiblePlayers(next);
+    setHasMore(players.length > next.length);
+  }, [page, players]);
 
   // Handle filter change
   const handleFilterChange = (
@@ -103,12 +138,12 @@ const players = () => {
         <div className=" mt-20 bg-[#E5F4FF] mx-auto p-6 md:p-12 rounded-3xl flex flex-col md:flex-row justify-between">
           <div className="w-full md:w-[44%] my-auto">
             <h1 className="text-3xl md:text-5xl font-bold">
-              Discover Football Talent Across the World
+              Discover Football Talent in Africa
             </h1>
             <p className="text-[#6C6C6C] my-3 text-sm">
               Browse profiles of rising footballers on Playeer — from grassroots
               players to semi-pro talents. Filter by position, country, age
-              group, or performance to find standout profiles.
+              group, or performance to find exceptional players.
             </p>
           </div>
           <img
@@ -213,7 +248,7 @@ const players = () => {
             <div className="flex w-full md:w-[25%] ml-auto mb-4 items-center bg-[#F4F4F4] rounded-md">
               <input
                 type="text"
-                name="search"
+                name="search by name"
                 value={filters.search}
                 onChange={handleFilterChange}
                 className="p-3 rounded-md text-sm bg-[#F4F4F4] focus:outline-none w-full"
@@ -234,7 +269,7 @@ const players = () => {
                 />
               </svg>
             </div>
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
               {loading ? (
                 <div className="col-span-2 flex justify-center items-center min-h-[300px]">
@@ -245,7 +280,7 @@ const players = () => {
                   No players found.
                 </div>
               ) : (
-                players.map((player: any) => (
+                visiblePlayers.map((player: any) => (
                   <div
                     key={player._id}
                     className="relative cursor-pointer"
@@ -295,6 +330,14 @@ const players = () => {
                 ))
               )}
             </div>
+            {/* Sentinel for infinite scroll */}
+            <div ref={sentinelRef} className="h-10"></div>
+            {/* Bottom loader */}
+            {hasMore && (
+              <div className="flex justify-center items-center py-4 text-sm text-[#6C6C6C]">
+                Loading more...
+              </div>
+            )}
           </div>
         </div>
         <PlayerModal

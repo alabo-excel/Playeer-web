@@ -1,5 +1,6 @@
 import React from 'react';
 import { CopyrightIcon, Mail } from "lucide-react"
+import Link from 'next/link';
 
 
 const FooterNav = () => {
@@ -25,23 +26,36 @@ const FooterNav = () => {
         </div>
         <div className='w-full md:w-[25%] flex text-sm justify-between gap-4'>
           <div className=''>
-            <p className='text-[#6C6C6C] my-0 md:my-3'>Home</p>
-            <p className='text-[#6C6C6C] my-0 md:my-3'>About Us</p>
-            <p className='text-[#6C6C6C] my-0 md:my-3'>Testimonials</p>
-            <p className='text-[#6C6C6C] my-0 md:my-3'>Players directory</p>
+            <Link href={"/"}>
+              <p className='text-[#6C6C6C] my-0 md:my-3'>Home</p>
+            </Link>
+            <Link href={"/#about"}>
+              <p className='text-[#6C6C6C] my-0 md:my-3'>About Us</p>
+            </Link>
+            <Link href={"/#testimonials"}>
+              <p className='text-[#6C6C6C] my-0 md:my-3'>Testimonials</p>
+            </Link>
+            <Link href={"/players"}>
+              <p className='text-[#6C6C6C] my-0 md:my-3'>Player directory</p>
+            </Link>
           </div>
           <div className=''>
-            <p className='text-[#6C6C6C] my-0 md:my-3'>Pricing</p>
-            <p className='text-[#6C6C6C] my-0 md:my-3'>Supports</p>
-            <p className='text-[#6C6C6C] my-0 md:my-3'>Contact Us</p>
-            <p className='text-[#6C6C6C] my-0 md:my-3'>FAQs</p>
+            <Link href={"/#pricing"}>
+              <p className='text-[#6C6C6C] my-0 md:my-3'>Pricing</p>
+            </Link>
+            <Link href={"/#contact"}>
+              <p className='text-[#6C6C6C] my-0 md:my-3'>Contact Us</p>
+            </Link>
+            <Link href={"/#faqs"}>
+              <p className='text-[#6C6C6C] my-0 md:my-3'>FAQs</p>
+            </Link>
           </div>
         </div>
       </div>
       <div className='flex flex-col md:flex-row text-sm justify-between my-4 gap-2 md:gap-4 items-center'>
         <div className='w-full md:w-[30%] flex items-center justify-center md:justify-start mb-2 md:mb-0'>
           <CopyrightIcon className='text-[#6C6C6C]' />
-          <p className='my-auto ml-2 text-[#6C6C6C] text-center md:text-left'>Copyright 2025 Playeer</p>
+          <p className='my-auto ml-2 text-[#6C6C6C] text-center md:text-left'>© 2025 All rights reserved | Playeer</p>
         </div>
         <div className='w-full md:w-[25%] flex flex-row justify-center md:justify-between gap-4'>
           <p className='text-[#6C6C6C]  underline-offset-2'>Terms of service</p>

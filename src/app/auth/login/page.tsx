@@ -79,18 +79,18 @@ const LoginPage = () => {
           </p>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <button type="button" className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-full">
+            {/* <button type="button" className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-full">
               <img className="mr-2" src="/images/icons/google.png" alt="" />
               <span className="my-auto">Google</span>
-            </button>
-            <button type="button" className="flex p-3 border justify-center text-[#202426] border-gray rounded-full w-full">
+            </button> */}
+            {/* <button type="button" className="flex p-3 border justify-center text-[#202426] border-gray rounded-full w-full">
               <img src="/images/icons/apple.png" className="mr-2" alt="" />
               <span className="my-auto">Apple</span>
-            </button>
+            </button> */}
           </div>
-          <div className="border-b border-gray mb-6">
+          {/* <div className="border-b border-gray mb-6">
             <p className="text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto">or</p>
-          </div>
+          </div> */}
 
           <div className="my-4">
             <label htmlFor="email" className="mb-2">
@@ -165,7 +165,7 @@ const LoginPage = () => {
           <div className="flex justify-center">
             <p className="text-[#6C6C6C] mr-2">Don’t have an account?</p>
             <Link href={"/auth/signup"}>
-              <span className="text-primary">Sign Up Free</span>{" "}
+              <span className="text-primary">Sign Up For Free</span>{" "}
             </Link>
           </div>
         </div>

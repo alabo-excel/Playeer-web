@@ -80,7 +80,7 @@ const Card: React.FC<CardProps> = ({
           <button
             onClick={() => {
               showPlay(true);
-              handleViewClick(data.userId);
+              handleViewClick(data._id);
             }}
             className="rounded-full p-4 bg-[#F4F4F4] cursor-pointer w-14 absolute top-14 text-[#232323] left-0 right-0 mx-auto"
           >
@@ -159,18 +159,20 @@ const Card: React.FC<CardProps> = ({
         </div>
 
         <div className="">
-          <p className="text-sm font-bold my-2">
+          <p className="text-[16px] font-bold my-2">
             {data.title || data.certificateTitle}
-            {type !== "video" ? (
+            {type !== "highlight" ? (
               <span className="text-sm ml-3 my-auto text-[#6C6C6C]">
                 ({formatDate(data.createdAt || data.date || data.dateIssued)})
               </span>
             ) : null}
           </p>
         </div>
-        <p className="text-sm text-[#6C6C6C]">
+        <p className="text-[14px]">
           {data.description} <br />
-          {data.tags}
+        </p>
+        <p className="text-[#5A5A5A] text-[14px]">
+          #{data.tags}
         </p>
       </div>
 

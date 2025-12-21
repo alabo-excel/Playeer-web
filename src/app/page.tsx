@@ -93,6 +93,21 @@ const home = () => {
                 global football network. Upload your skills, track your
                 progress, and get in front of decision-makers who matter.
               </p>
+
+              <div className="mt-6 flex gap-4 flex-col sm:flex-row">
+                <Link href="/auth/signup">
+                  <button
+                    className={`bg-[#E5F4FF] lg:mr-6 px-12 py-3 rounded-full text-[#0095FF] transition-colors`}
+                  >Sign Up</button>
+                </Link>
+                <Link
+                  href="/#about"
+                >
+                  <button
+                    className="bg-[#0095FF] px-12 py-3 rounded-full text-white transition-colors"
+                  >Learn More</button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
@@ -180,9 +195,8 @@ const home = () => {
               <img
                 key={single}
                 onMouseEnter={() => setActiveSlide(single)}
-                className={`md:h-full object-cover rounded-2xl transition-width ease-in-out ${
-                  activeSlide === single ? "w-[55%]" : "w-[20%]"
-                }`}
+                className={`md:h-full object-cover rounded-2xl transition-width ease-in-out ${activeSlide === single ? "w-[55%]" : "w-[20%]"
+                  }`}
                 src={`/images/players-slide/slide-${single}.png`}
                 alt=""
               />
@@ -380,9 +394,8 @@ const home = () => {
                   {premiumPlayers.map((player: any, i) => (
                     <SwiperSlide key={i}>
                       <div
-                        className={`transition-transform duration-500 ${
-                          activeIndex === i ? "scale-100" : "scale-80"
-                        }`}
+                        className={`transition-transform duration-500 ${activeIndex === i ? "scale-100" : "scale-80"
+                          }`}
                       >
                         <div
                           key={player._id}
@@ -467,9 +480,8 @@ const home = () => {
                 {premiumPlayers.map((player: any, i) => (
                   <SwiperSlide key={i}>
                     <div
-                      className={`transition-transform duration-500 ${
-                        activeIndex === i ? "scale-100" : "scale-80"
-                      }`}
+                      className={`transition-transform duration-500 ${activeIndex === i ? "scale-100" : "scale-80"
+                        }`}
                     >
                       <div key={player._id} className="relative cursor-pointer">
                         <img
@@ -610,7 +622,7 @@ const home = () => {
         </div>
       </section>
 
-      <section className="md:my-20 max-w-7xl mx-auto">
+      <section id="testimonials" className="md:my-20 max-w-7xl mx-auto">
         <div className="w-full md:w-[40%] !text-center mx-auto px-2">
           <div className="bg-[#E5F4FF] w-52 mx-auto text-center rounded-full p-3 mb-4">
             <p className="!text-[#0095FF] font-semibold">TESTIMONIALS</p>
@@ -705,6 +717,12 @@ const home = () => {
             upload your clips and highlight your strengths. Recruiters, explore
             potential with confidence.
           </p>
+
+          <Link href="/players">
+            <button className="bg-[#0095FF] mt-6 px-12 py-3 rounded-full text-white transition-colors">
+              View Profiles
+            </button>
+          </Link>
         </div>
       </section>
 

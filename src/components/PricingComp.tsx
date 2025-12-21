@@ -21,7 +21,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
     const fetchPlans = async () => {
       setPlansLoading(true);
       try {
-        const res = await api.get("/plans");
+        const res = await api.get("/plans/active");
         setPlans(res.data?.data?.plans || []);
       } catch (err) {
         console.error("Failed to fetch plans:", err);

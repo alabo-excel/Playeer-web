@@ -132,25 +132,25 @@ const signup = () => {
           </p>
 
           <div className="grid grid-cols-2 gap-4 mb-4">
-            <button type="button" className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-full">
+            {/* <button type="button" className="flex justify-center text-[#202426] p-3 border border-gray rounded-full w-full">
               <img className="mr-2" src="/images/icons/google.png" alt="" />
               <span className="my-auto">Google</span>
-            </button>
-            <button type="button" className="flex p-3 border justify-center text-[#202426] border-gray rounded-full w-full">
+            </button> */}
+            {/* <button type="button" className="flex p-3 border justify-center text-[#202426] border-gray rounded-full w-full">
               <img src="/images/icons/apple.png" className="mr-2" alt="" />
               <span className="my-auto">Apple</span>
-            </button>
+            </button> */}
           </div>
-          <div className="border-b border-gray mb-6">
+          {/* <div className="border-b border-gray mb-6">
             <p className="text-center -mb-3 bg-[#F8F8F8] w-10 mx-auto">or</p>
-          </div>
+          </div> */}
           <div className="grid grid-cols-2 gap-4">
             <div className="">
-              <label htmlFor="fullName" className="mb-2">
+              <label htmlFor="firstName" className="mb-2">
                 First name
               </label>
               <input
-                name="fullName"
+                name="firstName"
                 type="text"
                 className={`w-full rounded-md text-sm p-3 border ${errors.fullname ? 'border-[#991616] text-[#991616]' : 'border-[#DFDFDF]'}`}
                 placeholder="Enter First name"
@@ -162,11 +162,11 @@ const signup = () => {
               )}
             </div>
             <div className="">
-              <label htmlFor="username" className="mb-2">
+              <label htmlFor="lastName" className="mb-2">
                 Last Name
               </label>
               <input
-                name="username"
+                name="lastName"
                 type="text"
                 className={`w-full rounded-md text-sm p-3 border ${errors.username ? 'border-[#991616] text-[#991616]' : 'border-[#DFDFDF]'}`}
                 placeholder="Enter Last Name"
@@ -332,7 +332,7 @@ const signup = () => {
             {loading ? (
               <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
             ) : (
-              "Sign Up Free"
+              "Create a Free Account"
             )}
           </button>
           {/* </Link> */}
