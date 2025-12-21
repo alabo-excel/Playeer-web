@@ -33,7 +33,7 @@ const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
         >
           <Menu className="w-6 h-6" />
         </button> */}
-        <Link href={"/user/dashboard"}>
+        <Link href={"/"}>
           <img
             className="w-32 my-auto"
             src="/images/logo-colored.png"

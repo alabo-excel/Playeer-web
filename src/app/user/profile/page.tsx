@@ -455,7 +455,7 @@ function Profile() {
                 {errors.dominantFoot && <p className="text-red-500 text-xs mt-1">{errors.dominantFoot}</p>}
               </div>
               <div className="sm:col-span-1">
-                <label className="block text-[#222] mb-2 text-sm font-medium">Height</label>
+                <label className="block text-[#222] mb-2 text-sm font-medium">Height (cm)</label>
                 <input
                   name="height"
                   value={form.height}
@@ -466,7 +466,7 @@ function Profile() {
                 />
               </div>
               <div className="sm:col-span-1">
-                <label className="block text-[#222] mb-2 text-sm font-medium">Weight</label>
+                <label className="block text-[#222] mb-2 text-sm font-medium">Weight (kg)</label>
                 <input
                   name="weight"
                   value={form.weight}

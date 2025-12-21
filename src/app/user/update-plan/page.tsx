@@ -9,6 +9,7 @@ import api from "@/utils/api";
 import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import { ArrowLeft } from "lucide-react";
+import { formatDate } from "@/utils/formatDate";
 
 const updatePlan = () => {
   const user = useAtomValue(userAtom);
@@ -136,7 +137,16 @@ const updatePlan = () => {
           {/* Current Plan Card */}
           <div className="mb-6 sm:mb-8">
             <div className="bg-[#F4F4F4] p-4 sm:p-6 rounded-2xl flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4 sm:gap-0 mb-6">
-              <h2 className="text-lg sm:text-xl font-bold capitalize text-center sm:text-left sm:my-auto text-[#222]">{user?.plan} Plan</h2>
+              <div className="sm:my-auto">
+                <h2 className="text-lg sm:text-xl font-bold capitalize text-center sm:text-left text-[#222]">{user?.plan} Plan</h2>
+                {user?.plan && user?.plan !== 'free' && (user as any)?.renewalDate && (
+                  <p className="text-xs sm:text-sm text-[#666] mt-1 text-center sm:text-left">
+                    Renews on {formatDate((user as any).renewalDate)}
+                  </p>
+                )}
+              </div>
+
+
               <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
                 {user?.plan !== 'free' && (
                   <button

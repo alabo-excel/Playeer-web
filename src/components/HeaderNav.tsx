@@ -113,7 +113,7 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
 
           {user ? (
             <div className="w-44 hidden md:flex justify-between my-auto">
-              <Link href={"/user/profile"}>
+              <Link href={"/user/dashboard"}>
                 <img
                   src={user?.profilePicture || "/images/player-2.jpg"}
                   className="w-8 my-auto h-8 rounded-full"

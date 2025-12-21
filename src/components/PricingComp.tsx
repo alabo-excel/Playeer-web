@@ -48,7 +48,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
         <button
           type="button"
           className={`rounded-full w-full p-3 sm:p-4 text-white text-sm sm:text-base font-medium ${loading || selectedPlan === "free"
-            ? "bg-transparent !text-[#BFBFBF] cursor-not-allowed"
+            ? "bg-transparent !text-[#BFBFBF] !cursor-not-allowed"
             : "bg-primary"
             }`}
           onClick={() => onPlanSelect("free")}
@@ -111,7 +111,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
         <button
           type="button"
           className={`rounded-full w-full p-3 sm:p-4 text-white text-sm sm:text-base font-medium ${loading || selectedPlan === "yearly"
-            ? "bg-transparent !text-[#BFBFBF] cursor-not-allowed"
+            ? "bg-transparent !text-[#BFBFBF] !cursor-not-allowed"
             : "bg-primary"
             }`}
           onClick={() => onPlanSelect("yearly")}
@@ -182,7 +182,7 @@ const PricingComp: React.FC<PricingCompProps> = ({
         <button
           type="button"
           className={`rounded-full w-full p-3 sm:p-4 text-white text-sm sm:text-base font-medium ${loading || selectedPlan === "monthly"
-            ? "bg-transparent !text-[#BFBFBF] cursor-not-allowed"
+            ? "bg-transparent !text-[#BFBFBF] !cursor-not-allowed"
             : "bg-primary"
             }`}
           onClick={() => onPlanSelect("monthly")}

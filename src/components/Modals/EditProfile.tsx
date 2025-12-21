@@ -239,7 +239,7 @@ const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any
           </div>
 
         </div>
-        <div className="grid lg:grid-cols-2 gap-4">
+        <div className="grid lg:grid-cols-2 gap-4 text-left">
           {/* <div>
             <label className="font-semibold mb-2 text-sm">Full Name</label>
             <input
@@ -253,7 +253,7 @@ const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any
             )}
           </div> */}
           <div>
-            <label className=" mb-2 text-sm">Gender</label>
+            <label className="mb-2 text-sm">Gender</label>
             <select
               name="gender"
               className="p-3 rounded-md w-full bg-[#F4F4F4]"
@@ -487,7 +487,7 @@ const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any
             )}
           </div> */}
           <div>
-            <label className=" mb-2 text-sm">Height</label>
+            <label className=" mb-2 text-sm">Height (cm)</label>
             <input
               name="height"
               value={form.height}
@@ -500,7 +500,7 @@ const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any
             )}
           </div>
           <div>
-            <label className=" mb-2 text-sm">Weight</label>
+            <label className=" mb-2 text-sm">Weight (kg)</label>
             <input
               name="weight"
               value={form.weight}
@@ -524,7 +524,7 @@ const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any
           disabled={loading}
         >
           {loading ? (
-            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+            <div className="w-6 h-6 border-2 mx-auto border-white border-t-transparent rounded-full animate-spin"></div>
 
           ) : (
             <span className="my-auto">Save</span>
