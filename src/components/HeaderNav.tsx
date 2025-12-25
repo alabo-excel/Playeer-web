@@ -4,7 +4,7 @@ import Link from "next/link";
 import { userAtom } from "@/store/user";
 import api from "@/utils/api";
 import { useAtomValue } from "jotai";
-import router from "next/router";
+// import router from "next/router";
 import { useRouter } from "next/navigation";
 
 const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
@@ -47,11 +47,10 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
 
   return (
     <nav
-      className={`fixed mx-auto right-0 left-0 top-0 transition-all duration-300 transition-discrete z-90 ${
-        scrolled
+      className={`fixed mx-auto right-0 left-0 top-0 transition-all duration-300 transition-discrete z-90 ${scrolled
           ? "bg-white rounded-full md:w-[80%] !mx-auto mt-6  shadow-lg"
           : "w-full bg-transparent  py-4"
-      } ${scroll || scrolled ? "text-black" : "text-[#FBFBFB]"}`}
+        } ${scroll || scrolled ? "text-black" : "text-[#FBFBFB]"}`}
     >
       <div className=" mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
@@ -98,9 +97,9 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
               </Link>
               <Link
                 className="hover:text-[#0095FF] transition-colors"
-                href={"/#contact"}
+                href={"/faq"}
               >
-                Contact
+                FAQ
               </Link>
               {/* <Link
                 href="/#"
@@ -162,18 +161,16 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
 
       {/* Mobile menu overlay */}
       <div
-        className={`fixed inset-0 z-40 bg-transparent bg-opacity-20 transition-opacity duration-300 ${
-          isMenuOpen ? "block" : "hidden"
-        }`}
+        className={`fixed inset-0 z-40 bg-transparent bg-opacity-20 transition-opacity duration-300 ${isMenuOpen ? "block" : "hidden"
+          }`}
         onClick={() => setIsMenuOpen(false)}
         aria-hidden="true"
       />
 
       {/* Mobile menu */}
       <div
-        className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 md:hidden ${
-          isMenuOpen ? "translate-y-0" : "-translate-y-full"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 md:hidden ${isMenuOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
         style={{ background: "#fff" }}
       >
         <div className="flex justify-between items-center h-16 px-4 border-b border-[#E5F4FF]">
@@ -223,11 +220,11 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
             Pricing
           </Link>
           <Link
-            href="/#contact"
+            href="/faq"
             className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
-            Contact
+            FAQ
           </Link>
           {/* <Link
             href="/#faq"

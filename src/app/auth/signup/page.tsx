@@ -304,7 +304,7 @@ const signup = () => {
               onChange={handleChange}
             />
             <p className="text-[#6C6C6C] text-sm">
-              I agree to Playeer’s Terms & Privacy Policy
+              I agree to Playeer’s <Link href="/terms" className="font-semibold underline">Terms</Link> & <Link href="/privacy-policy" className="font-semibold underline">Privacy Policy</Link>
             </p>
           </div>
           {errors.agree && (

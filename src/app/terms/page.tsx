@@ -1,10 +1,16 @@
+'use client'
+
+
+import FooterNav from '@/components/FooterNav';
+import HeaderNav from '@/components/HeaderNav';
 import React from 'react';
 
 const terms = () => {
     return (
-        <div>
-            
-        </div>
+        <>
+            <HeaderNav />
+            <FooterNav />
+        </>
     );
 };
 
