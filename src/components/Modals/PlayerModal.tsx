@@ -110,7 +110,7 @@ const PlayerModal = ({
 
                 <Link href={"#contact"} onClick={onClose}>
                   <button className="my-auto bg-[#0095FF] text-white py-3 rounded-full px-8">
-                    Contact Us
+                    Player Inquiry
                   </button>
                 </Link>
               </div>

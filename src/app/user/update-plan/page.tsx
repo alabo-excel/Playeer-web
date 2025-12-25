@@ -19,6 +19,8 @@ const updatePlan = () => {
   const router = useRouter();
   const [open, setOpen] = useState(false)
   const [cancelModalOpen, setCancelModalOpen] = useState(false)
+  const [downgradeModalOpen, setDowngradeModalOpen] = useState(false)
+  const [pendingDowngradePlan, setPendingDowngradePlan] = useState<string>("")
   const [plans, setPlans] = useState<any[]>([]);
   const [plansLoading, setPlansLoading] = useState<boolean>(true);
   const [cancelling, setCancelling] = useState(false);
@@ -27,7 +29,7 @@ const updatePlan = () => {
     const fetchPlans = async () => {
       setPlansLoading(true);
       try {
-        const res = await api.get("/plans");
+        const res = await api.get("/plans/");
         setPlans(res.data?.data?.plans || []);
       } catch (err) {
         console.error("Failed to fetch plans:", err);
@@ -47,6 +49,18 @@ const updatePlan = () => {
   const currentPlanDetails = plans.find(
     (p) => p.planName?.toLowerCase() === user?.plan?.toLowerCase()
   );
+
+  const getPlanOrder = (planName: string) => {
+    const order = { 'free': 0, 'monthly': 1, 'yearly': 2 };
+    return order[planName as keyof typeof order] ?? -1;
+  };
+
+  const isDowngrade = (selectedPlan: string) => {
+    if (!user?.plan) return false;
+    const currentOrder = getPlanOrder(user.plan.toLowerCase());
+    const selectedOrder = getPlanOrder(selectedPlan.toLowerCase());
+    return selectedOrder < currentOrder;
+  };
 
   const handlePay = async (selectedPlan: string) => {
     try {
@@ -83,9 +97,16 @@ const updatePlan = () => {
 
   const handlePlanSelect = (selectedPlan: string) => {
     setPlan(selectedPlan);
-    if (selectedPlan === "free") {
-      // updatePlan("free");
+
+    if (isDowngrade(selectedPlan)) {
+      // Show downgrade modal for plan downgrades
+      setPendingDowngradePlan(selectedPlan);
+      setDowngradeModalOpen(true);
+    } else if (selectedPlan === "free") {
+      // For free plan selection (when user doesn't have a paid plan)
+      handleCancelSubscription();
     } else {
+      // Handle upgrades or same plan
       handlePay(selectedPlan);
     }
   };
@@ -104,6 +125,22 @@ const updatePlan = () => {
     }
   };
 
+  const handleConfirmDowngrade = async () => {
+    if (!pendingDowngradePlan) return;
+
+    setDowngradeModalOpen(false);
+
+    if (pendingDowngradePlan === "free") {
+      await handleCancelSubscription();
+    } else {
+      // For downgrades between paid plans, we might need to update the plan immediately
+      // or schedule it for the next billing cycle depending on your backend logic
+      await updatePlan(pendingDowngradePlan);
+    }
+
+    setPendingDowngradePlan("");
+  };
+
   const handleCancelSubscription = async () => {
     if (!user?._id) return;
 
@@ -111,7 +148,9 @@ const updatePlan = () => {
     try {
       const res = await api.post(`/subscriptions/${user._id}/cancel`);
       if (res?.data?.success) {
-        setUser((prev: any) => ({ ...prev, plan: 'free' }));
+
+
+        // setUser((prev: any) => ({ ...prev, plan: 'free' }));
         router.push("/user/dashboard");
       }
     } catch (err) {
@@ -121,8 +160,6 @@ const updatePlan = () => {
       setCancelling(false);
     }
   }
-
-
   return (
     <AdminLayout>
       <div className="pt-4 sm:pt-8">
@@ -206,7 +243,7 @@ const updatePlan = () => {
                 <h1 className="text-2xl sm:text-3xl font-bold mb-3">Playeer Plans & Pricing</h1>
                 <p className="text-sm sm:text-base text-[#5A5A5A]">Find the plan that fits your goals. Upgrade and cancel anytime, save 20% with yearly billing.</p>
               </div>
-              <PricingComp selectedPlan={plan} onPlanSelect={handlePlanSelect} />
+              <PricingComp selectedPlan={plan} currentUserPlan={user?.plan} onPlanSelect={handlePlanSelect} />
             </div>
           </Modal>
         )}
@@ -249,6 +286,49 @@ const updatePlan = () => {
                   ) : (
                     'Cancel Subscription'
                   )}
+                </button>
+              </div>
+            </div>
+          </Modal>
+        )}
+
+        {/* Downgrade Plan Modal */}
+        {downgradeModalOpen && (
+          <Modal onClose={() => setDowngradeModalOpen(false)} width="420px">
+            <div className="text-center">
+              <div className="mb-4">
+                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Plan Downgrade Scheduled</h3>
+                <p className="text-sm text-[#666] mb-6">
+                  Your plan will be downgraded to <span className="font-semibold capitalize">{pendingDowngradePlan}</span> at the end of your current billing cycle.
+                  {user?.plan && user?.plan !== 'free' && (user as any)?.renewalDate && (
+                    <span className="block mt-2 text-sm">
+                      This change will take effect on {formatDate((user as any).renewalDate)}.
+                    </span>
+                  )}
+                  {pendingDowngradePlan === 'free' && (
+                    <span className="block mt-2 text-orange-600 font-medium">
+                      ⚠️ You'll lose access to premium features when the downgrade takes effect.
+                    </span>
+                  )}
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setDowngradeModalOpen(false)}
+                  className="flex-1 bg-[#F2F2F2] p-3 rounded-full text-gray-700 font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleConfirmDowngrade}
+                  className="flex-1 bg-orange-600 text-white p-3 rounded-full font-medium hover:bg-orange-700 transition-colors"
+                >
+                  Confirm Downgrade
                 </button>
               </div>
             </div>
