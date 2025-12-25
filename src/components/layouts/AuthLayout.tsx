@@ -2,8 +2,10 @@ import React from "react";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ToastContainer } from 'react-toastify';
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+
   const testimonials = [
     {
       name: "Samuel Adeyemi",
@@ -73,6 +75,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
           {children}
         </div>
       </div>
+      <ToastContainer />
     </section>
   );
 };

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import AdminHeader from '../AdminHeader';
 import SideNav from '../SideNav';
 import FooterAdmin from '../FooterAdmin';
+import { ToastContainer, toast } from 'react-toastify';
 
 const AdminLayout = ({ children }: { children: React.ReactNode }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -33,7 +34,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
           {children}
         </section>
       </section>
-
+      <ToastContainer />
       <FooterAdmin />
     </main>
   );
