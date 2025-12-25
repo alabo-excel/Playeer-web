@@ -21,7 +21,7 @@ const FooterNav = () => {
       </div>
       <div className='flex flex-col md:flex-row md:justify-between py-10 border-b border-b-[#B6B6B6] gap-6'>
         <div className='w-full md:w-[30%] mb-6 md:mb-0'>
-          <img className='w-32 md:w-40' src="/images/logo-colored.png" alt="" />
+          <img className='w-32 md:w-40' src="/images/logo-colored.svg" alt="" />
           <p className='text-sm mt-4 text-[#6C6C6C]'>Bridging the gap between undiscovered football talent and the professionals.</p>
         </div>
         <div className='w-full md:w-[25%] flex text-sm justify-between gap-4'>

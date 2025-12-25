@@ -36,7 +36,7 @@ const AdminHeader = ({ onSidebarToggle }: { onSidebarToggle?: () => void }) => {
         <Link href={"/"}>
           <img
             className="w-32 my-auto"
-            src="/images/logo-colored.png"
+            src="/images/logo-colored.svg"
             alt=""
           />
         </Link>

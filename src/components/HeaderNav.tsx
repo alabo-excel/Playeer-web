@@ -60,8 +60,8 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
               <img
                 src={
                   scrolled || scroll
-                    ? "/images/logo-colored.png"
-                    : "/images/logo.png"
+                    ? "/images/logo-colored.svg"
+                    : "/images/logo.svg"
                 }
                 alt="logo"
                 className="w-32 my-auto"

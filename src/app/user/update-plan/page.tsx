@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Modal from "@/components/Modal";
 import { ArrowLeft } from "lucide-react";
 import { formatDate } from "@/utils/formatDate";
+import { toast } from 'react-toastify';
 
 const updatePlan = () => {
   const user = useAtomValue(userAtom);
@@ -17,8 +18,10 @@ const updatePlan = () => {
   const [plan, setPlan] = useState<any>("");
   const router = useRouter();
   const [open, setOpen] = useState(false)
+  const [cancelModalOpen, setCancelModalOpen] = useState(false)
   const [plans, setPlans] = useState<any[]>([]);
   const [plansLoading, setPlansLoading] = useState<boolean>(true);
+  const [cancelling, setCancelling] = useState(false);
 
   useEffect(() => {
     const fetchPlans = async () => {
@@ -103,6 +106,8 @@ const updatePlan = () => {
 
   const handleCancelSubscription = async () => {
     if (!user?._id) return;
+
+    setCancelling(true);
     try {
       const res = await api.post(`/subscriptions/${user._id}/cancel`);
       if (res?.data?.success) {
@@ -111,6 +116,9 @@ const updatePlan = () => {
       }
     } catch (err) {
       console.error("Failed to cancel subscription:", err);
+      toast.error("Failed to cancel subscription. Please try again.");
+    } finally {
+      setCancelling(false);
     }
   }
 
@@ -151,7 +159,7 @@ const updatePlan = () => {
                 {user?.plan !== 'free' && (
                   <button
                     className="bg-[#FFE9E9] px-4 sm:px-6 py-3 text-[#991616] rounded-full text-sm order-2 sm:order-1"
-                    onClick={() => handleCancelSubscription()}
+                    onClick={() => setCancelModalOpen(true)}
                   >
                     Cancel Subscription
                   </button>
@@ -199,6 +207,50 @@ const updatePlan = () => {
                 <p className="text-sm sm:text-base text-[#5A5A5A]">Find the plan that fits your goals. Upgrade and cancel anytime, save 20% with yearly billing.</p>
               </div>
               <PricingComp selectedPlan={plan} onPlanSelect={handlePlanSelect} />
+            </div>
+          </Modal>
+        )}
+
+        {/* Cancel Subscription Confirmation Modal */}
+        {cancelModalOpen && (
+          <Modal onClose={() => setCancelModalOpen(false)} width="420px">
+            <div className="text-center">
+              <div className="mb-4">
+                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Cancel Subscription</h3>
+                <p className="text-sm text-[#666] mb-6">
+                  Are you sure you want to cancel your subscription? You'll lose access to premium features at the end of your current billing period.
+                </p>
+              </div>
+              <div className="flex gap-3">
+                <button
+                  onClick={() => setCancelModalOpen(false)}
+                  className="flex-1 bg-[#F2F2F2] p-3 rounded-full text-gray-700 font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Keep Subscription
+                </button>
+                <button
+                  onClick={async () => {
+                    setCancelModalOpen(false);
+                    await handleCancelSubscription();
+                  }}
+                  disabled={cancelling}
+                  className="flex-1 bg-red-600 text-white p-3 rounded-full font-medium hover:bg-red-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {cancelling ? (
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                      Cancelling...
+                    </div>
+                  ) : (
+                    'Cancel Subscription'
+                  )}
+                </button>
+              </div>
             </div>
           </Modal>
         )}
