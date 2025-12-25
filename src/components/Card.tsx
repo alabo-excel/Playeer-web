@@ -172,7 +172,7 @@ const Card: React.FC<CardProps> = ({
           {data.description} <br />
         </p>
         <p className="text-[#5A5A5A] text-[14px]">
-          #{data.tags}
+          {data.tags}
         </p>
       </div>
 

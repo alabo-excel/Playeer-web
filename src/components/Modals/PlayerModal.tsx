@@ -19,7 +19,7 @@ import "swiper/css/navigation";
 import Card from "../Card";
 import api from "@/utils/api";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
 import HeaderNav from "../HeaderNav";
 const PlayerModal = ({
   open,
@@ -33,6 +33,9 @@ const PlayerModal = ({
   const countries = Country.getAllCountries();
   const countryObj = countries.find((c: any) => c.isoCode === data?.country);
   const [highlights, setHighlights] = useState<any[]>([]);
+  const [achievementsExpanded, setAchievementsExpanded] = useState(true);
+  const [certificatesExpanded, setCertificatesExpanded] = useState(true);
+  const [highlightsExpanded, setHighlightsExpanded] = useState(true);
   const userPosition = positions;
 
   const positionLabel = userPosition.find(
@@ -313,10 +316,60 @@ const PlayerModal = ({
               {/* {data?.plan !== "free" && ( */}
               <>
                 <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <p className="text-xl font-bold">Achievements</p>
+                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setAchievementsExpanded(!achievementsExpanded)}>
+                    <p className="text-xl font-bold">Achievements</p>
+                    <button className="text-black font-bold hover:text-gray-700 transition-colors">
+                      {achievementsExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </button>
+                  </div>
 
-                  <div className="mt-4 grid md:grid-cols-4 gap-4">
-                    {/* <Swiper
+                  {achievementsExpanded && (
+                    <div className="mt-4 grid md:grid-cols-4 gap-4">
+                      {/* <Swiper
+                          modules={[Navigation]}
+                          navigation
+                          spaceBetween={10}
+                          slidesPerView={1.2}
+                          breakpoints={{
+                            640: {
+                              slidesPerView: 2.2,
+                              spaceBetween: 10,
+                            },
+                            768: {
+                              slidesPerView: 3.2,
+                              spaceBetween: 10,
+                            },
+                            1024: {
+                              slidesPerView: 4.4,
+                              spaceBetween: 10,
+                            },
+                          }}
+                        > */}
+                      {data?.achievements &&
+                        data?.achievements.map((achievement: Achievement) => (
+                          // <SwiperSlide key={achievement._id}>
+                          <Card
+                            data={achievement}
+                            hide={true}
+                            type="achievement"
+                          />
+                        ))}
+                      {/* </Swiper> */}
+                    </div>
+                  )}
+                </div>
+
+                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
+                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setCertificatesExpanded(!certificatesExpanded)}>
+                    <p className="text-xl font-bold">Certificates</p>
+                    <button className="text-black font-bold hover:text-gray-700 transition-colors">
+                      {certificatesExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </button>
+                  </div>
+
+                  {certificatesExpanded && (
+                    <div className="mt-4 grid md:grid-cols-4 gap-4">
+                      {/* <Swiper
                         modules={[Navigation]}
                         navigation
                         spaceBetween={10}
@@ -336,71 +389,42 @@ const PlayerModal = ({
                           },
                         }}
                       > */}
-                    {data?.achievements &&
-                      data?.achievements.map((achievement: Achievement) => (
-                        // <SwiperSlide key={achievement._id}>
-                        <Card
-                          data={achievement}
-                          hide={true}
-                          type="achievement"
-                        />
-                      ))}
-                    {/* </Swiper> */}
-                  </div>
-                </div>
-
-                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <p className="text-xl font-bold">Certificates</p>
-
-                  <div className="mt-4 grid md:grid-cols-4 gap-4">
-                    {/* <Swiper
-                      modules={[Navigation]}
-                      navigation
-                      spaceBetween={10}
-                      slidesPerView={1.2}
-                      breakpoints={{
-                        640: {
-                          slidesPerView: 2.2,
-                          spaceBetween: 10,
-                        },
-                        768: {
-                          slidesPerView: 3.2,
-                          spaceBetween: 10,
-                        },
-                        1024: {
-                          slidesPerView: 4.4,
-                          spaceBetween: 10,
-                        },
-                      }}
-                    > */}
-                    {data?.certificates &&
-                      data?.certificates.map(
-                        (certificates: Certificate) => (
-                          // <SwiperSlide key={certificates._id}>
-                          <Card data={certificates} hide={true} type="certificate" />
-                          // </SwiperSlide>
-                        )
-                      )}
-                    {/* </Swiper> */}
-                  </div>
+                      {data?.certificates &&
+                        data?.certificates.map(
+                          (certificates: Certificate) => (
+                            // <SwiperSlide key={certificates._id}>
+                            <Card data={certificates} hide={true} type="certificate" />
+                            // </SwiperSlide>
+                          )
+                        )}
+                      {/* </Swiper> */}
+                    </div>
+                  )}
                 </div>
               </>
               {/* )} */}
 
               {highlights.length > 0 && (
                 <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <p className="text-xl font-bold">Highlight</p>
-
-                  <div className="mt-4 grid md:grid-cols-4 gap-4">
-                    {highlights.map((highlight: any) => (
-                      <Card
-                        key={highlight._id}
-                        data={highlight}
-                        hide={true}
-                        type="highlight"
-                      />
-                    ))}
+                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setHighlightsExpanded(!highlightsExpanded)}>
+                    <p className="text-xl font-bold">Highlight</p>
+                    <button className="text-black font-bold hover:text-gray-700 transition-colors">
+                      {highlightsExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                    </button>
                   </div>
+
+                  {highlightsExpanded && (
+                    <div className="mt-4 grid md:grid-cols-4 gap-4">
+                      {highlights.map((highlight: any) => (
+                        <Card
+                          key={highlight._id}
+                          data={highlight}
+                          hide={true}
+                          type="highlight"
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
