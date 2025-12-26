@@ -1,5 +1,5 @@
 import api from '@/utils/api';
-import React from 'react';
+import React, { useState } from 'react';
 
 type Props = {
     isOpen?: boolean;
@@ -8,14 +8,14 @@ type Props = {
 };
 
 const PlayerEnquiry: React.FC<Props> = ({ isOpen = false, onClose, playerId }) => {
-    const [name, setName] = React.useState("");
-    const [email, setEmail] = React.useState("");
-    const [phone, setPhone] = React.useState("");
-    const [inquiryType, setInquiryType] = React.useState("");
-    const [designation, setDesignation] = React.useState("");
-    const [message, setMessage] = React.useState("");
-    const [loading, setLoading] = React.useState(false);
-    const [errors, setErrors] = React.useState<{ [key: string]: string }>({});
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
+    const [inquiryType, setInquiryType] = useState("");
+    const [designation, setDesignation] = useState("");
+    const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     if (!isOpen) return null;
 
@@ -35,8 +35,6 @@ const PlayerEnquiry: React.FC<Props> = ({ isOpen = false, onClose, playerId }) =
             setLoading(true);
             setErrors({});
             // Lazy import api to match project helper
-
-
             const payload = {
                 name,
                 email,
