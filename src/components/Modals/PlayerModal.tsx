@@ -19,8 +19,9 @@ import "swiper/css/navigation";
 import Card from "../Card";
 import api from "@/utils/api";
 import Link from "next/link";
-import { ArrowLeft, ChevronDown, ChevronUp } from "lucide-react";
+import { ArrowLeft, BadgeCheck, ChevronDown, ChevronUp, SquarePlay } from "lucide-react";
 import HeaderNav from "../HeaderNav";
+import PlayerEnquiry from "./PlayerEnquiry";
 const PlayerModal = ({
   open,
   onClose,
@@ -33,10 +34,9 @@ const PlayerModal = ({
   const countries = Country.getAllCountries();
   const countryObj = countries.find((c: any) => c.isoCode === data?.country);
   const [highlights, setHighlights] = useState<any[]>([]);
-  const [achievementsExpanded, setAchievementsExpanded] = useState(true);
-  const [certificatesExpanded, setCertificatesExpanded] = useState(true);
-  const [highlightsExpanded, setHighlightsExpanded] = useState(true);
   const userPosition = positions;
+  const [enquiryModalOpen, setEnquiryModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("highlights");
 
   const positionLabel = userPosition.find(
     (pos: any) => pos.value === data?.mainPosition
@@ -89,6 +89,50 @@ const PlayerModal = ({
     };
   }, [open]);
 
+
+  const getInitials = () => {
+    if (!data?.fullName) return "U";
+    const names = data.fullName.split(" ");
+    return (names[0][0] + (names[1]?.[0] || "")).toUpperCase();
+  };
+
+  // Search state and filtered lists used by the tabs
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const achievements = data?.achievements || [];
+  const certificates = data?.certificates || [];
+
+  const filteredHighlights = highlights.filter((h: any) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return ((h.title || "").toLowerCase().includes(q) || (h.description || "").toLowerCase().includes(q));
+  });
+
+  const filteredAchievements = achievements.filter((a: any) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return ((a.title || "").toLowerCase().includes(q) || (a.description || "").toLowerCase().includes(q));
+  });
+
+  const filteredCertificates = certificates.filter((c: any) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return ((c.certificateTitle || "").toLowerCase().includes(q) || (c.description || "").toLowerCase().includes(q));
+  });
+
+  // helper used by Card components to refresh profile-ish data
+  const fetchProfile = async () => {
+    try {
+      if (!data?._id) return;
+      // attempt to re-fetch profile (caller may ignore returned value)
+      await api.get(`/users/view/${data._id}`);
+      // also refresh highlights list
+      await fetchHighlights();
+    } catch (error) {
+      console.error("fetchProfile error:", error);
+    }
+  };
+
   return (
     <>
       {open && (
@@ -108,330 +152,371 @@ const PlayerModal = ({
               <div className="lg:flex justify-between items-center my-4">
                 <h1 className="my-auto text-3xl">Profile Details</h1>
 
-                <Link href={"#contact"} onClick={onClose}>
-                  <button className="my-auto bg-[#0095FF] text-white py-3 rounded-full px-8">
-                    Player Inquiry
-                  </button>
-                </Link>
+                {/* <Link href={"#contact"} onClick={onClose}> */}
+                <button onClick={() => setEnquiryModalOpen(true)} className="my-auto bg-[#0095FF] text-white py-3 rounded-full px-8">
+                  Player Inquiry
+                </button>
+                {/* </Link> */}
               </div>
-              <section className="bg-[#FCFCFC] md:flex gap-4 p-3 rounded-3xl">
-                <div className="md:w-[35%]">
-                  <img
-                    src={data?.profilePicture || "/images/player-2.jpg"}
-                    className="rounded-xl md:h-90 w-full object-cover"
-                    alt=""
-                  />
-                  <p className="text-lg mt-2 font-bold">{data?.fullName}</p>
-                  <p className="my-2 text-sm text-[#6C6C6C]">{positionLabel}</p>
-                  <div className="bg-[#F4F4F4] p-3 text-center rounded-xl grid grid-cols-3 gap-2">
-                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                      <p className="text-[#6C6C6C] text-xs">Age</p>
-                      <p className="font-bold mt-3 text-lg">
-                        {data?.dateOfBirth && getAge(data.dateOfBirth)}
-                      </p>
-                    </div>
-                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                      <p className="text-[#6C6C6C] text-xs">Height</p>
-                      <p className="font-bold mt-3 text-lg">{data?.height}</p>
-                    </div>
-                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                      <p className="text-[#6C6C6C] text-xs">Weight</p>
-                      <p className="font-bold mt-3 text-lg">{data?.weight}</p>
-                    </div>
-                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                      <p className="text-[#6C6C6C] text-xs">Dominant Foot</p>
-                      <p className="font-bold mt-3 capitalize text-lg">
-                        {data?.dominantFoot}
-                      </p>
-                    </div>
-                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                      <p className="text-[#6C6C6C] text-xs">Jersey Number</p>
-                      <p className="font-bold mt-3 text-lg">
-                        {data?.jerseyNumber}
-                      </p>
-                    </div>
-                    <div className="rounded-md p-2 bg-[#0095FF0D] border border-[#0095FF80]">
-                      <p className="text-[#6C6C6C] text-xs">Gender</p>
-                      <p className="font-bold mt-3 capitalize text-lg">
-                        {data?.gender}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="md:w-[65%]">
-                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                    <div className="flex justify-between">
-                      <p className="text-xl font-bold">Personal Information</p>
-                    </div>
-                    <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
-                      <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">Full Name</p>
-                        <div className="flex gap-2 items-center flex-row">
-                          <p className="font-bold text-base">{data?.fullName}</p>
-                          {data?.plan !== "free" && (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#0095FF" className="w-4 h-4">
-                            <path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
-                          </svg>)}
-                        </div>
-                      </div>
-                      <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">
-                          Date of Birth
-                        </p>
-                        <p className="font-bold text-base">
-                          {data?.dateOfBirth && formatDate(data?.dateOfBirth)}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">Age</p>
-                        <p className="font-bold text-base">
-                          {data?.dateOfBirth && getAge(data.dateOfBirth)}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">Gender</p>
-                        <p className="font-bold capitalize text-base">
-                          {data?.gender}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">
-                          Nationality
-                        </p>
-                        <p className="font-bold text-base">
-                          {countryObj?.name}
-                        </p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">City</p>
-                        <p className="font-bold text-base">{data?.city}</p>
-                      </div>
-                      {/* <div>
-                      <p className="text-sm text-[#6C6C6C] mb-2">
-                        Contact Email
-                      </p>
-                      <p className="font-bold text-base">{data?.email}</p>
-                    </div> */}
-                    </div>
+              <div className="bg-[#F4F4F4] rounded-3xl p-4 sm:p-6 lg:p-8 mb-6">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 mb-6">
+                  {/* Avatar */}
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 lg:w-32 lg:h-32 rounded-full border-2 border-[#DFDFDF] bg-[#F5F5F5] flex items-center justify-center flex-shrink-0 mx-auto sm:mx-0">
+                    {data?.profilePicture ? (
+                      <img
+                        src={data.profilePicture}
+                        alt="Profile"
+                        className="w-full h-full rounded-full object-cover"
+                      />
+                    ) : (
+                      <span className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#BFBFBF]">
+                        {getInitials()}
+                      </span>
+                    )}
                   </div>
 
-                  <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                    <div className="flex justify-between">
-                      <p className="text-xl font-bold">Football Information</p>
-                      {/* <button className="text-primary my-auto p-2 flex gap-3 rounded-full px-4 border border-primary">
-                  <SquarePen size={15} className="my-auto" />
-                  <span className="text-sm my-auto">Edit</span>
-                </button> */}
+                  {/* User Info */}
+                  <div className="flex-1 text-center sm:text-left">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-4">
+                      <div className="flex sm:gap-4 justify-center items-center">
+                        <h1 className="text-xl sm:text-2xl font-bold text-[#1F1F1F] mb-2 sm:mb-1">
+                          {data?.fullName || "User"}
+                        </h1>
+                        {data?.plan === "free" ?
+                          <span className="inline-block bg-[#E8F4E8] text-[#0F973D] px-3 py-1 rounded-full text-xs font-medium">
+                            {data?.plan === "free" ? "Free" : data?.plan || "Free"}
+                          </span> : <BadgeCheck fill='#1969FE' className='text-white' />}
+                      </div>
                     </div>
-                    <div className="grid md:grid-cols-3 grid-cols-2 gap-4 mt-3">
+
+                    {/* Stats Grid */}
+                    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
                       <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">
-                          Main Position
+                        <p className="text-xs text-[#6C6C6C] mb-1">Email address</p>
+                        <p className="text-sm font-bold text-[#1F1F1F] break-all">
+                          {data?.email || "-"}
                         </p>
-                        <p className="font-bold text-bse">{positionLabel}</p>
                       </div>
                       <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">
+                        <p className="text-xs text-[#6C6C6C] mb-1">Phone Number</p>
+                        <p className="text-sm font-bold text-[#1F1F1F]">
+                          {data?.phone || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#6C6C6C] mb-1">Gender</p>
+                        <p className="text-sm font-bold text-[#1F1F1F] capitalize">
+                          {data?.gender || "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#6C6C6C] mb-1">Age</p>
+                        <p className="text-sm font-bold text-[#1F1F1F]">
+                          {data?.dateOfBirth ? getAge(data.dateOfBirth) : "-"}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#6C6C6C] mb-1">Nationality</p>
+                        <p className="text-sm font-bold text-[#1F1F1F]">
+                          {countryObj && countryObj?.name}
+                        </p>
+                      </div>
+
+                      <div>
+                        <p className="text-xs text-[#6C6C6C] mb-1">
+                          Preferred Position
+                        </p>
+                        <p className="text-sm font-bold text-[#1F1F1F]">
+                          {positionLabel}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-xs text-[#6C6C6C] mb-1">
                           Secondary Position
                         </p>
-                        <p className="font-bold text-base">{secondLabe}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">
-                          Dominant Foot
-                        </p>
-                        <p className="font-bold capitalize text-base">
-                          {data?.dominantFoot}
+                        <p className="text-sm font-bold text-[#1F1F1F]">
+                          {secondLabe}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">
-                          Jersey Number
-                        </p>
-                        <p className="font-bold text-base">
-                          {data?.jerseyNumber}
+                        <p className="text-xs text-[#6C6C6C] mb-1">Preferred foot</p>
+                        <p className="text-sm font-bold text-[#1F1F1F] capitalize">
+                          {data?.dominantFoot || "-"}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">
-                          Years of Expreience
-                        </p>
-                        <p className="font-bold text-base">
-                          {data?.yearsOfExperience} years
+                        <p className="text-xs text-[#6C6C6C] mb-1">Height</p>
+                        <p className="text-sm font-bold text-[#1F1F1F]">
+                          {data?.height || "-"}
                         </p>
                       </div>
                       <div>
-                        <p className="text-sm text-[#6C6C6C] mb-2">
-                          Current Club/Academy
-                        </p>
-                        <p className="font-bold text-base">
-                          {data?.currentTeam}
+                        <p className="text-xs text-[#6C6C6C] mb-1">Weight</p>
+                        <p className="text-sm font-bold text-[#1F1F1F]">
+                          {data?.weight || "-"}
                         </p>
                       </div>
+
                     </div>
+
+
                   </div>
-                  {/* {data?.footballJourney &&
-                    data?.footballJourney?.length > 0 && (
-                      <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                        <div className="flex justify-between">
-                          <div>
-                            <p className="text-xl font-bold">
-                              Football Journey
-                            </p>
-                            <p className="text-sm text-[#6C6C6C]">
-                              List past clubs, academies, or events you’ve been
-                              part of.
-                            </p>
+                </div>
+              </div>
+
+
+              <div className="border-b border-[#DFDFDF] mb-6">
+                <div className="flex flex-wrap gap-4 sm:gap-8 overflow-x-auto">
+                  <button
+                    onClick={() => setActiveTab("highlights")}
+                    className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === "highlights"
+                      ? "text-[#1F1F1F]"
+                      : ""
+                      }`}
+                  >
+                    <span className="hidden sm:inline">Highlight Videos</span>
+                    <span className="sm:hidden">Highlights</span>
+                    {activeTab === "highlights" && (
+                      <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full"></div>
+                    )}
+                  </button>
+                  {(
+                    <>
+                      <button
+                        onClick={() => setActiveTab("achievements")}
+                        className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === "achievements"
+                          ? "text-[#1F1F1F]"
+                          : "text-[#6C6C6C] hover:text-[#1F1F1F]"
+                          }`}
+                      >
+                        Achievements
+                        {activeTab === "achievements" && (
+                          <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full"></div>
+                        )}
+                      </button>
+                      <button
+                        onClick={() => setActiveTab("certifications")}
+                        className={`pb-4 text-sm font-medium transition-colors relative whitespace-nowrap ${activeTab === "certifications"
+                          ? "text-[#1F1F1F]"
+                          : "text-[#6C6C6C] hover:text-[#1F1F1F]"
+                          }`}
+                      >
+                        <span className="hidden sm:inline">Certifications</span>
+                        <span className="sm:hidden">Certificates</span>
+                        {activeTab === "certifications" && (
+                          <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-t-full"></div>
+                        )}
+                      </button>
+                    </>
+                  )}
+                </div>
+              </div>
+
+              <div className="min-h-[400px]">
+                {/* Highlights Tab */}
+                {activeTab === "highlights" && (
+                  <>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+                      <div className="relative flex-1 max-w-full sm:max-w-md">
+                        <input
+                          type="text"
+                          placeholder="Search highlights..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                          <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                        </span>
+                      </div>
+
+                    </div>
+
+                    {highlights.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-20">
+                        <div className="flex justify-center mb-6">
+                          <div className="bg-primary bg-opacity-10 p-4 rounded-full">
+                            <SquarePlay className="text-white" />
                           </div>
                         </div>
-                        <div>
-                          {data.footballJourney.map(
-                            (single: FootballJourneyEntry) => (
-                              <div className="my-3" key={single._id}>
-                                <div className="flex gap-4">
-                                  <p className="font-bold text-base">
-                                    {single.teamName}
-                                  </p>
-                                  <span className="text-[#232323] text-sm">
-                                    ({formatDate(single.from)} –{" "}
-                                    {formatDate(single.to)})
-                                  </span>
-                                </div>
-                                <p className="text-sm text-[#6C6C6C]">
-                                  {
-                                    userPosition.find(
-                                      (pos: any) =>
-                                        pos.value === single?.position
-                                    )?.label
-                                  }
-                                </p>
-                              </div>
-                            )
-                          )}
-                        </div>
+                        <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                          No highlights yet.
+                        </h3>
+
                       </div>
-                    )} */}
-                </div>
-              </section>
-
-              {/* {data?.plan !== "free" && ( */}
-              <>
-                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setAchievementsExpanded(!achievementsExpanded)}>
-                    <p className="text-xl font-bold">Achievements</p>
-                    <button className="text-black font-bold hover:text-gray-700 transition-colors">
-                      {achievementsExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                    </button>
-                  </div>
-
-                  {achievementsExpanded && (
-                    <div className="mt-4 grid md:grid-cols-4 gap-4">
-                      {/* <Swiper
-                          modules={[Navigation]}
-                          navigation
-                          spaceBetween={10}
-                          slidesPerView={1.2}
-                          breakpoints={{
-                            640: {
-                              slidesPerView: 2.2,
-                              spaceBetween: 10,
-                            },
-                            768: {
-                              slidesPerView: 3.2,
-                              spaceBetween: 10,
-                            },
-                            1024: {
-                              slidesPerView: 4.4,
-                              spaceBetween: 10,
-                            },
-                          }}
-                        > */}
-                      {data?.achievements &&
-                        data?.achievements.map((achievement: Achievement) => (
-                          // <SwiperSlide key={achievement._id}>
-                          <Card
-                            data={achievement}
-                            hide={true}
-                            type="achievement"
-                          />
+                    ) : filteredHighlights.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-20">
+                        <div className="flex justify-center mb-6">
+                          <div className="bg-gray-100 p-4 rounded-full">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <circle cx="11" cy="11" r="8" />
+                              <path d="M21 21l-4.35-4.35" />
+                            </svg>
+                          </div>
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                          No highlights found
+                        </h3>
+                        <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                          No highlights match your search "{searchQuery}". Try different keywords or clear your search.
+                        </p>
+                        <button
+                          onClick={() => setSearchQuery("")}
+                          className="text-primary text-sm font-medium hover:underline"
+                        >
+                          Clear search
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {filteredHighlights.map((highlight, index) => (
+                          <Card key={index} data={highlight} fetchData={fetchHighlights} type="highlight" />
                         ))}
-                      {/* </Swiper> */}
-                    </div>
-                  )}
-                </div>
+                      </div>
+                    )}
+                  </>
+                )}
 
-                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setCertificatesExpanded(!certificatesExpanded)}>
-                    <p className="text-xl font-bold">Certificates</p>
-                    <button className="text-black font-bold hover:text-gray-700 transition-colors">
-                      {certificatesExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                    </button>
-                  </div>
-
-                  {certificatesExpanded && (
-                    <div className="mt-4 grid md:grid-cols-4 gap-4">
-                      {/* <Swiper
-                        modules={[Navigation]}
-                        navigation
-                        spaceBetween={10}
-                        slidesPerView={1.2}
-                        breakpoints={{
-                          640: {
-                            slidesPerView: 2.2,
-                            spaceBetween: 10,
-                          },
-                          768: {
-                            slidesPerView: 3.2,
-                            spaceBetween: 10,
-                          },
-                          1024: {
-                            slidesPerView: 4.4,
-                            spaceBetween: 10,
-                          },
-                        }}
-                      > */}
-                      {data?.certificates &&
-                        data?.certificates.map(
-                          (certificates: Certificate) => (
-                            // <SwiperSlide key={certificates._id}>
-                            <Card data={certificates} hide={true} type="certificate" />
-                            // </SwiperSlide>
-                          )
-                        )}
-                      {/* </Swiper> */}
-                    </div>
-                  )}
-                </div>
-              </>
-              {/* )} */}
-
-              {highlights.length > 0 && (
-                <div className="bg-[#F4F4F4] p-3 rounded-2xl mb-3">
-                  <div className="flex justify-between items-center cursor-pointer" onClick={() => setHighlightsExpanded(!highlightsExpanded)}>
-                    <p className="text-xl font-bold">Highlight</p>
-                    <button className="text-black font-bold hover:text-gray-700 transition-colors">
-                      {highlightsExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                    </button>
-                  </div>
-
-                  {highlightsExpanded && (
-                    <div className="mt-4 grid md:grid-cols-4 gap-4">
-                      {highlights.map((highlight: any) => (
-                        <Card
-                          key={highlight._id}
-                          data={highlight}
-                          hide={true}
-                          type="highlight"
+                {/* Achievements Tab */}
+                {activeTab === "achievements" && (
+                  <>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+                      <div className="relative flex-1 max-w-full sm:max-w-md">
+                        <input
+                          type="text"
+                          placeholder="Search Achievements..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         />
-                      ))}
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                          <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                        </span>
+                      </div>
+
                     </div>
-                  )}
-                </div>
-              )}
+
+                    {(!data?.achievements || data.achievements.length === 0) ? (
+
+                      // Premium plan - show add achievements message
+                      <div className="flex flex-col items-center justify-center py-20">
+                        <div className="flex justify-center mb-6">
+                          <img src="/images/icons/achievements.png" alt="" />
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                          No achievements added yet.
+                        </h3>
+                        <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                          Showcase your career milestones whether it’s tournament wins, MVP awards, trials, or big moments on the pitch.                </p>
+                      </div>
+
+                    ) : filteredAchievements.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-20">
+                        <div className="flex justify-center mb-6">
+                          <div className="bg-gray-100 p-4 rounded-full">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <circle cx="11" cy="11" r="8" />
+                              <path d="M21 21l-4.35-4.35" />
+                            </svg>
+                          </div>
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                          No achievements found
+                        </h3>
+                        <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                          No achievements match your search "{searchQuery}". Try different keywords or clear your search.
+                        </p>
+                        <button
+                          onClick={() => setSearchQuery("")}
+                          className="text-primary text-sm font-medium hover:underline"
+                        >
+                          Clear search
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {filteredAchievements.map((achievement, index) => (
+                          <Card key={index} data={achievement} fetchData={fetchProfile} type="achievement" />
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* Certifications Tab */}
+                {activeTab === "certifications" && (
+                  <>
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+                      <div className="relative flex-1 max-w-full sm:max-w-md">
+                        <input
+                          type="text"
+                          placeholder="Search Certificates..."
+                          value={searchQuery}
+                          onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full pl-10 pr-4 py-3 border border-[#DFDFDF] rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        />
+                        <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                          <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" /></svg>
+                        </span>
+                      </div>
+                    </div>
+
+                    {(!data?.certificates || data.certificates.length === 0) ? (
+
+                      // Premium plan - show add certificates message
+                      <div className="flex flex-col items-center justify-center py-20">
+                        <div className="flex justify-center mb-6">
+                          <img src="/images/icons/certification.png" alt="" />
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                          No certification uploaded yet.
+                        </h3>
+                        <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                          Add your verified training certificates, academy licenses, or fitness test results to build credibility.                </p>
+
+                      </div>
+
+                    ) : filteredCertificates.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-20">
+                        <div className="flex justify-center mb-6">
+                          <div className="bg-gray-100 p-4 rounded-full">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                              <circle cx="11" cy="11" r="8" />
+                              <path d="M21 21l-4.35-4.35" />
+                            </svg>
+                          </div>
+                        </div>
+                        <h3 className="text-lg font-bold text-[#1F1F1F] mb-2">
+                          No certificates found
+                        </h3>
+                        <p className="text-sm text-[#6C6C6C] text-center mb-6 max-w-md">
+                          No certificates match your search "{searchQuery}". Try different keywords or clear your search.
+                        </p>
+                        <button
+                          onClick={() => setSearchQuery("")}
+                          className="text-primary text-sm font-medium hover:underline"
+                        >
+                          Clear search
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                        {filteredCertificates.map((certificate, index) => (
+                          <div key={index}>
+                            <Card key={index} data={certificate} fetchData={fetchProfile} type="certificate" />
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
             </div>
           </div>
         </div>
-        // </Modal>
       )}
+
+      <PlayerEnquiry isOpen={enquiryModalOpen} playerId={data?._id} onClose={() => setEnquiryModalOpen(false)} />
     </>
   );
 };

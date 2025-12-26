@@ -343,7 +343,7 @@ const players = () => {
         <PlayerModal
           data={data}
           open={showModal}
-          onClose={() => setShowModal(false)}
+          onClose={() => { setShowModal(false), router.push('/players'); }}
         />
       </section>
       <ContactComp />
