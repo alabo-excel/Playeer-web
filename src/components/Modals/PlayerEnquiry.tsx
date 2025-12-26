@@ -131,10 +131,10 @@ const PlayerEnquiry: React.FC<Props> = ({ isOpen = false, onClose, playerId }) =
                                 <option value="others">Others</option>
                             </select>
                         </div>
-                        <div>
+                        {/* <div>
                             <label className="text-sm text-gray-600 block mb-2">Email</label>
                             <input className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm" placeholder="Email Address" />
-                        </div>
+                        </div> */}
                     </div>
 
                     <div>
