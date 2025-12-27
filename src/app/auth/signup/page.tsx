@@ -12,6 +12,12 @@ import { Country } from "country-state-city";
 const signup = () => {
   const router = useRouter();
   const [countries] = useState(Country.getAllCountries());
+  // List of African ISO codes (primary countries)
+  const AFRICAN_ISO = [
+    'DZ', 'AO', 'BJ', 'BW', 'BF', 'BI', 'CV', 'CM', 'CF', 'TD', 'KM', 'CG', 'CD', 'CI', 'DJ', 'EG', 'GQ', 'ER', 'SZ', 'ET', 'GA', 'GM', 'GH', 'GN', 'GW', 'KE', 'LS', 'LR', 'LY', 'MG', 'MW', 'ML', 'MR', 'MU', 'MA', 'MZ', 'NA', 'NE', 'NG', 'RW', 'ST', 'SN', 'SC', 'SL', 'SO', 'ZA', 'SS', 'SD', 'TZ', 'TG', 'TN', 'UG', 'ZM', 'ZW'
+  ];
+
+  const africanCountries = countries.filter(c => AFRICAN_ISO.includes(c.isoCode));
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
     firstName: "",
@@ -41,9 +47,10 @@ const signup = () => {
   };
 
   const getPopularCountries = () => {
-    const popularCodes = ['NG', 'US', 'GB', 'CA', 'AU', 'GH', 'KE', 'ZA'];
-    const popular = countries.filter(c => popularCodes.includes(c.isoCode));
-    const rest = countries.filter(c => !popularCodes.includes(c.isoCode));
+    // Popular African countries first
+    const popularCodes = ['NG', 'GH', 'KE', 'ZA', 'EG', 'TZ', 'UG', 'SN'];
+    const popular = africanCountries.filter(c => popularCodes.includes(c.isoCode));
+    const rest = africanCountries.filter(c => !popularCodes.includes(c.isoCode));
     return [...popular, ...rest];
   };
 

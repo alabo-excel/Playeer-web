@@ -21,7 +21,7 @@ const dominantFootOptions = [
 ];
 const secondaryPositionOptions = positions;
 
-const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any }) => {
+const EditProfile = ({ show, onClose }: { show: boolean | undefined; onClose: any }) => {
   const user = useAtomValue(userAtom);
   const setUser = useSetAtom(userAtom);
   const [form, setForm] = useState({
@@ -73,7 +73,14 @@ const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any
   const [loading, setLoading] = useState(false);
   const [apiError, setApiError] = useState("");
   const [countries] = useState(Country.getAllCountries());
-  const countryOptions = countries.map((country) => ({
+  // African ISO codes
+  const AFRICAN_ISO = [
+    'DZ', 'AO', 'BJ', 'BW', 'BF', 'BI', 'CV', 'CM', 'CF', 'TD', 'KM', 'CG', 'CD', 'CI', 'DJ', 'EG', 'GQ', 'ER', 'SZ', 'ET', 'GA', 'GM', 'GH', 'GN', 'GW', 'KE', 'LS', 'LR', 'LY', 'MG', 'MW', 'ML', 'MR', 'MU', 'MA', 'MZ', 'NA', 'NE', 'NG', 'RW', 'ST', 'SN', 'SC', 'SL', 'SO', 'ZA', 'SS', 'SD', 'TZ', 'TG', 'TN', 'UG', 'ZM', 'ZW'
+  ];
+
+  const africanCountries = countries.filter((c) => AFRICAN_ISO.includes(c.isoCode));
+
+  const countryOptions = africanCountries.map((country) => ({
     value: country.isoCode,
     label: country.name,
   }));
@@ -106,7 +113,7 @@ const EditProfile = ({ show, onClose }: { show: boolean| undefined; onClose: any
 
     if (name === "country") {
       setForm((prev) => ({ ...prev, city: "" }));
-      const countryObj = countries.find((c) => c.isoCode === value);
+      const countryObj = africanCountries.find((c) => c.isoCode === value);
       if (countryObj) {
         setCities(State.getStatesOfCountry(countryObj.isoCode) || []);
       } else {

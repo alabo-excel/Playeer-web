@@ -24,6 +24,12 @@ function Profile() {
   const user = useAtomValue(userAtom);
   const setUser = useSetAtom(userAtom);
   const [countries] = useState(Country.getAllCountries());
+  // African ISO codes
+  const AFRICAN_ISO = [
+    'DZ', 'AO', 'BJ', 'BW', 'BF', 'BI', 'CV', 'CM', 'CF', 'TD', 'KM', 'CG', 'CD', 'CI', 'DJ', 'EG', 'GQ', 'ER', 'SZ', 'ET', 'GA', 'GM', 'GH', 'GN', 'GW', 'KE', 'LS', 'LR', 'LY', 'MG', 'MW', 'ML', 'MR', 'MU', 'MA', 'MZ', 'NA', 'NE', 'NG', 'RW', 'ST', 'SN', 'SC', 'SL', 'SO', 'ZA', 'SS', 'SD', 'TZ', 'TG', 'TN', 'UG', 'ZM', 'ZW'
+  ];
+
+  const africanCountries = countries.filter(c => AFRICAN_ISO.includes(c.isoCode));
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [form, setForm] = useState({
@@ -112,9 +118,9 @@ function Profile() {
 
   // Get popular countries for the dropdown
   const getPopularCountries = () => {
-    const popularCodes = ['NG', 'US', 'GB', 'CA', 'AU', 'GH', 'KE', 'ZA'];
-    const popular = countries.filter(c => popularCodes.includes(c.isoCode));
-    const rest = countries.filter(c => !popularCodes.includes(c.isoCode));
+    const popularCodes = ['NG', 'GH', 'KE', 'ZA', 'EG', 'TZ', 'UG', 'SN'];
+    const popular = africanCountries.filter(c => popularCodes.includes(c.isoCode));
+    const rest = africanCountries.filter(c => !popularCodes.includes(c.isoCode));
     return [...popular, ...rest];
   };
 
@@ -248,7 +254,7 @@ function Profile() {
     }
   };
 
-  const countryOptions = countries.map(country => ({
+  const countryOptions = africanCountries.map(country => ({
     value: country.isoCode,
     label: country.name
   }));

@@ -10,7 +10,6 @@ import { X, XCircleIcon } from "lucide-react";
 import { positions } from "@/utils/positions";
 import { Country } from "country-state-city";
 import { Spin } from "antd";
-import PlayerModal from "@/components/Modals/PlayerModal";
 import Select from "react-select";
 import { useRef } from "react";
 
@@ -122,10 +121,9 @@ const players = () => {
 
   // Handle player click
   const handlePlayerClick = async (userId: string) => {
-    setShowModal(true);
+    router.push(`/players/single?id=${userId}`);
     try {
       await api.get(`/users/view/${userId}`);
-      // router.push(`/players/${userId}`);
     } catch (err) {
       // handle error if needed
     }
@@ -285,7 +283,7 @@ const players = () => {
                     key={player._id}
                     className="relative cursor-pointer"
                     onClick={() => {
-                      setData(player), handlePlayerClick(player._id);
+                       handlePlayerClick(player._id);
                     }}
                   >
                     <img
@@ -340,11 +338,7 @@ const players = () => {
             )}
           </div>
         </div>
-        <PlayerModal
-          data={data}
-          open={showModal}
-          onClose={() => { setShowModal(false), router.push('/players'); }}
-        />
+        
       </section>
       <ContactComp />
       <FooterNav />

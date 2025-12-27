@@ -23,7 +23,11 @@ const PlayerEnquiry: React.FC<Props> = ({ isOpen = false, onClose, playerId }) =
         const e: { [key: string]: string } = {};
         if (!name.trim()) e.name = "Name is required";
         if (!email.trim()) e.email = "Email is required";
+        else if (!/^\S+@\S+\.\S+$/.test(email)) e.email = "Enter a valid email";
+        if (!phone.trim()) e.phone = "Phone is required";
         if (!inquiryType) e.inquiryType = "Please select an inquiry type";
+        if (!designation) e.designation = "Please select your designation";
+        if (!message.trim()) e.message = "Message is required";
         setErrors(e);
         return Object.keys(e).length === 0;
     };
@@ -103,7 +107,8 @@ const PlayerEnquiry: React.FC<Props> = ({ isOpen = false, onClose, playerId }) =
 
                         <div>
                             <label className="text-sm text-gray-600 block mb-2">Phone</label>
-                            <input value={phone} onChange={(ev) => setPhone(ev.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm" placeholder="Phone Number" />
+                            <input value={phone} onChange={(ev) => setPhone(ev.target.value)} aria-invalid={!!errors.phone} className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm" placeholder="Phone Number" />
+                            {errors.phone && <p className="text-xs text-red-500 mt-1">{errors.phone}</p>}
                         </div>
                         <div>
                             <label className="text-sm text-gray-600 block mb-2">Inquiry Type</label>
@@ -120,7 +125,7 @@ const PlayerEnquiry: React.FC<Props> = ({ isOpen = false, onClose, playerId }) =
 
                         <div>
                             <label className="text-sm text-gray-600 block mb-2">Designation</label>
-                            <select value={designation} onChange={(ev) => setDesignation(ev.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm bg-white">
+                            <select value={designation} onChange={(ev) => setDesignation(ev.target.value)} aria-invalid={!!errors.designation} className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm bg-white">
                                 <option value="">Select</option>
                                 <option value="agent">Agent</option>
                                 <option value="scout">Scout</option>
@@ -130,6 +135,7 @@ const PlayerEnquiry: React.FC<Props> = ({ isOpen = false, onClose, playerId }) =
                                 <option value="broker">Broker</option>
                                 <option value="others">Others</option>
                             </select>
+                            {errors.designation && <p className="text-xs text-red-500 mt-1">{errors.designation}</p>}
                         </div>
                         {/* <div>
                             <label className="text-sm text-gray-600 block mb-2">Email</label>
@@ -139,7 +145,8 @@ const PlayerEnquiry: React.FC<Props> = ({ isOpen = false, onClose, playerId }) =
 
                     <div>
                         <label className="text-sm text-gray-600 block mb-2">Message</label>
-                        <textarea value={message} onChange={(ev) => setMessage(ev.target.value)} className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm h-32 resize-none" placeholder="Message..." />
+                        <textarea value={message} onChange={(ev) => setMessage(ev.target.value)} aria-invalid={!!errors.message} className="w-full border border-gray-200 rounded-lg px-4 py-3 text-sm h-32 resize-none" placeholder="Message..." />
+                        {errors.message && <p className="text-xs text-red-500 mt-1">{errors.message}</p>}
                     </div>
                     {errors.submit && <p className="text-sm text-red-500">{errors.submit}</p>}
                     <div className="flex justify-end">

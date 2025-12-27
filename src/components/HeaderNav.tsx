@@ -101,12 +101,12 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
               >
                 FAQ
               </Link>
-              {/* <Link
-                href="/#"
+              <Link
+                href="/#contact"
                 className="hover:text-[#0095FF] transition-colors"
               >
-                FAQ
-              </Link> */}
+                Contact
+              </Link> 
             </div>
           </div>
 
@@ -226,13 +226,13 @@ const HeaderNav = ({ scroll }: { scroll?: boolean }) => {
           >
             FAQ
           </Link>
-          {/* <Link
-            href="/#faq"
+          <Link
+            href="/#contact"
             className="block px-3 py-2 rounded-md text-base font-medium text-[#232323] hover:bg-[#E5F4FF] hover:text-[#0095FF] transition-colors"
             onClick={() => setIsMenuOpen(false)}
           >
-            FAQ
-          </Link> */}
+            Contact
+          </Link>
           {user ? (
             <div className="flex justify-between px-3 my-auto">
               <Link href={"/user/profile"}>

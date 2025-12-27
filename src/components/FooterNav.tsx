@@ -46,7 +46,7 @@ const FooterNav = () => {
             <Link href={"/#contact"}>
               <p className='text-[#6C6C6C] my-0 md:my-3'>Contact Us</p>
             </Link>
-            <Link href={"/faqs"}>
+            <Link href={"/faq"}>
               <p className='text-[#6C6C6C] my-0 md:my-3'>FAQs</p>
             </Link>
           </div>
@@ -58,8 +58,12 @@ const FooterNav = () => {
           <p className='my-auto ml-2 text-[#6C6C6C] text-center md:text-left'>© 2025 All rights reserved | Playeer</p>
         </div>
         <div className='w-full md:w-[25%] flex flex-row justify-center md:justify-between gap-4'>
-          <p className='text-[#6C6C6C]  underline-offset-2'>Terms of service</p>
-          <p className='text-[#6C6C6C]  underline-offset-2'>Privacy Policy</p>
+          <Link href={'/terms'}>
+            <p className='text-[#6C6C6C] underline-offset-2'>Terms of service</p>
+          </Link>
+          <Link href={'/privacy-policy'}>
+            <p className='text-[#6C6C6C] underline-offset-2'>Privacy Policy</p>
+          </Link>
         </div>
       </div>
     </footer>

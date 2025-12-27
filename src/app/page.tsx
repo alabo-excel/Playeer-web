@@ -328,6 +328,7 @@ const home = () => {
                     <div
                       key={player._id}
                       className="relative cursor-pointer w-64 hover:scale-100"
+                      onClick={() => router.push(`/players/single?id=${player._id}`)}
                     >
                       <img
                         src={player.profilePicture || "/images/player-2.jpg"}
@@ -401,6 +402,7 @@ const home = () => {
                         <div
                           key={player._id}
                           className="relative cursor-pointer"
+                          onClick={() => router.push(`/players/single?id=${player._id}`)}
                         >
                           <img
                             src={
