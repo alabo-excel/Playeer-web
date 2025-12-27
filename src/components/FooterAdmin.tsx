@@ -11,7 +11,7 @@ const FooterAdmin = () => {
                     <span className="text-xs md:text-sm text-gray-700">Follow us:</span>
                     <div className="flex gap-3">
                         <a
-                            href="https://linkedin.com"
+                            href="https://linkedin.com/Playeer_africa"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-600 hover:text-primary transition-colors"
@@ -20,7 +20,7 @@ const FooterAdmin = () => {
                             <Linkedin size={18} />
                         </a>
                         <a
-                            href="https://twitter.com"
+                            href="https://twitter.com/Playeer_africa"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-600 hover:text-primary transition-colors"
@@ -29,7 +29,7 @@ const FooterAdmin = () => {
                             <Twitter size={18} />
                         </a>
                         <a
-                            href="https://instagram.com"
+                            href="https://instagram.com/Playeer_africa"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-gray-600 hover:text-primary transition-colors"
@@ -42,16 +42,16 @@ const FooterAdmin = () => {
 
                 {/* Navigation Links */}
                 <div className="flex flex-wrap gap-3 md:gap-6 justify-center md:justify-end w-full md:w-auto">
-                    <Link href="/about" className="text-xs md:text-sm text-gray-700 hover:text-primary transition-colors">
+                    <Link href="/#about" className="text-xs md:text-sm text-gray-700 hover:text-primary transition-colors">
                         About
                     </Link>
                     <Link href="/terms" className="text-xs md:text-sm text-gray-700 hover:text-primary transition-colors">
                         Terms
                     </Link>
-                    <Link href="/privacy" className="text-xs md:text-sm text-gray-700 hover:text-primary transition-colors">
+                    <Link href="/privacy-policy" className="text-xs md:text-sm text-gray-700 hover:text-primary transition-colors">
                         Privacy
                     </Link>
-                    <Link href="/support" className="text-xs md:text-sm text-gray-700 hover:text-primary transition-colors">
+                    <Link href="mailto:hello@playeer.com" className="text-xs md:text-sm text-gray-700 hover:text-primary transition-colors">
                         Support
                     </Link>
                 </div>
