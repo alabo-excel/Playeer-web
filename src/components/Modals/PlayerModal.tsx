@@ -65,7 +65,7 @@ const PlayerModal = ({
   useEffect(() => {
     fetchUserData();
     fetchHighlights();
-  }, [data]);
+  }, [data, player]);
 
   const getInitials = () => {
     if (!data?.fullName) return "U";

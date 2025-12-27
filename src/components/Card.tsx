@@ -95,7 +95,7 @@ const Card: React.FC<CardProps> = ({
               <>
                 <button className="flex text-xs my-auto bg-[#E5F4FF] justify-between py-1 px-3 rounded-full text-primary">
                   <Eye size={18} />
-                  <span className="my-auto ml-1">{data.views.length}</span>
+                  <span className="my-auto ml-1">{data.views}</span>
                 </button>
                 <p className="text-sm my-auto text-[#6C6C6C]">
                   {formatDate(data.createdAt)}
