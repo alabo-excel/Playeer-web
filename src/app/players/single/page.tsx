@@ -1,12 +1,13 @@
 'use client'
 
 import PlayerModal from '@/components/Modals/PlayerModal';
-import React from 'react';
+import { useSearchParams } from 'next/navigation';
+import React, { Suspense } from 'react';
 
-// Server page: accepts query param `id` (searchParams.id) with fallback to params.id
-const singlePlayerView = ({ params, searchParams }: { params: { id?: string }, searchParams: { [key: string]: any } }) => {
-    const idFromQuery = typeof searchParams?.id === 'string' ? searchParams.id : undefined;
-    const id = idFromQuery ?? params?.id ?? '';
+// Client component that uses useSearchParams
+const SinglePlayerView = () => {
+    const searchParams = useSearchParams();
+    const id = searchParams.get('id') || '';
     return (
         <main className='p-6'>
             <PlayerModal player={id} />
@@ -14,4 +15,13 @@ const singlePlayerView = ({ params, searchParams }: { params: { id?: string }, s
     );
 };
 
-export default singlePlayerView;
+// Page component with Suspense boundary
+const Page = () => {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <SinglePlayerView />
+        </Suspense>
+    );
+};
+
+export default Page;
