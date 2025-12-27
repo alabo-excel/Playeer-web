@@ -7,24 +7,40 @@ import React, { useState } from 'react';
 
 const FAQ_ITEMS = [
     {
-        q: 'How does BillPilot work?',
-        a: 'BillPilot connects securely to your bill accounts and automates payments on your behalf. Simply link your accounts, set your preferences, and we’ll handle everything automatically - from payment scheduling to sending reminders before due dates.'
+        q: 'What is Playeer?',
+        a: 'Playeer is a digital platform that helps football players showcase their talent and get discovered by scouts and clubs.'
     },
     {
-        q: 'Is my payment information safe?',
-        a: 'Yes — we use bank-grade encryption and store minimal sensitive data. Payments are processed through trusted payment providers and we never share your credentials.'
+        q: 'Who can use Playeer?',
+        a: 'Playeer is built for grassroots and semi professional footballers, especially young players across Africa.'
     },
     {
-        q: 'Can I cancel at any time?',
-        a: 'You can cancel your subscription anytime from your account settings. Any scheduled payments already processed will follow the payment provider rules.'
+        q: 'Is Playeer free to use?',
+        a: 'Yes. Players can create a basic profile for free, with optional paid plans for more visibility.'
     },
     {
-        q: 'What types of bills can I automate?',
-        a: 'Electricity, water, internet, subscriptions, loan repayments and most recurring bills are supported. If you don’t see a bill provider, contact support and we’ll add it.'
+        q: 'How does Playeer help players get noticed?',
+        a: 'Players upload their profile, match highlights, stats, and position details so scouts can find them easily.'
     },
     {
-        q: 'How do I contact support?',
-        a: 'Use the contact form below or email support@billpilot.example and we’ll respond within 24 hours.'
+        q: 'Do I need an agent to use Playeer?',
+        a: 'No. Playeer allows players to present themselves directly without needing an agent.'
+    },
+    {
+        q: 'Is Playeer only for African players?',
+        a: 'Playeer is starting in Africa but is open to players and scouts globally.'
+    },
+    {
+        q: 'Are scouts and clubs verified on Playeer?',
+        a: 'Yes. All scouts and clubs will go through a verification process before accessing player data.'
+    },
+    {
+        q: 'Can young players under 18 join Playeer?',
+        a: 'Yes. Under 18 players can join with parental or guardian consent.'
+    },
+    {
+        q: 'How much does the premium plan cost?',
+        a: 'The Rising Star plan costs ₦5,000 or $5 monthly, while the Pro Player plan costs ₦50,000 or $50 yearly.'
     }
 ];
 

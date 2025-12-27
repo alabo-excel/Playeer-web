@@ -23,6 +23,7 @@ import { useRouter } from "next/navigation";
 import api from "@/utils/api";
 import { useEffect } from "react";
 import { positions } from "@/utils/positions";
+import testimonials from "@/utils/testimonials";
 
 const home = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -635,14 +636,13 @@ const home = () => {
         <div className="mt-10">
           {/* First Swiper: left-to-right */}
           <Marquee pauseOnHover={true} className="gap-4">
-            {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+            {testimonials.slice(0, 5).map((item, i) => (
               <div key={i} className="w-[350px] mx-2 flex-shrink-0">
                 <div className="bg-[#F6F6F6] rounded-xl p-4 md:p-8">
                   <Quote className="text-[#232323] mb-4" />
                   {/* <p className="text-lg font-semibold mb-2">Player {i}</p> */}
                   <p className="text-[#6C6C6C] text-sm md:text-base">
-                    We found a brilliant young talent for our U-18 squad thanks
-                    to Playeer.
+                    {item.quote}
                   </p>
                   <div className="flex mt-2">
                     <img
@@ -652,10 +652,10 @@ const home = () => {
                     />
                     <div>
                       <h2 className="font-bold text-sm md:text-base">
-                        Luka A., – Serbia
+                        {item.name} – {item.country}
                       </h2>
                       <p className="text-[#6C6C6C] text-xs md:text-sm">
-                        Club Manager
+                        {item.role}
                       </p>
                     </div>
                   </div>
@@ -665,14 +665,13 @@ const home = () => {
           </Marquee>
           {/* Second Swiper: right-to-left */}
           <Marquee pauseOnHover={true} direction="right" className="gap-4 mt-6">
-            {[1, 2, 3, 4, 5, 6, 7].map((i) => (
+            {testimonials.slice(5, 10).map((item, i) => (
               <div key={i} className="w-[300px] mx-2 flex-shrink-0">
                 <div className="bg-[#F6F6F6] rounded-xl p-4 md:p-8">
                   <Quote className="text-[#232323] mb-4" />
                   {/* <p className="text-lg font-semibold mb-2">Player {i}</p> */}
                   <p className="text-[#6C6C6C] text-sm md:text-base">
-                    We found a brilliant young talent for our U-18 squad thanks
-                    to Playeer.
+                    {item.quote}
                   </p>
                   <div className="flex mt-2">
                     <img
@@ -682,10 +681,10 @@ const home = () => {
                     />
                     <div>
                       <h2 className="font-bold text-sm md:text-base">
-                        Luka A., – Serbia
+                        {item.name} – {item.country}
                       </h2>
                       <p className="text-[#6C6C6C] text-xs md:text-sm">
-                        Club Manager
+                        {item.role}
                       </p>
                     </div>
                   </div>
@@ -698,7 +697,7 @@ const home = () => {
 
       <section className="relative md:my-20 my-10 lg:h-auto h-[80vh] mx-auto flex flex-col md:flex-row items-center justify-center">
         <img
-          className="w-full h-full object-cover object-left"
+          className="w-full h-full object-cover object-bottom"
           src="/images/cta-img.png"
           alt=""
         />

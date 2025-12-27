@@ -46,7 +46,7 @@ const FooterNav = () => {
             <Link href={"/#contact"}>
               <p className='text-[#6C6C6C] my-0 md:my-3'>Contact Us</p>
             </Link>
-            <Link href={"/#faqs"}>
+            <Link href={"/faqs"}>
               <p className='text-[#6C6C6C] my-0 md:my-3'>FAQs</p>
             </Link>
           </div>
